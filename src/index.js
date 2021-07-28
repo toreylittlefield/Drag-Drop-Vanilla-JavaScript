@@ -2,15 +2,26 @@ import "./styles.css";
 
 const gridItems = document.querySelectorAll(".grid-item");
 
-function allowDrop(ev) {
-  console.log({ ev });
-  ev.preventDefault();
-}
+const writeToScreenBox = (logOutput) => {
+  const loggingBoxList = document.querySelector(".logging-box ul");
+  const li = document.createElement("li");
+  const pTag = document.createElement("p");
+  let output = logOutput;
+
+  if (typeof output === "object")
+    pTag.innerText = JSON.stringify(logOutput, null, 2);
+  if (typeof output === "string") pTag.innerText = logOutput;
+  if (typeof output !== "string" && output !== "object")
+    pTag.innerText = logOutput;
+
+  li.appendChild(pTag);
+  loggingBoxList.append(li);
+};
 
 const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
-  console.log("move");
+  // console.log("move");
 
   element.style.position = "absolute";
   element.style.top = event.pageY + "px";
@@ -18,7 +29,7 @@ const move = (event) => {
 };
 
 const up = (event, element) => {
-  console.log("up");
+  // console.log("up");
   element.removeEventListener("pointermove", move);
   addRemoveClonedNode(null, true);
   const body = document.body;
@@ -28,7 +39,7 @@ const up = (event, element) => {
 };
 
 const addRemoveClonedNode = (element, removed) => {
-  console.log("out");
+  // console.log("out");
   if (removed) {
     const clonedActive = document.getElementById("active-clone");
     if (clonedActive) clonedActive.remove();
@@ -39,32 +50,24 @@ const addRemoveClonedNode = (element, removed) => {
   const nextSibling = element.nextElementSibling;
   const clonedElement = element.cloneNode();
   clonedElement.id = "active-clone";
-  console.log({ element });
+  // console.log({ element });
   if (nextSibling) nextSibling.before(clonedElement);
   if (!nextSibling) element.parentElement.append(clonedElement);
 };
 
-function drag(event) {
+function down(event) {
+  writeToScreenBox(event);
+  writeToScreenBox(event.target);
   const element = event.target;
 
   element.setPointerCapture(event.pointerId);
   element.style.transform = `scale(1.25)`;
-  console.log({ event });
+  // console.log({ event });
 
   element.addEventListener("pointermove", move);
   element.addEventListener("pointerup", (event) => {
     up(event, element);
   });
-
-  // console.log({ element });
-  // ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-  console.log({ ev });
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
 }
 
 const generateRandomRGBA = () => {
@@ -85,7 +88,5 @@ gridItems.forEach((gridItem, index) => {
   gridItem.style.backgroundColor = rgbaBG;
   gridItem.style.color = rgbaFontColor;
 
-  gridItem.onpointerdown = drag;
-  // gridItem.addEventListener("ondragover", allowDrop);
-  // gridItem.addEventListener("ondrop", drop);
+  gridItem.onpointerdown = down;
 });
