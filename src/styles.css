@@ -1,0 +1,28 @@
+body {
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+.grid-container {
+  background-color: rgba(241, 240, 240, 0.63);
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 100px;
+  grid-gap: 20px;
+  place-items: center;
+  border: 2px dashed black;
+}
+
+.grid-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgb(44, 117, 211);
+  border-radius: 20px;
+  height: 75px;
+  width: 75px;
+  background-color: rgba(44, 117, 211, 0.8);
+  color: rgba(250, 250, 250, 0.9);
+  touch-action: none;
+}
