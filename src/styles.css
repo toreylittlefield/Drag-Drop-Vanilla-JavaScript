@@ -6,12 +6,11 @@ body {
 .grid-container {
   background-color: rgba(241, 240, 240, 0.63);
   display: grid;
-  width: 100%;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 100px;
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 2em;
   place-items: center;
   border: 2px dashed black;
+  padding: 1em;
 }
 
 .grid-item {
@@ -25,4 +24,47 @@ body {
   background-color: rgba(44, 117, 211, 0.8);
   color: rgba(250, 250, 250, 0.9);
   touch-action: none;
+}
+
+.logging-box-section {
+  position: sticky;
+  bottom: 0%;
+  background-blend-mode: overlay;
+  backdrop-filter: blur(30px) opacity(80%)
+    drop-shadow(4px 4px 10px rgb(245, 241, 241));
+  border-top: 2px solid black;
+  overflow-y: scroll;
+  height: 30vh;
+}
+
+.logging-box {
+  display: grid;
+  place-items: center;
+}
+
+.logging-box-section:hover {
+  height: 60vh;
+}
+
+.logging-box h2 {
+  margin-bottom: 0.25em;
+}
+
+.logging-box ul {
+  list-style-type: square;
+  list-style-position: inside;
+  align-self: start;
+  justify-self: start;
+  width: 100%;
+}
+
+.logging-box li {
+  padding: 1em;
+  border: 1px solid white;
+  background-color: black;
+  color: rgba(250, 250, 250, 1);
+}
+
+.logging-box li p {
+  line-height: 1.5em;
 }
