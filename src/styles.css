@@ -1,18 +1,42 @@
-body {
-  font-family: sans-serif;
+/* Box sizing rules */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: sans-serif;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  margin: 2em;
+}
+
+/* The Grid */
 
 .grid-container {
   background-color: rgba(241, 240, 240, 0.63);
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-rows: max-content;
-  grid-gap: 2em;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 2rem;
+  grid-auto-rows: minmax(50px, auto);
   place-items: center;
+  justify-content: center;
   border: 2px dashed black;
   padding: 1em;
   pointer-events: none;
+}
+
+@media screen and (max-width: 1080px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  }
 }
 
 .grid-item {
@@ -21,14 +45,76 @@ body {
   justify-content: center;
   border: 3px solid rgb(44, 117, 211);
   border-radius: 20px;
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   background-color: rgba(44, 117, 211, 0.8);
   color: rgba(250, 250, 250, 0.9);
   touch-action: none;
   pointer-events: all;
-  font-size: 3em;
+  font-size: 2.5em;
 }
+
+@media screen and (max-device-width: 480px) {
+  .grid-item {
+    height: 75px;
+    width: 75px;
+    font-size: 1.2em;
+  }
+}
+
+/* Buttons */
+
+.btn {
+  padding: 1.25em;
+  border-radius: 10px;
+  margin: 0.5em;
+  font-size: 1.5em;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 480px) {
+  .btn {
+    font-size: 1.25em;
+    margin: 1em 0em;
+  }
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+.btn:active {
+  transform: scale(0.99);
+}
+
+.btn.show {
+  background-color: rgba(36, 36, 114, 0.9);
+  color: rgba(241, 240, 240, 1);
+}
+
+.btn.show:hover {
+  background-color: rgba(36, 36, 114, 1);
+}
+
+.btn.show:active {
+  background-color: rgba(36, 36, 114, 0.8);
+}
+
+.btn.shuffle {
+  background-color: rgba(43, 165, 124, 1);
+  color: rgba(253, 253, 253, 1);
+}
+
+.btn.shuffle:hover {
+  background-color: rgb(35, 136, 102);
+}
+
+.btn.shuffle:active {
+  background-color: rgb(35, 136, 102, 0.75);
+}
+
+/* Logging Output Box */
 
 .logging-box-section {
   position: sticky;
@@ -70,47 +156,4 @@ body {
 
 .logging-box li p {
   line-height: 1.5em;
-}
-
-.btn {
-  padding: 1.25em;
-  border-radius: 10px;
-  margin: 0.5em;
-  font-size: larger;
-  border: none;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: scale(1.02);
-}
-
-.btn:active {
-  transform: scale(0.99);
-}
-
-.btn.show {
-  background-color: rgba(36, 36, 114, 0.9);
-  color: rgba(241, 240, 240, 1);
-}
-
-.btn.show:hover {
-  background-color: rgba(36, 36, 114, 1);
-}
-
-.btn.show:active {
-  background-color: rgba(36, 36, 114, 0.8);
-}
-
-.btn.shuffle {
-  background-color: rgba(43, 165, 124, 1);
-  color: rgba(253, 253, 253, 1);
-}
-
-.btn.shuffle:hover {
-  background-color: rgb(35, 136, 102);
-}
-
-.btn.shuffle:active {
-  background-color: rgb(35, 136, 102, 0.75);
 }
