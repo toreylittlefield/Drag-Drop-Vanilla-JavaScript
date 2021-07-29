@@ -69,21 +69,23 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
   // console.log({ moveEvent: event });
   const x = event.x;
   const y = event.y;
-  if (x <= left || x >= right || y <= top || y >= bottom) {
-    return false;
-  }
+  // hit left-right boundary
+  if (x <= left || x >= right) return "top-bottom";
+  // hit top-bottom boundary
+  if (y <= top || y >= bottom) return "left-right";
+
   const currentClosetElement = document.elementFromPoint(x, y);
   if (
     currentClosetElement.className !== "grid-item" ||
     currentClosetElement.id === "active-clone"
   )
-    return true;
+    return "all";
   const clondedNode = document.querySelector("#active-clone");
   const clonedCopy = clondedNode.cloneNode();
   currentClosetElement.replaceWith(clonedCopy);
   clondedNode.replaceWith(currentClosetElement);
   // console.log({ currentClosetElement, clondedNode, clonedCopy });
-  return true;
+  return "all";
   // // moving to left
   // if (event.movementX < 0) return currentClosetElement.before(clondedNode);
   // // moving to right
@@ -102,10 +104,12 @@ const move = (event) => {
   addRemoveClonedNode(element, false);
   element.style.position = "absolute";
   const canMove = isOverElement(event, element);
-  if (canMove) {
+  if (canMove === "all") {
     element.style.top = event.pageY + "px";
     element.style.left = event.pageX + "px";
   }
+  if (canMove === "top-bottom") element.style.top = event.pageY + "px";
+  if (canMove === "left-right") element.style.left = event.pageX + "px";
 };
 
 /**
