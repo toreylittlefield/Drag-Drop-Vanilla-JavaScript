@@ -79,8 +79,7 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
   const x = event.x;
   const y = event.y;
   const checkYPositions = y <= pageYOffset + top || y >= height - pageYOffset;
-  const checkXPosition =
-    x <= left + pageXOffset || x >= width - left - pageXOffset;
+  const checkXPosition = x <= left + pageXOffset || x >= width - pageXOffset;
   // hit top-bottom boundary
   if (checkYPositions) return "left-right";
   // hit left-right boundary
