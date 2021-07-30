@@ -113,6 +113,8 @@ const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
   element.style.position = "absolute";
+  element.style.zIndex = 1;
+
   const { width, height } = element.getBoundingClientRect().toJSON();
   const canMove = isOverElement(event, element);
   if (canMove === "all") {
@@ -143,26 +145,19 @@ const move = (event) => {
  */
 const up = (event, element) => {
   const clonedElement = document.querySelector("#active-clone");
-  // console.log({ element, clonedElement });
   if (clonedElement) {
     clonedElement.replaceWith(element);
     clonedElement.remove();
-    clonedElement.removeEventListener("pointerup", up);
+    // clonedElement.removeEventListener("pointerup", up);
   }
   element.removeEventListener("pointermove", move);
-  // element.style.position = "static";
-  // element.style.top = "none"
-  // element.style.left = "none";
-  // element.style.transform = "none";
-  // element.style.pointerEvents = "auto";
-
+  element.style.cursor = "grab";
   element.style.position = "";
   element.style.top = "";
   element.style.left = "";
   element.style.transform = "";
   element.style.pointerEvents = "auto";
-
-  // addRemoveClonedNode(null, true);
+  element.style.zIndex = 0;
   element.releasePointerCapture(event.pointerId);
 };
 
@@ -201,6 +196,7 @@ function down(event) {
   bottom = height + top;
   writeToScreenBox({ top, bottom, left, right, height });
   const element = event.target;
+  element.style.cursor = "grabbing";
   element.style.pointerEvents = "none";
   element.setPointerCapture(event.pointerId);
   element.style.transform = `rotate(-5deg) scale(1.25)`;

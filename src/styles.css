@@ -50,8 +50,10 @@ body {
   background-color: rgba(44, 117, 211, 0.8);
   color: rgba(250, 250, 250, 0.9);
   touch-action: none;
+  cursor: grab;
   pointer-events: all;
   font-size: 2.5em;
+  z-index: 0;
 }
 
 @media screen and (max-device-width: 480px) {
