@@ -3,27 +3,27 @@ const gridItems = document.querySelectorAll(".grid-item");
 /**
  * @type {DOMRect}
  */
-let top, bottom, left, right, height;
-window.addEventListener("DOMContentLoaded", () => {
-  writeToScreenBox("DOM Loaded");
-  setTimeout(() => {
-    let {
-      top: t,
-      bottom: b,
-      left: l,
-      right: r,
-      height: h
-    } = document
-      .querySelector(".grid-container")
-      .getBoundingClientRect()
-      .toJSON();
-    top = t;
-    bottom = b;
-    left = l;
-    right = r;
-    height = h;
-  }, 2000);
-});
+// let top, bottom, left, right, height;
+// window.addEventListener("DOMContentLoaded", () => {
+//   writeToScreenBox("DOM Loaded");
+//   setTimeout(() => {
+//     let {
+//       top: t,
+//       bottom: b,
+//       left: l,
+//       right: r,
+//       height: h
+//     } = document
+//       .querySelector(".grid-container")
+//       .getBoundingClientRect()
+//       .toJSON();
+//     top = t;
+//     bottom = b;
+//     left = l;
+//     right = r;
+//     height = h;
+//   }, 2000);
+// });
 
 // writes text in <p> tags and appends to the logging-box list
 const writeToScreenBox = (logOutput) => {
@@ -48,7 +48,7 @@ const writeToScreenBox = (logOutput) => {
   }
 };
 
-writeToScreenBox({ top, bottom, left, right, height });
+// writeToScreenBox({ top, bottom, left, right, height });
 
 /**
  * @param {Event} event
@@ -72,23 +72,23 @@ shuffleButtonSelector.onclick = randomShuffle;
  * @param {HTMLElement} element
  */
 const isOverElement = (event = PointerEvent, element = HTMLElement) => {
-  let { width, height } = element.getBoundingClientRect().toJSON();
-  // console.log({ width, height });
-  // moving to left
-  // if (event.movementX < 0) width *= -1 / 2;
-  // // moving up
-  // if (event.movementY < 0) height *= -1 / 2;
+  let { width, height, left, top } = document
+    .querySelector(".grid-container")
+    .getBoundingClientRect()
+    .toJSON();
   const x = event.x;
-  // + width / 2;
   const y = event.y;
-  // + height / 2;
-  // console.log({ x, y });
-  // hit left-right boundary
-  if (x <= left || x >= right) return "top-bottom";
+  const checkYPositions = y <= pageYOffset + top || y >= height - pageYOffset;
+  const checkXPosition =
+    x <= left + pageXOffset || x >= width - left - pageXOffset;
   // hit top-bottom boundary
-  if (y <= top || y >= bottom) return "left-right";
+  if (checkYPositions) return "left-right";
+  // hit left-right boundary
+  if (checkXPosition) return "top-bottom";
 
   const currentClosetElement = document.elementFromPoint(x, y);
+  if (currentClosetElement) {
+  }
   if (
     currentClosetElement.className !== "grid-item" ||
     currentClosetElement.id === "active-clone"
@@ -101,7 +101,6 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
   const clonedCopy = clondedNode.cloneNode();
   currentClosetElement.replaceWith(clonedCopy);
   clondedNode.replaceWith(currentClosetElement);
-  // console.log({ currentClosetElement, clondedNode, clonedCopy });
   return "all";
 };
 
@@ -125,7 +124,6 @@ const move = (event) => {
     element.style.top = event.pageY - height / 3 + "px";
   if (canMove === "left-right")
     element.style.left = event.pageX - width / 3 + "px";
-  console.log(event.offsetX, event.offsetY);
 
   // with offsets
   // if (canMove === "all") {
@@ -179,7 +177,6 @@ const addRemoveClonedNode = (element, removed) => {
   const clonedElement = element.cloneNode();
   clonedElement.id = "active-clone";
   clonedElement.style.transform = `scale(1.25)`;
-  // console.log({ clonedElement });
   if (nextSibling) nextSibling.before(clonedElement);
   if (!nextSibling) element.parentElement.append(clonedElement);
 };
@@ -192,9 +189,9 @@ function down(event) {
   // writeToScreenBox(event);
   // writeToScreenBox(event.target);
   event.preventDefault();
-  top = document.documentElement.scrollTop + top;
-  bottom = height + top;
-  writeToScreenBox({ top, bottom, left, right, height });
+  // top = document.documentElement.scrollTop + top;
+  // bottom = height + top;
+  // writeToScreenBox({ top, bottom, left, right, height });
   const element = event.target;
   element.style.cursor = "grabbing";
   element.style.pointerEvents = "none";
