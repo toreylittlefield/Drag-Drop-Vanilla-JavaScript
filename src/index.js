@@ -90,7 +90,7 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
   if (currentClosetElement) {
   }
   if (
-    currentClosetElement.className !== "grid-item" ||
+    !currentClosetElement.className.startsWith("grid-item") ||
     currentClosetElement.id === "active-clone"
   )
     return "all";
@@ -124,16 +124,6 @@ const move = (event) => {
     element.style.top = event.pageY - height / 3 + "px";
   if (canMove === "left-right")
     element.style.left = event.pageX - width / 3 + "px";
-
-  // with offsets
-  // if (canMove === "all") {
-  //   element.style.top = event.pageY - event.offsetY + "px";
-  //   element.style.left = event.pageX - event.offsetX + "px";
-  // }
-  // if (canMove === "top-bottom")
-  //   element.style.top = event.pageY - event.offsetY + "px";
-  // if (canMove === "left-right")
-  //   element.style.left = event.pageX - event.offsetX + "px";
 };
 
 /**
@@ -148,6 +138,10 @@ const up = (event, element) => {
     clonedElement.remove();
     // clonedElement.removeEventListener("pointerup", up);
   }
+  [...gridItems].forEach((item) => {
+    item.style.transform = `scale(1)`;
+    item.classList.remove("pulse");
+  });
   element.removeEventListener("pointermove", move);
   element.style.cursor = "grab";
   element.style.position = "";
@@ -171,6 +165,7 @@ const addRemoveClonedNode = (element, removed) => {
     if (clonedActive) clonedActive.remove();
     return;
   }
+
   if (element?.style.position === "absolute") return;
 
   const nextSibling = element.nextElementSibling;
@@ -186,17 +181,17 @@ const addRemoveClonedNode = (element, removed) => {
  * @param {PointerEvent} event
  */
 function down(event) {
-  // writeToScreenBox(event);
-  // writeToScreenBox(event.target);
   event.preventDefault();
-  // top = document.documentElement.scrollTop + top;
-  // bottom = height + top;
-  // writeToScreenBox({ top, bottom, left, right, height });
+  [...gridItems].forEach((item) => {
+    item.style.transform = `scale(0.95)`;
+    item.classList.add("pulse");
+  });
   const element = event.target;
   element.style.cursor = "grabbing";
   element.style.pointerEvents = "none";
   element.setPointerCapture(event.pointerId);
   element.style.transform = `rotate(-5deg) scale(1.25)`;
+
   // add our listener events
   element.addEventListener("pointermove", move);
   element.addEventListener("pointerup", (event) => up(event, element), {

@@ -64,6 +64,35 @@ body {
   }
 }
 
+/* grid items animation on pointer down */
+.pulse {
+  animation: pulse 1000ms infinite;
+  transform: rotate(0deg);
+}
+
+@keyframes pulse {
+  0% {
+    transform: rotate(-0.75deg);
+    border-left: 5px solid rebeccapurple;
+  }
+  25% {
+    transform: rotate(0.75deg);
+    border-bottom: 5px solid rebeccapurple;
+  }
+  50% {
+    transform: rotate(-0.75deg);
+    border-right: 5px solid rebeccapurple;
+  }
+  75% {
+    transform: rotate(-0.75deg);
+    border-top: 5px solid rebeccapurple;
+  }
+  100% {
+    transform: rotate(0.75deg);
+    border: 5px solid transparent;
+  }
+}
+
 /* Buttons */
 
 .btn {
