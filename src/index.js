@@ -1,29 +1,17 @@
 const gridItems = document.querySelectorAll(".grid-item");
 
-/**
- * @type {DOMRect}
- */
-// let top, bottom, left, right, height;
-// window.addEventListener("DOMContentLoaded", () => {
-//   writeToScreenBox("DOM Loaded");
-//   setTimeout(() => {
-//     let {
-//       top: t,
-//       bottom: b,
-//       left: l,
-//       right: r,
-//       height: h
-//     } = document
-//       .querySelector(".grid-container")
-//       .getBoundingClientRect()
-//       .toJSON();
-//     top = t;
-//     bottom = b;
-//     left = l;
-//     right = r;
-//     height = h;
-//   }, 2000);
-// });
+const [
+  liPageX,
+  liPageY,
+  elementLeft,
+  elementTop,
+  offSetX,
+  offSetY,
+  gridTop,
+  gridLeft,
+  gridCalcYBounds,
+  gridCalcXBounds
+] = [...document.querySelectorAll(".events-container li")];
 
 // writes text in <p> tags and appends to the logging-box list
 const writeToScreenBox = (logOutput) => {
@@ -78,16 +66,30 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
     .toJSON();
   const x = event.x;
   const y = event.y;
-  const checkYPositions = y <= pageYOffset + top || y >= height - pageYOffset;
-  const checkXPosition = x <= left + pageXOffset || x >= width - pageXOffset;
+  console.log(element.style.top, element.style.left);
+  offSetX.textContent = "pageXOffSet: " + pageXOffset;
+  offSetY.textContent = "pageYOffSet: " + pageYOffset;
+  gridLeft.textContent = "GridContainer Left: " + left;
+  gridTop.textContent = "GridContainer Top: " + top;
+  gridCalcYBounds.textContent = `Container Calc Y Bounds: Top: ${top}, Bottom: ${
+    height + top
+  }, Total Height ${height - top}, rectHeight: ${height}`;
+  gridCalcXBounds.textContent = `Container Calc X Bounds: Left: ${left}, Right: ${
+    width + left
+  }, Total Width ${width - left}, rectWidth: ${width}`;
+
+  const checkYPositions = y <= pageYOffset + top || y >= height + top;
+  const checkXPosition = x <= left || x >= width + left;
+  if (checkXPosition && checkYPositions) {
+    console.log("edge case");
+    return null;
+  }
   // hit top-bottom boundary
   if (checkYPositions) return "left-right";
   // hit left-right boundary
   if (checkXPosition) return "top-bottom";
 
   const currentClosetElement = document.elementFromPoint(x, y);
-  if (currentClosetElement) {
-  }
   if (
     !currentClosetElement.className.startsWith("grid-item") ||
     currentClosetElement.id === "active-clone"
@@ -112,17 +114,24 @@ const move = (event) => {
   addRemoveClonedNode(element, false);
   element.style.position = "absolute";
   element.style.zIndex = 1;
-
   const { width, height } = element.getBoundingClientRect().toJSON();
+
   const canMove = isOverElement(event, element);
   if (canMove === "all") {
     element.style.top = event.pageY - height / 3 + "px";
     element.style.left = event.pageX - width / 3 + "px";
   }
-  if (canMove === "top-bottom")
+  if (canMove === "top-bottom") {
     element.style.top = event.pageY - height / 3 + "px";
-  if (canMove === "left-right")
+  }
+  if (canMove === "left-right") {
     element.style.left = event.pageX - width / 3 + "px";
+  }
+  liPageX.textContent = "PageX: " + event.pageX;
+  liPageY.textContent = "PageY: " + event.pageY;
+  elementLeft.textContent = "Element Left: " + element.style.left;
+  elementTop.textContent = "Element Top" + element.style.top;
+  // console.log(element.style.top, element.style.left);
 };
 
 /**
@@ -217,7 +226,6 @@ gridItems.forEach((gridItem, index) => {
   gridItem.id = index;
   gridItem.style.backgroundColor = rgbaBG;
   gridItem.style.color = rgbaFontColor;
-
   gridItem.onpointerdown = down;
 });
 
@@ -254,4 +262,12 @@ buttonSelector.addEventListener("click", (event) => {
     listSection.style.visibility = "hidden";
   }
   event.preventDefault();
+});
+
+document.querySelector(".btn.events").addEventListener("click", () => {
+  const eventsContainer = document.querySelector(".events-container");
+  console.log(eventsContainer.style);
+  if (eventsContainer.style.display === "none")
+    return (eventsContainer.style.display = "block");
+  eventsContainer.style.display = "none";
 });
