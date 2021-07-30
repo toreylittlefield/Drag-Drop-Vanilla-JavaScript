@@ -40,6 +40,12 @@ const writeToScreenBox = (logOutput) => {
 
   li.appendChild(pTag);
   loggingBoxList.append(li);
+  // remove nodes if length is
+  const MAX_NUMBER_TO_DISPLAY = 10;
+  let COUNT_ELEMENTS = () => loggingBoxList.childElementCount;
+  while (MAX_NUMBER_TO_DISPLAY < COUNT_ELEMENTS()) {
+    loggingBoxList.firstElementChild.remove();
+  }
 };
 
 writeToScreenBox({ top, bottom, left, right, height });
@@ -66,9 +72,17 @@ shuffleButtonSelector.onclick = randomShuffle;
  * @param {HTMLElement} element
  */
 const isOverElement = (event = PointerEvent, element = HTMLElement) => {
-  // console.log({ moveEvent: event });
+  let { width, height } = element.getBoundingClientRect().toJSON();
+  // console.log({ width, height });
+  // moving to left
+  // if (event.movementX < 0) width *= -1 / 2;
+  // // moving up
+  // if (event.movementY < 0) height *= -1 / 2;
   const x = event.x;
+  // + width / 2;
   const y = event.y;
+  // + height / 2;
+  // console.log({ x, y });
   // hit left-right boundary
   if (x <= left || x >= right) return "top-bottom";
   // hit top-bottom boundary
@@ -80,19 +94,15 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
     currentClosetElement.id === "active-clone"
   )
     return "all";
+  writeToScreenBox(
+    currentClosetElement.className || currentClosetElement.tagName
+  );
   const clondedNode = document.querySelector("#active-clone");
   const clonedCopy = clondedNode.cloneNode();
   currentClosetElement.replaceWith(clonedCopy);
   clondedNode.replaceWith(currentClosetElement);
   // console.log({ currentClosetElement, clondedNode, clonedCopy });
   return "all";
-  // // moving to left
-  // if (event.movementX < 0) return currentClosetElement.before(clondedNode);
-  // // moving to right
-  // if (event.movementX > 0) return currentClosetElement.after(clondedNode);
-  // // moving down
-  // if (event.movementY < 0) return currentClosetElement.after(clondedNode);
-  // // moving up
 };
 
 /**
@@ -103,13 +113,27 @@ const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
   element.style.position = "absolute";
+  const { width, height } = element.getBoundingClientRect().toJSON();
   const canMove = isOverElement(event, element);
   if (canMove === "all") {
-    element.style.top = event.pageY + "px";
-    element.style.left = event.pageX + "px";
+    element.style.top = event.pageY - height / 3 + "px";
+    element.style.left = event.pageX - width / 3 + "px";
   }
-  if (canMove === "top-bottom") element.style.top = event.pageY + "px";
-  if (canMove === "left-right") element.style.left = event.pageX + "px";
+  if (canMove === "top-bottom")
+    element.style.top = event.pageY - height / 3 + "px";
+  if (canMove === "left-right")
+    element.style.left = event.pageX - width / 3 + "px";
+  console.log(event.offsetX, event.offsetY);
+
+  // with offsets
+  // if (canMove === "all") {
+  //   element.style.top = event.pageY - event.offsetY + "px";
+  //   element.style.left = event.pageX - event.offsetX + "px";
+  // }
+  // if (canMove === "top-bottom")
+  //   element.style.top = event.pageY - event.offsetY + "px";
+  // if (canMove === "left-right")
+  //   element.style.left = event.pageX - event.offsetX + "px";
 };
 
 /**
@@ -159,6 +183,7 @@ const addRemoveClonedNode = (element, removed) => {
   const nextSibling = element.nextElementSibling;
   const clonedElement = element.cloneNode();
   clonedElement.id = "active-clone";
+  clonedElement.style.transform = `scale(1.25)`;
   // console.log({ clonedElement });
   if (nextSibling) nextSibling.before(clonedElement);
   if (!nextSibling) element.parentElement.append(clonedElement);
@@ -171,15 +196,14 @@ const addRemoveClonedNode = (element, removed) => {
 function down(event) {
   // writeToScreenBox(event);
   // writeToScreenBox(event.target);
-
+  event.preventDefault();
   top = document.documentElement.scrollTop + top;
   bottom = height + top;
   writeToScreenBox({ top, bottom, left, right, height });
-
   const element = event.target;
   element.style.pointerEvents = "none";
   element.setPointerCapture(event.pointerId);
-  element.style.transform = `scale(1.25)`;
+  element.style.transform = `rotate(-5deg) scale(1.25)`;
   // add our listener events
   element.addEventListener("pointermove", move);
   element.addEventListener("pointerup", (event) => up(event, element), {
