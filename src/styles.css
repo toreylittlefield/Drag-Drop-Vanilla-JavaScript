@@ -188,3 +188,26 @@ body {
 .logging-box li p {
   line-height: 1.5em;
 }
+
+/* Events and Postions Container */
+
+.events-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  margin-top: 0%;
+  background-color: rgba(241, 240, 240, 0.63);
+}
+
+@media screen and (max-width: 480px) {
+  .events-container {
+    margin-top: -100%;
+  }
+}
+
+.events-container ul,
+li {
+  margin: 0;
+  padding-left: 0;
+}
