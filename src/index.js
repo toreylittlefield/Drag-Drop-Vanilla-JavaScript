@@ -1,58 +1,5 @@
+import iconsArray from "./Icons";
 const gridItems = document.querySelectorAll(".grid-item");
-
-const [
-  liPageX,
-  liPageY,
-  elementLeft,
-  elementTop,
-  offSetX,
-  offSetY,
-  gridTop,
-  gridLeft,
-  gridCalcYBounds,
-  gridCalcXBounds
-] = [...document.querySelectorAll(".events-container li")];
-
-// writes text in <p> tags and appends to the logging-box list
-const writeToScreenBox = (logOutput) => {
-  const loggingBoxList = document.querySelector(".logging-box ul");
-  const li = document.createElement("li");
-  const pTag = document.createElement("p");
-  let output = logOutput;
-
-  if (typeof output === "object")
-    pTag.innerText = JSON.stringify(logOutput, null, 2);
-  if (typeof output === "string") pTag.innerText = logOutput;
-  if (typeof output !== "string" && typeof output !== "object")
-    pTag.innerText = logOutput;
-
-  li.appendChild(pTag);
-  loggingBoxList.append(li);
-  // remove nodes if length is
-  const MAX_NUMBER_TO_DISPLAY = 10;
-  let COUNT_ELEMENTS = () => loggingBoxList.childElementCount;
-  while (MAX_NUMBER_TO_DISPLAY < COUNT_ELEMENTS()) {
-    loggingBoxList.firstElementChild.remove();
-  }
-};
-
-// writeToScreenBox({ top, bottom, left, right, height });
-
-/**
- * @param {Event} event
- * @param {NodeList} gridItems
- */
-const randomShuffle = () => {
-  const numOfItems = gridItems.length;
-  const randomGridId = () => Math.ceil(Math.random() * numOfItems - 1);
-  [...gridItems].forEach((currentItem) => {
-    const randomGridItem = document.getElementById(randomGridId());
-    randomGridItem.after(currentItem);
-  });
-};
-
-const shuffleButtonSelector = document.querySelector(".btn.shuffle");
-shuffleButtonSelector.onclick = randomShuffle;
 
 /**
  * @description swaps in the DOM the cloned element with the grid-item that the pointer is currently over
@@ -66,18 +13,6 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
     .toJSON();
   const x = event.pageX;
   const y = event.pageY;
-  offSetX.textContent = "pageXOffSet: " + pageXOffset;
-  offSetY.textContent = "pageYOffSet: " + pageYOffset;
-  gridLeft.textContent = "GridContainer Left: " + left;
-  gridTop.textContent = "GridContainer Top: " + top;
-  gridCalcYBounds.textContent = `Container Calc Y Bounds: Top: ${
-    pageYOffset + top
-  }, Bottom: ${height + top + pageYOffset}, Total Height ${
-    height + top + pageYOffset - pageYOffset - top
-  }, rectHeight: ${height}`;
-  gridCalcXBounds.textContent = `Container Calc X Bounds: Left: ${left}, Right: ${
-    width + left
-  }, Total Width ${width - left}, rectWidth: ${width}`;
 
   //top + pageYOffset +
   const checkYPositions =
@@ -99,9 +34,6 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
     currentClosetElement.id === "active-clone"
   )
     return "all";
-  // writeToScreenBox(
-  //   currentClosetElement.className || currentClosetElement.tagName
-  // );
   const clondedNode = document.querySelector("#active-clone");
   const clonedCopy = clondedNode.cloneNode();
   currentClosetElement.replaceWith(clonedCopy);
@@ -116,8 +48,6 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
 const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
-  element.style.position = "absolute";
-  element.style.zIndex = 1;
   const { width, height } = element.getBoundingClientRect().toJSON();
 
   const canMove = isOverElement(event, element);
@@ -131,10 +61,32 @@ const move = (event) => {
   if (canMove === "left-right") {
     element.style.left = event.pageX - width / 3 + "px";
   }
-  liPageX.textContent = "PageX: " + event.pageX;
-  liPageY.textContent = "PageY: " + event.pageY;
-  elementLeft.textContent = "Element Left: " + element.style.left;
-  elementTop.textContent = "Element Top" + element.style.top;
+};
+
+/**
+ * @description clones once the currently selected element
+ * @param {HTMLElement} element
+ * @returns
+ */
+const addRemoveClonedNode = (element) => {
+  if (element.classList.contains("dragging-active-item-move")) return;
+
+  const nextSibling = element.nextElementSibling;
+  const clonedElement = element.cloneNode();
+  clonedElement.id = "active-clone";
+  element.classList.add("dragging-active-item-move");
+  if (nextSibling) nextSibling.before(clonedElement);
+  if (!nextSibling) element.parentElement.append(clonedElement);
+  [...gridItems].forEach((item) => {
+    if (
+      item.id === "active-clone"
+      // ||
+      // item.classList.contains("dragging-active-item-move")
+    )
+      return;
+    item.style.transform = `scale(1)`;
+    item.classList.remove("pulse");
+  });
 };
 
 /**
@@ -154,37 +106,9 @@ const up = (event, element) => {
     item.classList.remove("pulse");
   });
   element.removeEventListener("pointermove", move);
-  element.style.cursor = "grab";
-  element.style.position = "";
-  element.style.top = "";
-  element.style.left = "";
-  element.style.transform = "";
-  element.style.pointerEvents = "auto";
-  element.style.zIndex = 0;
+  element.classList.remove("dragging-active-item-move");
+  element.classList.remove("dragging-active-item-down");
   element.releasePointerCapture(event.pointerId);
-};
-
-/**
- * @description clones once the currently selected element
- * @param {HTMLElement} element
- * @param {Boolean} removed
- * @returns
- */
-const addRemoveClonedNode = (element, removed) => {
-  if (removed) {
-    const clonedActive = document.getElementById("active-clone");
-    if (clonedActive) clonedActive.remove();
-    return;
-  }
-
-  if (element?.style.position === "absolute") return;
-
-  const nextSibling = element.nextElementSibling;
-  const clonedElement = element.cloneNode();
-  clonedElement.id = "active-clone";
-  clonedElement.style.transform = `scale(1.25)`;
-  if (nextSibling) nextSibling.before(clonedElement);
-  if (!nextSibling) element.parentElement.append(clonedElement);
 };
 
 /**
@@ -193,27 +117,46 @@ const addRemoveClonedNode = (element, removed) => {
  */
 function down(event) {
   event.preventDefault();
-  [...gridItems].forEach((item) => {
-    item.style.transform = `scale(0.95)`;
-    item.classList.add("pulse");
-  });
-  const element = event.target;
-  element.style.cursor = "grabbing";
-  element.style.pointerEvents = "none";
+  let element;
+  if (event.target.parentElement.className === "grid-container") {
+    element = event.target;
+  } else {
+    element = event.target.parentElement;
+  }
+  element.classList.add("dragging-active-item-down");
   element.setPointerCapture(event.pointerId);
-  element.style.transform = `rotate(-5deg) scale(1.25)`;
 
-  //
-  const eventsContainerSelector = document.querySelector(".events-container");
-  eventsContainerSelector.style.fontSize = "16px";
-  eventsContainerSelector.style.transform = "";
-  element.append(eventsContainerSelector);
+  // from css variable
+  const pressDuration = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue(
+      "--animation-duration"
+    )
+  );
+  const longPress = setTimeout(() => {
+    console.log("inside");
+    element.removeEventListener("pointerup", clearTimer);
+    [...gridItems].forEach((item) => {
+      item.style.transform = `scale(0.95)`;
+      item.classList.add("pulse");
+    });
+    // add our listener events to move and drag
+    element.addEventListener("pointermove", move);
+    element.addEventListener("pointerup", (event) => up(event, element), {
+      once: true
+    });
+  }, pressDuration);
 
-  // add our listener events
-  element.addEventListener("pointermove", move);
-  element.addEventListener("pointerup", (event) => up(event, element), {
-    once: true
-  });
+  // clear the timer if pointerup event occurs and cancel / remove
+  const clearTimer = () => {
+    clearTimeout(longPress);
+    [...gridItems].forEach((item) => {
+      item.style.transform = `scale(1)`;
+      item.classList.remove("pulse");
+    });
+    element.classList.remove("dragging-active-item-down");
+    element.releasePointerCapture(event.pointerId);
+  };
+  element.addEventListener("pointerup", clearTimer, { once: true });
 }
 
 // generate random background colors and fonts
@@ -222,8 +165,8 @@ const generateRandomRGBA = () => {
     .fill(0)
     .map((color, idx) =>
       idx === 0
-        ? Math.ceil(Math.random() * 365)
-        : Math.ceil(Math.random() * 100)
+        ? 0 + Math.ceil(Math.random() * 50)
+        : 70 + Math.ceil(Math.random() * 30)
     );
   let fontColor = `hsla(${0},${s >= 60 ? 50 : 10}%,${l >= 60 ? 10 : 100}%,1)`;
   return { rgbaBG: `hsla(${h},${s}%,${l}%,0.8)`, rgbaFontColor: fontColor };
@@ -232,67 +175,15 @@ const generateRandomRGBA = () => {
 // label and add styles to grid-items at runtime
 gridItems.forEach((gridItem, index) => {
   const { rgbaBG, rgbaFontColor } = generateRandomRGBA();
+  const icon = document.createElement("img");
+  gridItem.textContent = "";
+  icon.src = iconsArray[index];
+  icon.height = gridItem.clientWidth / 2;
+  icon.width = gridItem.clientHeight / 2;
+  icon.id = `icon-${index}`;
+  gridItem.appendChild(icon);
   gridItem.id = index;
   gridItem.style.backgroundColor = rgbaBG;
   gridItem.style.color = rgbaFontColor;
   gridItem.onpointerdown = down;
 });
-
-// hide show the console on button click event
-class buttonState {
-  constructor() {
-    this.open = false;
-  }
-
-  /**
-   * @param {boolean} open
-   */
-  set toggle(open) {
-    open === false ? (this.open = true) : (this.open = false);
-  }
-
-  toggleOpen() {
-    return this.open;
-  }
-}
-const buttonOpen = new buttonState();
-const loggingSection = document.querySelector(".logging-box-section");
-const buttonSelector = document.querySelector(".btn.show");
-const listSection = document.querySelector(".logging-box ul");
-
-buttonSelector.addEventListener("click", (event) => {
-  buttonOpen.open = !buttonOpen.open;
-  if (buttonOpen.toggleOpen()) {
-    loggingSection.style.height = "min(70vh, 100%)";
-    listSection.style.visibility = "visible";
-  }
-  if (!buttonOpen.toggleOpen()) {
-    loggingSection.style.height = "50px";
-    listSection.style.visibility = "hidden";
-  }
-  event.preventDefault();
-});
-
-document.querySelector(".btn.events").addEventListener("click", () => {
-  const eventsContainer = document.querySelector(".events-container");
-  if (eventsContainer.style.display === "none")
-    return (eventsContainer.style.display = "block");
-  eventsContainer.style.display = "none";
-});
-
-let POINTEROBJECT = {
-  POINTER_PAGE_X: 0,
-  POINTER_PAGE_Y: 0,
-  POINTER_X: 0,
-  POINTER_Y: 0
-};
-const update = () =>
-  document.addEventListener("pointermove", (event) => {
-    let { POINTER_PAGE_X, POINTER_PAGE_Y, POINTER_X, POINTER_Y } =
-      POINTEROBJECT;
-    POINTER_PAGE_X = event.pageX;
-    POINTER_PAGE_Y = event.pageY;
-    POINTER_X = event.x;
-    POINTER_Y = event.y;
-  });
-update();
