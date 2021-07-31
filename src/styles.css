@@ -196,15 +196,18 @@ body {
   top: 0;
   left: 0;
   z-index: 10;
-  margin-top: 0%;
   background-color: rgba(241, 240, 240, 0.63);
+  color: black;
+  user-select: none;
+  pointer-events: none;
+  touch-action: none;
 }
 
-@media screen and (max-width: 480px) {
+/* @media screen and (max-width: 480px) {
   .events-container {
     margin-top: -100%;
   }
-}
+} */
 
 .events-container ul,
 li {

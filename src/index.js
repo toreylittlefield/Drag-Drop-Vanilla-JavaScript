@@ -64,25 +64,28 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
     .querySelector(".grid-container")
     .getBoundingClientRect()
     .toJSON();
-  const x = event.x;
-  const y = event.y;
-  console.log(element.style.top, element.style.left);
+  const x = event.pageX;
+  const y = event.pageY;
   offSetX.textContent = "pageXOffSet: " + pageXOffset;
   offSetY.textContent = "pageYOffSet: " + pageYOffset;
   gridLeft.textContent = "GridContainer Left: " + left;
   gridTop.textContent = "GridContainer Top: " + top;
-  gridCalcYBounds.textContent = `Container Calc Y Bounds: Top: ${top}, Bottom: ${
-    height + top
-  }, Total Height ${height - top}, rectHeight: ${height}`;
+  gridCalcYBounds.textContent = `Container Calc Y Bounds: Top: ${
+    pageYOffset + top
+  }, Bottom: ${height + top + pageYOffset}, Total Height ${
+    height + top + pageYOffset - pageYOffset - top
+  }, rectHeight: ${height}`;
   gridCalcXBounds.textContent = `Container Calc X Bounds: Left: ${left}, Right: ${
     width + left
   }, Total Width ${width - left}, rectWidth: ${width}`;
 
-  const checkYPositions = y <= pageYOffset + top || y >= height + top;
+  //top + pageYOffset +
+  const checkYPositions =
+    y <= pageYOffset + top || y >= height + pageYOffset + top;
   const checkXPosition = x <= left || x >= width + left;
   if (checkXPosition && checkYPositions) {
     console.log("edge case");
-    return null;
+    return "all";
   }
   // hit top-bottom boundary
   if (checkYPositions) return "left-right";
@@ -90,14 +93,15 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
   if (checkXPosition) return "top-bottom";
 
   const currentClosetElement = document.elementFromPoint(x, y);
+  if (!currentClosetElement) return "all";
   if (
     !currentClosetElement.className.startsWith("grid-item") ||
     currentClosetElement.id === "active-clone"
   )
     return "all";
-  writeToScreenBox(
-    currentClosetElement.className || currentClosetElement.tagName
-  );
+  // writeToScreenBox(
+  //   currentClosetElement.className || currentClosetElement.tagName
+  // );
   const clondedNode = document.querySelector("#active-clone");
   const clonedCopy = clondedNode.cloneNode();
   currentClosetElement.replaceWith(clonedCopy);
@@ -131,7 +135,6 @@ const move = (event) => {
   liPageY.textContent = "PageY: " + event.pageY;
   elementLeft.textContent = "Element Left: " + element.style.left;
   elementTop.textContent = "Element Top" + element.style.top;
-  // console.log(element.style.top, element.style.left);
 };
 
 /**
@@ -200,6 +203,12 @@ function down(event) {
   element.setPointerCapture(event.pointerId);
   element.style.transform = `rotate(-5deg) scale(1.25)`;
 
+  //
+  const eventsContainerSelector = document.querySelector(".events-container");
+  eventsContainerSelector.style.fontSize = "16px";
+  eventsContainerSelector.style.transform = "";
+  element.append(eventsContainerSelector);
+
   // add our listener events
   element.addEventListener("pointermove", move);
   element.addEventListener("pointerup", (event) => up(event, element), {
@@ -266,8 +275,24 @@ buttonSelector.addEventListener("click", (event) => {
 
 document.querySelector(".btn.events").addEventListener("click", () => {
   const eventsContainer = document.querySelector(".events-container");
-  console.log(eventsContainer.style);
   if (eventsContainer.style.display === "none")
     return (eventsContainer.style.display = "block");
   eventsContainer.style.display = "none";
 });
+
+let POINTEROBJECT = {
+  POINTER_PAGE_X: 0,
+  POINTER_PAGE_Y: 0,
+  POINTER_X: 0,
+  POINTER_Y: 0
+};
+const update = () =>
+  document.addEventListener("pointermove", (event) => {
+    let { POINTER_PAGE_X, POINTER_PAGE_Y, POINTER_X, POINTER_Y } =
+      POINTEROBJECT;
+    POINTER_PAGE_X = event.pageX;
+    POINTER_PAGE_Y = event.pageY;
+    POINTER_X = event.x;
+    POINTER_Y = event.y;
+  });
+update();
