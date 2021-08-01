@@ -108,6 +108,8 @@ const up = (event, element) => {
   element.removeEventListener("pointermove", move);
   element.classList.remove("dragging-active-item-move");
   element.classList.remove("dragging-active-item-down");
+  // optional add the css transition img / svg
+  element.querySelector("img").classList.remove("pulse");
   element.releasePointerCapture(event.pointerId);
 };
 
@@ -123,6 +125,8 @@ function down(event) {
   } else {
     element = event.target.parentElement;
   }
+  // optional add the css transition img / svg
+  element.querySelector("img").classList.add("pulse");
   element.classList.add("dragging-active-item-down");
   element.setPointerCapture(event.pointerId);
 
@@ -154,6 +158,8 @@ function down(event) {
       item.classList.remove("pulse");
     });
     element.classList.remove("dragging-active-item-down");
+    // optional add the css transition img / svg
+    element.querySelector("img").classList.remove("pulse");
     element.releasePointerCapture(event.pointerId);
   };
   element.addEventListener("pointerup", clearTimer, { once: true });
