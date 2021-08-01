@@ -25,7 +25,6 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
-
 /* The Grid */
 
 .grid-container {
@@ -42,12 +41,9 @@ body {
   padding: 3em;
   pointer-events: none;
   transform: rotate(90deg);
-  /* perspective: 1200px; */
   transform-style: preserve-3d;
-  transition: all 500ms linear;
-  background-image: url(./Icons/phone.svg);
-  background-repeat: no-repeat;
-  /* background-; */
+  transition: transform 500ms linear;
+  will-change: transform;
   overflow: hidden;
 }
 
@@ -56,9 +52,8 @@ body {
     scale3d(0.9, 0.9, 2) translate3d(0px, 0px, -50px);
   outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
   outline-offset: -2vw;
+  will-change: transform;
   border-radius: 50px;
-  /* border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px; */
   box-shadow: -13px 20px 0vh 0vh rgba(0, 0, 0, 0.5), -0.4em 0 0 chocolate,
     inset 0.1em 0 0 chocolate, inset -0.3em 0 0px 0px rgba(0, 0, 0, 0.5),
     0.3em 2em 2em rgba(0, 0, 0, 0.8),
@@ -72,19 +67,22 @@ body {
 .grid-container:active img {
   transition: all 750ms ease;
   transform: rotate(0);
+  will-change: transform;
 }
 
-@media screen and (max-width: 1080px) {
+/* @media screen and (max-width: 1080px) {
   .grid-container {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-}
+} */
 
-@media screen and (max-width: 480px) {
+/* @media screen and (max-width: 480px) {
   .grid-container {
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    transform: rotate(90deg);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: minmax(75px, auto);
   }
-}
+} */
 
 .grid-item {
   display: flex;
@@ -107,6 +105,7 @@ body {
 .grid-item img {
   transition: all 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transform: rotate(-90deg);
+  will-change: transform;
 }
 
 @media screen and (max-device-width: 480px) {
@@ -123,6 +122,7 @@ body {
   pointer-events: none;
   transform: rotate(-5deg) scale(1.25);
   animation: pulse var(--animation-duration) 1;
+  will-change: transform;
 }
 
 /* add on pointer move after cloning and remove on pointer up */
