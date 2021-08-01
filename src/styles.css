@@ -129,15 +129,19 @@ body {
 .dragging-active-item-move {
   position: absolute;
   z-index: 999;
+  top: auto;
+  left: auto;
+  will-change: left, top;
 }
 
-#active-clone {
+/* #active-clone {
   transform: scale(3.25);
-}
+} */
 
 /* grid items animation on pointer down and romoved on move and/or pointer up */
 .pulse {
   animation: pulse var(--animation-duration) infinite;
+  will-change: transform, border;
   /* transform: rotate(0deg) scale(0.5); */
   border: inherit;
 }
