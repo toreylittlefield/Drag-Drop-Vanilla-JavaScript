@@ -30,6 +30,7 @@
 
 body {
   font-family: sans-serif;
+  font-size: 16px;
   min-height: 100vh;
   scroll-behavior: smooth;
   margin: 2em;
@@ -62,7 +63,7 @@ button {
   border-radius: 0.5em;
   word-wrap: normal;
   box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
-  transform: perspective(1200px) translateZ(100px);
+  /* transform: perspective(1200px) translateZ(100px); */
   transition: background 400ms,
     visibility var(--animation-duration) linear var(--animation-duration);
   color: rgba(231, 218, 218, 0.795);
@@ -95,7 +96,8 @@ span.ripple {
 .grid-container {
   background-color: rgba(15, 1, 1, 0.2);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(19em, 1fr));
+  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
   grid-gap: 2rem;
   grid-auto-rows: minmax(50px, auto);
   place-items: center;
@@ -130,18 +132,18 @@ span.ripple {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 5px solid rgba(44, 117, 211, 0.15);
-  box-shadow: -5px 50px 400px 10px rgba(102, 51, 153, 0.8);
-  border-radius: 20px;
-  height: 150px;
-  width: 150px;
+  border: 0.31em solid rgba(44, 117, 211, 0.15);
+  box-shadow: -0.31em 3.15em 25em 0.625em rgba(102, 51, 153, 0.8);
+  border-radius: 1.25em;
+  height: 9em;
+  width: 9em;
   background-color: rgba(44, 117, 211, 0.8);
   color: rgba(250, 250, 250, 0.9);
   touch-action: none;
   user-select: none;
   cursor: grab;
   pointer-events: all;
-  font-size: 2.5em;
+  /* font-size: 2.5em; */
   z-index: 0;
 }
 
@@ -153,8 +155,8 @@ span.ripple {
 
 @media screen and (max-device-width: 480px) {
   .grid-item {
-    height: 75px;
-    width: 75px;
+    height: 4.7em;
+    width: 4.7em;
     font-size: 1.2em;
   }
 }
@@ -163,27 +165,27 @@ span.ripple {
 .active {
   background: var(--bg-gradient);
   transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
-  transform: perspective(2500px) rotateX(45deg) scale3d(0.9, 1.05, 2)
-    translate3d(0px, -120px, -50px);
+  transform: perspective(157em) rotateX(45deg) scale3d(0.9, 1.05, 2)
+    translate3d(0px, -7.5em, -3.5em);
 
   outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
   outline-offset: -2vw;
   will-change: transform;
-  border-radius: 50px;
-  box-shadow: -13px 20px 0vh 0vh rgba(0, 0, 0, 0.5), -0.4em 0 0 chocolate,
-    inset 0.1em 0 0 chocolate, inset -0.3em 0 0px 0px rgba(0, 0, 0, 0.5),
+  border-radius: 3.125em;
+  box-shadow: -0.815em 1.25em 0em 0em rgba(0, 0, 0, 0.5), -0.4em 0 0 chocolate,
+    inset 0.1em 0 0 chocolate, inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
     0.3em 2em 2em rgba(0, 0, 0, 0.8),
     inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
   animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 200ms;
 }
 
 .active div.grid-item {
-  box-shadow: -0.1em 0.3em 0px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: -0.1em 0.3em 0px 0.125em rgba(0, 0, 0, 0.2);
 }
 
 .active .grid-item img {
   transition: all 750ms ease;
-  transform: rotate(0) translate3d(0px, -10px, 100px);
+  transform: rotate(0) translate3d(0px, -0.2em, 6.25em);
   will-change: transform;
 }
 
