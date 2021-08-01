@@ -27,7 +27,7 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
     y <= pageYOffset + top - 150 || y >= height + pageYOffset + top;
   const checkXPosition = x <= left || x >= width + left;
   if (checkXPosition && checkYPositions) {
-    console.log("edge case");
+    // console.log("edge case");
     return "all";
   }
   // hit top-bottom boundary
@@ -74,7 +74,7 @@ const move = (event) => {
     // element.style.left = event.pageX - width / 3 + "px";
     element.style.left = event.x - width + "px";
   }
-  console.log({ event });
+  // console.log({ event });
 };
 
 /**
@@ -165,7 +165,7 @@ function down(event) {
   }, pressDuration);
   const gridContainer = document.querySelector(".grid-container");
   if (!gridContainer.classList.contains("active")) {
-    console.log("active");
+    // console.log("active");
     gridContainer.classList.add("active");
     // remove the scroll
     document.body.style.overflow = "hidden";
