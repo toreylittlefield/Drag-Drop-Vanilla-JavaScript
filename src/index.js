@@ -1,5 +1,13 @@
 import iconsArray from "./Icons";
+
+// scroll to middle of page on load
+const scroll = () =>
+  window.scrollTo(0, Math.ceil(document.body.clientHeight / 4));
+document.body.addEventListener("load", scroll, { once: true });
+
 const gridItems = document.querySelectorAll(".grid-item");
+const showHideBtn = document.querySelector(".btn.change-view");
+const gridContainer = document.querySelector(".grid-container");
 
 /**
  * @description swaps in the DOM the cloned element with the grid-item that the pointer is currently over
@@ -16,7 +24,7 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
 
   //top + pageYOffset +
   const checkYPositions =
-    y <= pageYOffset + top || y >= height + pageYOffset + top;
+    y <= pageYOffset + top - 150 || y >= height + pageYOffset + top;
   const checkXPosition = x <= left || x >= width + left;
   if (checkXPosition && checkYPositions) {
     console.log("edge case");
@@ -48,19 +56,25 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
 const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
-  const { width, height } = element.getBoundingClientRect().toJSON();
+  // const { width, height } = element.getBoundingClientRect().toJSON();
+  const { clientHeight: width, clientWidth: height } = element;
 
   const canMove = isOverElement(event, element);
   if (canMove === "all") {
-    element.style.top = event.pageY - height / 3 + "px";
-    element.style.left = event.pageX - width / 3 + "px";
+    // element.style.top = event.pageY - height / 3 + "px";
+    element.style.top = event.y - height + "px";
+    // element.style.left = event.pageX - width / 3 + "px";
+    element.style.left = event.x - width + "px";
   }
   if (canMove === "top-bottom") {
-    element.style.top = event.pageY - height / 3 + "px";
+    // element.style.top = event.pageY - height / 3 + "px";
+    element.style.top = event.y - height + "px";
   }
   if (canMove === "left-right") {
-    element.style.left = event.pageX - width / 3 + "px";
+    // element.style.left = event.pageX - width / 3 + "px";
+    element.style.left = event.x - width + "px";
   }
+  console.log({ event });
 };
 
 /**
@@ -79,13 +93,13 @@ const addRemoveClonedNode = (element) => {
   if (!nextSibling) element.parentElement.append(clonedElement);
   [...gridItems].forEach((item) => {
     if (
-      item.id === "active-clone"
-      // ||
-      // item.classList.contains("dragging-active-item-move")
+      item.id === "active-clone" ||
+      item.classList.contains("dragging-active-item-move")
     )
       return;
-    item.style.transform = `scale(1)`;
+    // item.style.transform = `scale(1)`;
     item.classList.remove("pulse");
+    item.classList.add("pulse-griditems");
   });
 };
 
@@ -104,6 +118,7 @@ const up = (event, element) => {
   [...gridItems].forEach((item) => {
     item.style.transform = `scale(1)`;
     item.classList.remove("pulse");
+    item.classList.remove("pulse-griditems");
   });
   element.removeEventListener("pointermove", move);
   element.classList.remove("dragging-active-item-move");
@@ -137,19 +152,26 @@ function down(event) {
     )
   );
   const longPress = setTimeout(() => {
-    console.log("inside");
     element.removeEventListener("pointerup", clearTimer);
     [...gridItems].forEach((item) => {
-      item.style.transform = `scale(0.95)`;
       item.classList.add("pulse");
     });
+
     // add our listener events to move and drag
     element.addEventListener("pointermove", move);
     element.addEventListener("pointerup", (event) => up(event, element), {
       once: true
     });
   }, pressDuration);
-
+  const gridContainer = document.querySelector(".grid-container");
+  if (!gridContainer.classList.contains("active")) {
+    console.log("active");
+    gridContainer.classList.add("active");
+    // remove the scroll
+    document.body.style.overflow = "hidden";
+    //show our button
+    showHideBtn.style.visibility = "visible";
+  }
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
     clearTimeout(longPress);
@@ -193,3 +215,39 @@ gridItems.forEach((gridItem, index) => {
   gridItem.style.color = rgbaFontColor;
   gridItem.onpointerdown = down;
 });
+
+showHideBtn.addEventListener("pointerdown", (event) => {
+  event.stopPropagation();
+  if (gridContainer.classList.contains("active")) {
+    gridContainer.classList.remove("active");
+    document.body.style.overflow = "";
+    showHideBtn.style.visibility = "hidden";
+  }
+});
+
+// https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/
+const createRipple = (event) => {
+  const button = event.currentTarget;
+
+  const circle = document.createElement("span");
+  const diameter = Math.max(button.clientWidth, button.clientHeight);
+  const radius = diameter / 2;
+
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+  circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+  circle.classList.add("ripple");
+
+  const ripple = button.getElementsByClassName("ripple")[0];
+
+  if (ripple) {
+    ripple.remove();
+  }
+
+  button.appendChild(circle);
+};
+
+const buttons = document.getElementsByTagName("button");
+for (const button of buttons) {
+  button.addEventListener("click", createRipple);
+}
