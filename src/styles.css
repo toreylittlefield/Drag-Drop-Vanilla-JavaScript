@@ -8,6 +8,24 @@
 :root {
   --animation-duration: 1000ms;
   --bg-color: ;
+  --bg-gradient: linear-gradient(
+    hsl(290, 50%, 8%) 0%,
+    hsla(290, 50%, 8%, 0.978) 9.5%,
+    hsla(290, 50%, 8%, 0.925) 17.7%,
+    hsla(290, 50%, 8%, 0.857) 24.7%,
+    hsla(290, 50%, 8%, 0.781) 31%,
+    hsla(290, 50%, 8%, 0.701) 36.8%,
+    hsla(290, 50%, 8%, 0.62) 42.3%,
+    hsla(290, 50%, 8%, 0.538) 47.6%,
+    hsla(290, 50%, 8%, 0.455) 52.9%,
+    hsla(290, 50%, 8%, 0.373) 58.2%,
+    hsla(290, 50%, 8%, 0.291) 63.7%,
+    hsla(290, 50%, 8%, 0.212) 69.5%,
+    hsla(290, 50%, 8%, 0.138) 75.8%,
+    hsla(290, 50%, 8%, 0.07) 82.9%,
+    hsla(290, 50%, 8%, 0.019) 91.2%,
+    hsla(290, 50%, 8%, 0) 100%
+  );
 }
 
 body {
@@ -25,8 +43,55 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
-/* The Grid */
 
+button {
+  outline: none;
+  border: none;
+  border-style: none;
+  cursor: pointer;
+}
+
+.btn.change-view {
+  position: sticky;
+  top: 5%;
+  left: 80%;
+  font-size: 1.5em;
+  padding: 0.75em 0.5em;
+  z-index: 999;
+  overflow: hidden;
+  border-radius: 0.5em;
+  word-wrap: normal;
+  box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
+  transform: perspective(1200px) translateZ(100px);
+  transition: background 400ms,
+    visibility var(--animation-duration) linear var(--animation-duration);
+  color: rgba(231, 218, 218, 0.795);
+  background-color: hsla(280, 5%, 12%, 0.95);
+  visibility: hidden;
+}
+.btn.change-view:hover {
+  transform: scale(1.05);
+  background-color: hsla(280, 5%, 12%, 0.8);
+}
+
+/* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
+
+span.ripple {
+  position: absolute; /* The absolute position we mentioned earlier */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(230, 204, 204, 0.75);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* The Grid */
 .grid-container {
   background-color: rgba(15, 1, 1, 0.2);
   display: grid;
@@ -45,29 +110,6 @@ body {
   transition: transform 500ms linear;
   will-change: transform;
   overflow: hidden;
-}
-
-.grid-container:active {
-  transform: perspective(1200px) rotateX(45deg) rotate3d(0, -100, 50, 0deg)
-    scale3d(0.9, 0.9, 2) translate3d(0px, 0px, -50px);
-  outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
-  outline-offset: -2vw;
-  will-change: transform;
-  border-radius: 50px;
-  box-shadow: -13px 20px 0vh 0vh rgba(0, 0, 0, 0.5), -0.4em 0 0 chocolate,
-    inset 0.1em 0 0 chocolate, inset -0.3em 0 0px 0px rgba(0, 0, 0, 0.5),
-    0.3em 2em 2em rgba(0, 0, 0, 0.8),
-    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
-}
-
-.grid-container:active div.grid-item {
-  background-color: black;
-}
-
-.grid-container:active img {
-  transition: all 750ms ease;
-  transform: rotate(0);
-  will-change: transform;
 }
 
 /* @media screen and (max-width: 1080px) {
@@ -96,6 +138,7 @@ body {
   background-color: rgba(44, 117, 211, 0.8);
   color: rgba(250, 250, 250, 0.9);
   touch-action: none;
+  user-select: none;
   cursor: grab;
   pointer-events: all;
   font-size: 2.5em;
@@ -116,6 +159,34 @@ body {
   }
 }
 
+/* active states activated on pointer down event */
+.active {
+  background: var(--bg-gradient);
+  transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
+  transform: perspective(2500px) rotateX(45deg) scale3d(0.9, 1.05, 2)
+    translate3d(0px, -120px, -50px);
+
+  outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
+  outline-offset: -2vw;
+  will-change: transform;
+  border-radius: 50px;
+  box-shadow: -13px 20px 0vh 0vh rgba(0, 0, 0, 0.5), -0.4em 0 0 chocolate,
+    inset 0.1em 0 0 chocolate, inset -0.3em 0 0px 0px rgba(0, 0, 0, 0.5),
+    0.3em 2em 2em rgba(0, 0, 0, 0.8),
+    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
+  animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 200ms;
+}
+
+.active div.grid-item {
+  box-shadow: -0.1em 0.3em 0px 2px rgba(0, 0, 0, 0.2);
+}
+
+.active .grid-item img {
+  transition: all 750ms ease;
+  transform: rotate(0) translate3d(0px, -10px, 100px);
+  will-change: transform;
+}
+
 /* add on pointer down and remove on pointer up */
 .dragging-active-item-down {
   cursor: grabbing;
@@ -134,15 +205,10 @@ body {
   will-change: left, top;
 }
 
-/* #active-clone {
-  transform: scale(3.25);
-} */
-
 /* grid items animation on pointer down and romoved on move and/or pointer up */
 .pulse {
   animation: pulse var(--animation-duration) infinite;
   will-change: transform, border;
-  /* transform: rotate(0deg) scale(0.5); */
   border: inherit;
 }
 
@@ -169,5 +235,48 @@ body {
     background: rgba(205, 174, 236, 0.99)
       radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
       center/0%;
+  }
+}
+
+/* pulse other grid items on move */
+.pulse-griditems {
+  animation: pulse-gridItems var(--animation-duration) infinite;
+  will-change: transform, border;
+  border: inherit;
+}
+
+@keyframes pulse-gridItems {
+  0% {
+    transform: rotate(-0.75deg);
+  }
+  25% {
+    transform: rotate(0.75deg);
+  }
+  50% {
+    transform: rotate(-0.75deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(-0.75deg);
+  }
+  100% {
+    transform: rotate(0.75deg);
+  }
+}
+
+/* shine for rotation transition of section .grid-container */
+@keyframes shine {
+  0% {
+    /* background-size: 10000%; */
+    background: linear-gradient(
+      75deg,
+      transparent 10%,
+      rgba(255, 255, 255, 0.2) 90%,
+      transparent 10%
+    );
+    background-repeat: no-repeat;
+    background-position: -50vw;
+  }
+  100% {
+    background-position: 300vw;
   }
 }
