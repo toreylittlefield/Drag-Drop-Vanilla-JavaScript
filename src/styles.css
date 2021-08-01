@@ -47,7 +47,7 @@ body {
 
 @media screen and (max-width: 480px) {
   body {
-    font-size: 2px;
+    font-size: 3px;
   }
 }
 
@@ -104,13 +104,13 @@ span.ripple {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(19em, 1fr));
   /* grid-template-columns: 1fr 1fr 1fr 1fr; */
-  grid-gap: 2rem;
+  grid-gap: 2em;
   grid-auto-rows: minmax(3.125em, auto);
   place-items: center;
   justify-content: center;
   outline: 0.5vw solid rgba(194, 189, 231, 0.3);
   border: 1vw outset rgba(194, 189, 231, 0.418);
-  box-shadow: 0px -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2);
+  box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2);
   padding: 3em;
   pointer-events: none;
   transform: rotate(90deg);
