@@ -9,7 +9,7 @@
   --animation-duration: 1000ms;
   --bg-color: ;
   --bg-gradient: linear-gradient(
-    hsl(290, 50%, 8%) 0%,
+    hsla(290, 50%, 8%) 0%,
     hsla(290, 50%, 8%, 0.978) 9.5%,
     hsla(290, 50%, 8%, 0.925) 17.7%,
     hsla(290, 50%, 8%, 0.857) 24.7%,
@@ -26,18 +26,22 @@
     hsla(290, 50%, 8%, 0.019) 91.2%,
     hsla(290, 50%, 8%, 0) 100%
   );
+  --grid-item-width: 10vw;
+  --grid-item-height: 11vw;
 }
 
 body {
   font-family: sans-serif;
   font-size: 16px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   scroll-behavior: smooth;
   margin: 2em;
+  margin-bottom: 0;
+  margin-top: 0;
   background: rgb(2, 0, 36);
   background: linear-gradient(
     90deg,
-    rgba(2, 0, 36, 1) 0%,
+    rgba(1, 0, 36, 1) 0%,
     rgba(0, 77, 64, 1) 77%,
     rgba(0, 212, 255, 1) 100%
   );
@@ -45,10 +49,30 @@ body {
   overflow-x: hidden;
 }
 
+.active-body {
+  background: linear-gradient(
+    130deg,
+    rgba(203, 203, 241, 0.9) 30%,
+    rgba(5, 4, 56, 0.5) 45%,
+    rgba(0, 77, 64, 0.8) 75%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  margin-bottom: 0;
+  /* transform: scale(0.97); */
+  will-change: auto;
+  /* transition:  1s cubic-bezier(0.175, 0.885, 0.32, 0.9); */
+}
+
 @media screen and (max-width: 480px) {
   body {
-    font-size: 3px;
+    /* font-size: 3px; */
   }
+}
+
+/* Page Wrapper */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 button {
@@ -99,57 +123,50 @@ span.ripple {
 }
 
 /* The Grid */
+/* grid-template-columns: repeat(auto-fit, minmax(19em, 1fr)); */
+/* grid-auto-rows: minmax(3.125em, auto); */
 .grid-container {
   background-color: rgba(15, 1, 1, 0.2);
+  background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(19em, 1fr));
-  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
-  grid-gap: 2em;
-  grid-auto-rows: minmax(3.125em, auto);
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 3vw;
+  grid-template-rows: repeat(3, 1fr);
   place-items: center;
   justify-content: center;
   outline: 0.5vw solid rgba(194, 189, 231, 0.3);
   border: 1vw outset rgba(194, 189, 231, 0.418);
   box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2);
   padding: 3em;
+  border-radius: 3.125em;
   pointer-events: none;
   transform: rotate(90deg);
   transform-style: preserve-3d;
   transition: transform 500ms linear;
-  will-change: transform;
+  will-change: transform, auto;
   overflow: hidden;
+  position: relative;
 }
-
-/* @media screen and (max-width: 1080px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-} */
-
-/* @media screen and (max-width: 480px) {
-  .grid-container {
-    transform: rotate(90deg);
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: minmax(75px, auto);
-  }
-} */
 
 .grid-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0.31em solid rgba(44, 117, 211, 0.15);
-  box-shadow: -0.31em 3.15em 25em 0.625em rgba(102, 51, 153, 0.8);
+  /* border: 0.31em solid rgba(44, 117, 211, 0.15); */
+  /* box-shadow: -0.31em 3.15em 25em 0.625em rgba(102, 51, 153, 0.8); */
   border-radius: 1.25em;
-  height: 9em;
-  width: 9em;
-  background-color: rgba(44, 117, 211, 0.8);
-  color: rgba(250, 250, 250, 0.9);
+  height: var(--grid-item-height);
+  width: var(--grid-item-width);
+  /* background-color: rgba(44, 117, 211, 0.8);
+  color: rgba(250, 250, 250, 0.9); */
   touch-action: none;
   user-select: none;
   cursor: grab;
   pointer-events: all;
-  /* font-size: 2.5em; */
   z-index: 0;
 }
 
@@ -159,34 +176,56 @@ span.ripple {
   will-change: transform;
 }
 
-/* @media screen and (max-device-width: 480px) {
-  .grid-item {
-    height: 4.7em;
-    width: 4.7em;
-    font-size: 1.2em;
-  }
-} */
-
 /* active states activated on pointer down event */
 .active {
-  background: var(--bg-gradient);
+  background-image: var(--bg-gradient),
+    url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100%, contain;
+  background-position: center, center;
+  background-origin: border-box, border-box;
   transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
   transform: perspective(157em) rotateX(45deg) scale3d(0.9, 1.05, 2)
     translate3d(0em, -7.5em, -3.5em);
-
-  outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
-  outline-offset: -2vw;
+  outline: none;
+  background-blend-mode: overlay;
+  /* outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
+  outline-offset: -2.3vw; */
   will-change: transform;
   border-radius: 3.125em;
-  box-shadow: -0.815em 1.25em 0em 0em rgba(0, 0, 0, 0.5), -0.4em 0 0 chocolate,
+  /* border-bottom-left-radius: 3em; */
+  box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5), -0.38em 0 0 chocolate,
     inset 0.1em 0 0 chocolate, inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
     0.3em 2em 2em rgba(0, 0, 0, 0.8),
     inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
-  animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 200ms;
+}
+
+/* For Shine */
+.active:before {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: -5vw;
+  width: 105vw;
+  height: 100vh;
+  animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
+}
+
+body.active-body::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 105vw;
+  height: 100%;
+  opacity: 0;
+  background: var(--bg-gradient);
+  animation: 20s glow ease-in-out infinite 0ms;
 }
 
 .active div.grid-item {
-  box-shadow: -0.1em 0.3em 0em 0.125em rgba(0, 0, 0, 0.2);
+  box-shadow: 0.1em 0.3em 0em 0.125em rgba(255, 237, 237, 0.1);
 }
 
 .active .grid-item img {
@@ -286,5 +325,15 @@ span.ripple {
   }
   100% {
     background-position: 300vw;
+  }
+}
+
+/* shine for rotation transition of section .grid-container */
+@keyframes glow {
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
   }
 }
