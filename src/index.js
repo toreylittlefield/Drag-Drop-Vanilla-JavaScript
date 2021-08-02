@@ -165,14 +165,30 @@ function down(event) {
   }, pressDuration);
   const gridContainer = document.querySelector(".grid-container");
   if (!gridContainer.classList.contains("active")) {
-    // console.log("active");
+    window.scrollTo(0, 0);
     gridContainer.classList.add("active");
     // document.body.style.background = "";
     document.body.classList.add("active-body");
     // remove the scroll
     // document.body.style.overflow = "hidden";
     //show our button
+    // const middleOfPage = Math.ceil(document.body.clientHeight / 4);
+    const pageWrapperSelector = document.querySelector(".page-wrapper");
+    let currentPos = event.pageY;
+    const point = Math.ceil(
+      document.body.clientHeight - pageWrapperSelector.clientHeight
+    );
+    const moveToCenterInverval = setInterval(() => {
+      console.log(currentPos, point);
+      if (currentPos >= point) {
+        console.log("clear");
+        clearInterval(moveToCenterInverval);
+      }
+      window.scrollTo(0, point);
+      currentPos += 20;
+    }, 50);
     showHideBtn.style.visibility = "visible";
+    // document.body.style.minHeight = window.innerHeight + 50 + "px";
   }
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
