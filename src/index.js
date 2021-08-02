@@ -167,8 +167,10 @@ function down(event) {
   if (!gridContainer.classList.contains("active")) {
     // console.log("active");
     gridContainer.classList.add("active");
+    // document.body.style.background = "";
+    document.body.classList.add("active-body");
     // remove the scroll
-    document.body.style.overflow = "hidden";
+    // document.body.style.overflow = "hidden";
     //show our button
     showHideBtn.style.visibility = "visible";
   }
@@ -221,6 +223,7 @@ showHideBtn.addEventListener("pointerdown", (event) => {
   if (gridContainer.classList.contains("active")) {
     gridContainer.classList.remove("active");
     document.body.style.overflow = "";
+    document.body.classList.remove("active-body");
     showHideBtn.style.visibility = "hidden";
   }
 });
