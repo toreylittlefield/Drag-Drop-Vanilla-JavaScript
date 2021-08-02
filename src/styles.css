@@ -26,6 +26,31 @@
     hsla(290, 50%, 8%, 0.019) 91.2%,
     hsla(290, 50%, 8%, 0) 100%
   );
+  --bg-glow: linear-gradient(
+    hsl(283, 77%, 31%) 0%,
+    hsla(283, 77%, 31%, 0.978) 9.5%,
+    hsla(283, 77%, 31%, 0.925) 17.7%,
+    hsla(283, 77%, 31%, 0.857) 24.7%,
+    hsla(283, 77%, 31%, 0.781) 31%,
+    hsla(283, 77%, 31%, 0.701) 36.8%,
+    hsla(283, 77%, 31%, 0.62) 42.3%,
+    hsla(283, 77%, 31%, 0.538) 47.6%,
+    hsla(283, 77%, 31%, 0.455) 52.9%,
+    hsla(283, 77%, 31%, 0.373) 58.2%,
+    hsla(283, 77%, 31%, 0.291) 63.7%,
+    hsla(283, 77%, 31%, 0.212) 69.5%,
+    hsla(283, 77%, 31%, 0.138) 75.8%,
+    hsla(283, 77%, 31%, 0.07) 82.9%,
+    hsla(283, 77%, 31%, 0.019) 91.2%,
+    hsla(283, 77%, 31%, 0) 100%
+  );
+  --active-bg-gradient: linear-gradient(
+    130deg,
+    rgba(203, 203, 241, 0.9) 30%,
+    rgba(5, 4, 56, 0.5) 45%,
+    rgba(0, 77, 64, 0.8) 75%,
+    rgba(0, 212, 255, 1) 100%
+  );
   --grid-item-width: 10vw;
   --grid-item-height: 11vw;
 }
@@ -49,18 +74,26 @@ body {
   overflow-x: hidden;
 }
 
+/* added on pointer down event */
 .active-body {
-  background: linear-gradient(
-    130deg,
-    rgba(203, 203, 241, 0.9) 30%,
-    rgba(5, 4, 56, 0.5) 45%,
-    rgba(0, 77, 64, 0.8) 75%,
-    rgba(0, 212, 255, 1) 100%
-  );
+  /* background: inherit; */
+  background-image: var(--active-bg-gradient);
   margin-bottom: 0;
-  /* transform: scale(0.97); */
-  will-change: auto;
-  /* transition:  1s cubic-bezier(0.175, 0.885, 0.32, 0.9); */
+  min-height: 200vh;
+  /* overflow-y: hidden; */
+}
+
+body.active-body::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: var(--bg-gradient);
+  animation: 20s glow ease-in-out infinite 0ms;
 }
 
 /* Page Wrapper */
@@ -92,7 +125,6 @@ button {
   border-radius: 0.5em;
   word-wrap: normal;
   box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
-  /* transform: perspective(1200px) translateZ(100px); */
   transition: background 400ms,
     visibility var(--animation-duration) linear var(--animation-duration);
   color: rgba(231, 218, 218, 0.795);
@@ -140,13 +172,15 @@ span.ripple {
   outline: 0.5vw solid rgba(194, 189, 231, 0.3);
   border: 1vw outset rgba(194, 189, 231, 0.418);
   box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2);
-  padding: 3em;
+  /* padding: 3em; */
+  /* padding: 3vw 3.5vw; */
+  padding: 3.2vw 3vw 3.2vw 6vw;
   border-radius: 3.125em;
   pointer-events: none;
   transform: rotate(90deg);
   transform-style: preserve-3d;
   transition: transform 500ms linear;
-  will-change: transform, auto;
+  will-change: transform;
   overflow: hidden;
   position: relative;
 }
@@ -155,13 +189,10 @@ span.ripple {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* border: 0.31em solid rgba(44, 117, 211, 0.15); */
-  /* box-shadow: -0.31em 3.15em 25em 0.625em rgba(102, 51, 153, 0.8); */
+  box-shadow: -0.31em 3.15em 30em 0.625em rgba(102, 51, 153, 0.8);
   border-radius: 1.25em;
   height: var(--grid-item-height);
   width: var(--grid-item-width);
-  /* background-color: rgba(44, 117, 211, 0.8);
-  color: rgba(250, 250, 250, 0.9); */
   touch-action: none;
   user-select: none;
   cursor: grab;
@@ -176,6 +207,8 @@ span.ripple {
 }
 
 /* active states activated on pointer down event */
+/* outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
+  outline-offset: -2.3vw; */
 .active {
   background-image: var(--bg-gradient),
     url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
@@ -188,11 +221,7 @@ span.ripple {
     translate3d(0em, -7.5em, -3.5em);
   outline: none;
   background-blend-mode: overlay;
-  /* outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
-  outline-offset: -2.3vw; */
   will-change: transform;
-  border-radius: 3.125em;
-  /* border-bottom-left-radius: 3em; */
   box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5), -0.38em 0 0 chocolate,
     inset 0.1em 0 0 chocolate, inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
     0.3em 2em 2em rgba(0, 0, 0, 0.8),
@@ -208,19 +237,6 @@ span.ripple {
   width: 105vw;
   height: 100vh;
   animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
-}
-
-body.active-body::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  background: var(--bg-gradient);
-  animation: 20s glow ease-in-out infinite 0ms;
 }
 
 .active div.grid-item {
@@ -330,7 +346,7 @@ body.active-body::before {
 /* shine for rotation transition of section .grid-container */
 @keyframes glow {
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
   }
   100% {
     opacity: 0;
