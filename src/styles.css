@@ -83,7 +83,7 @@ body {
   /* overflow-y: hidden; */
 }
 
-body.active-body::before {
+/* body.active-body::before {
   content: "";
   position: absolute;
   z-index: 0;
@@ -94,7 +94,7 @@ body.active-body::before {
   opacity: 0;
   background: var(--bg-gradient);
   animation: 20s glow ease-in-out infinite 0ms;
-}
+} */
 
 /* Page Wrapper */
 .page-wrapper {
