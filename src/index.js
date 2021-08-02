@@ -151,6 +151,10 @@ function down(event) {
       "--animation-duration"
     )
   );
+  // from css variable
+  const bgGradientOnActive = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue("----active-bg-gradient");
   const longPress = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
     [...gridItems].forEach((item) => {
@@ -173,20 +177,20 @@ function down(event) {
     // document.body.style.overflow = "hidden";
     //show our button
     // const middleOfPage = Math.ceil(document.body.clientHeight / 4);
-    const pageWrapperSelector = document.querySelector(".page-wrapper");
+    const pageWrapperSelector = () => document.querySelector("section");
     let currentPos = event.pageY;
     const point = Math.ceil(
-      document.body.clientHeight - pageWrapperSelector.clientHeight
+      document.body.clientHeight - pageWrapperSelector().clientHeight
     );
     const moveToCenterInverval = setInterval(() => {
-      console.log(currentPos, point);
+      console.log(currentPos, point, pageWrapperSelector());
       if (currentPos >= point) {
         console.log("clear");
         clearInterval(moveToCenterInverval);
       }
-      window.scrollTo(0, point);
-      currentPos += 20;
-    }, 50);
+      pageWrapperSelector().scrollIntoView();
+      currentPos += 200;
+    }, 300);
     showHideBtn.style.visibility = "visible";
     // document.body.style.minHeight = window.innerHeight + 50 + "px";
   }
