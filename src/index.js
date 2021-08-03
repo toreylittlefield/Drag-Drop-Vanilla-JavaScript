@@ -8,8 +8,14 @@ document.body.addEventListener("load", scroll, { once: true });
 const gridItems = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
 const gridContainer = document.querySelector(".grid-container");
+const darkModeToggle = document.querySelector(".btn.dark-mode");
 
 gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
+
+// add opacity to grid-container::after
+const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
+  (rule) => rule.selectorText === ".grid-container::after"
+);
 
 // // generate random background colors and fonts
 // const generateRandomRGBA = () => {
@@ -128,7 +134,6 @@ const addRemoveClonedNode = (element) => {
       item.classList.contains("dragging-active-item-move")
     )
       return;
-    // item.style.transform = `scale(1)`;
     item.classList.remove("pulse");
     item.classList.add("pulse-griditems");
   });
@@ -144,10 +149,9 @@ const up = (event, element) => {
   if (clonedElement) {
     clonedElement.replaceWith(element);
     clonedElement.remove();
-    // clonedElement.removeEventListener("pointerup", up);
+    clonedElement.removeEventListener("pointerup", up);
   }
   [...gridItems].forEach((item) => {
-    item.style.transform = `scale(1)`;
     item.classList.remove("pulse");
     item.classList.remove("pulse-griditems");
   });
@@ -172,8 +176,8 @@ function down(event) {
     element = event.target.parentElement;
   }
   // optional add the css transition img / svg
-  // element.querySelector("img").classList.add("pulse");
-  // element.classList.add("dragging-active-item-down");
+  element.querySelector("img").classList.add("pulse");
+  element.classList.add("dragging-active-item-down");
   element.setPointerCapture(event.pointerId);
 
   // from css variable
@@ -185,7 +189,7 @@ function down(event) {
   // from css variable
   const bgGradientOnActive = getComputedStyle(
     document.documentElement
-  ).getPropertyValue("----active-bg-gradient");
+  ).getPropertyValue("--active-bg-gradient");
   const longPress = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
     [...gridItems].forEach((item) => {
@@ -201,7 +205,10 @@ function down(event) {
   const gridContainer = document.querySelector(".grid-container");
   if (!gridContainer.classList.contains("active")) {
     window.scrollTo(0, 0);
+    console.log(gridContainer.getAttribute("after"));
     gridContainer.classList.add("active");
+    // add opacity to grid-container::after
+    gridAfterSelector.style.opacity = 1;
     // document.body.style.background = "";
 
     document.body.classList.add("active-body");
@@ -230,7 +237,6 @@ function down(event) {
   const clearTimer = () => {
     clearTimeout(longPress);
     [...gridItems].forEach((item) => {
-      item.style.transform = `scale(1)`;
       item.classList.remove("pulse");
     });
     element.classList.remove("dragging-active-item-down");
@@ -249,6 +255,28 @@ showHideBtn.addEventListener("pointerdown", (event) => {
     document.body.classList.remove("active-body");
     showHideBtn.style.opacity = 0;
   }
+});
+
+darkModeToggle.addEventListener("pointerdown", (event) => {
+  event.stopPropagation();
+  const getBackgroundStyle = document.body.style.background;
+  const setBackgroundStyle = (style) =>
+    (document.body.style.background = style);
+  const darkStyle = "var(--body-bg-gradient)";
+  const lightStyle = "initial";
+  const isActive = document.body.classList.contains("active-body");
+  if (isActive) {
+    document.body.classList.remove("active-body");
+    // setBackgroundStyle(lightStyle);
+    // return;
+  }
+  if (!isActive) {
+    document.body.classList.add("active-body");
+    // setBackgroundStyle(darkStyle);
+    // return;
+  }
+  if (getBackgroundStyle === darkStyle) return setBackgroundStyle(lightStyle);
+  if (getBackgroundStyle === lightStyle) return setBackgroundStyle(darkStyle);
 });
 
 // https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/
