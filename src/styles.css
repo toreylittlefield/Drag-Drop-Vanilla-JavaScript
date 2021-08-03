@@ -157,19 +157,29 @@ body {
   bottom: 0;
   background-color: rgba(0, 0, 0, 1);
   opacity: 1;
-  z-index: -9;
-  animation: fadeout 9.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 500ms 1 forwards;
+  z-index: 99;
+  animation: fadeout 16s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2000ms 1 forwards;
 }
 
 @keyframes fadeout {
-  20% {
+  10% {
     opacity: 0.8;
   }
-  70% {
-    opacity: 0.4;
+  20% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
   }
   100% {
     opacity: 0;
+    z-index: -9;
   }
 }
 
