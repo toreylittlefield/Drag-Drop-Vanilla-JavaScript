@@ -305,3 +305,8 @@ const buttons = document.getElementsByTagName("button");
 for (const button of buttons) {
   button.addEventListener("click", createRipple);
 }
+const videoSelector = document.querySelector("video");
+const videoPlayBackRate = (videoSelector.playbackRate = 2.5);
+videoSelector.addEventListener("ended", (event) => {
+  event.defaultPrevented;
+});
