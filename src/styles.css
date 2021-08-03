@@ -51,36 +51,52 @@
     rgba(0, 77, 64, 0.8) 75%,
     rgba(0, 212, 255, 1) 100%
   );
-  --grid-item-width: 10vw;
-  --grid-item-height: 11vw;
-}
-
-body {
-  font-family: sans-serif;
-  font-size: 16px;
-  min-height: 100vh;
-  scroll-behavior: smooth;
-  margin: 2em;
-  margin-bottom: 0;
-  margin-top: 0;
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
+  --body-bg-gradient: linear-gradient(
     90deg,
     rgba(1, 0, 36, 1) 0%,
     rgba(0, 77, 64, 1) 77%,
     rgba(0, 212, 255, 1) 100%
   );
+  --pulse-bg-gradient: rgba(205, 174, 236, 0.99)
+    radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
+    center/0%;
+  --shine-bg-gradient: linear-gradient(
+    75deg,
+    transparent 10%,
+    rgba(255, 255, 255, 0.2) 90%,
+    transparent 10%
+  );
+  --active-box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5),
+    -0.38em 0 0 chocolate, inset 0.1em 0 0 chocolate,
+    inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5), 0.3em 2em 2em rgba(0, 0, 0, 0.8),
+    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
+  --grid-item-width: 10vw;
+  --grid-item-height: 11vw;
+}
+
+html,
+body {
+  margin: 0em;
+  /* background-color: rgb(2, 0, 36); */
+  min-height: 100vh;
+  font-family: sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  /* background: var(--body-bg-gradient); */
   overflow-y: scroll;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 /* added on pointer down event */
+/* min-height: 200vh; */
+/* overflow-y: hidden; */
+/* background: inherit; */
 .active-body {
-  /* background: inherit; */
-  background-image: var(--active-bg-gradient);
-  margin-bottom: 0;
-  min-height: 200vh;
-  /* overflow-y: hidden; */
+  background-color: inherit;
+  /* background-image: var(--active-bg-gradient); */
+  /* margin-bottom: 0; */
+  /* contain: paint; */
 }
 
 /* body.active-body::before {
@@ -100,11 +116,12 @@ body {
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  background: transparent;
+  /* background: transparent; */
 }
 
 section {
-  background: transparent;
+  /* background: transparent; */
+  font-size: inherit;
 }
 
 button {
@@ -157,7 +174,7 @@ span.ripple {
 /* grid-template-columns: repeat(auto-fit, minmax(19em, 1fr)); */
 /* grid-auto-rows: minmax(3.125em, auto); */
 .grid-container {
-  background-color: rgba(15, 1, 1, 0.2);
+  /* background-color: rgba(15, 1, 1, 0.2); */
   background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
   background-repeat: no-repeat;
   background-size: contain;
@@ -169,18 +186,18 @@ span.ripple {
   grid-template-rows: repeat(3, 1fr);
   place-items: center;
   justify-content: center;
-  outline: 0.5vw solid rgba(194, 189, 231, 0.3);
+  /* outline: 0.5vw solid rgba(194, 189, 231, 0.3); */
   border: 1vw outset rgba(194, 189, 231, 0.418);
-  box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2);
-  /* padding: 3em; */
-  /* padding: 3vw 3.5vw; */
+  box-shadow: var(--active-box-shadow);
+
+  /* box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2); */
   padding: 3.2vw 3vw 3.2vw 6vw;
   border-radius: 3.125em;
   pointer-events: none;
   transform: rotate(90deg);
   transform-style: preserve-3d;
   transition: transform 500ms linear;
-  will-change: transform;
+  /* will-change: transform; */
   overflow: hidden;
   position: relative;
 }
@@ -189,7 +206,7 @@ span.ripple {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: -0.31em 3.15em 30em 0.625em rgba(102, 51, 153, 0.8);
+  /* box-shadow: -0.31em 3.15em 30em 0.625em rgba(102, 51, 153, 0.8); */
   border-radius: 1.25em;
   height: var(--grid-item-height);
   width: var(--grid-item-width);
@@ -201,31 +218,28 @@ span.ripple {
 }
 
 .grid-item img {
-  transition: all 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transform: rotate(-90deg);
-  will-change: transform;
+  /* will-change: transform; */
 }
 
 /* active states activated on pointer down event */
 /* outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
   outline-offset: -2.3vw; */
 .active {
-  background-image: var(--bg-gradient),
+  /* background-image: var(--bg-gradient),
     url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
   background-repeat: no-repeat, no-repeat;
   background-size: 100%, contain;
   background-position: center, center;
-  background-origin: border-box, border-box;
+  background-origin: border-box, border-box; */
   transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
   transform: perspective(157em) rotateX(45deg) scale3d(0.9, 1.05, 2)
     translate3d(0em, -7.5em, -3.5em);
   outline: none;
   background-blend-mode: overlay;
-  will-change: transform;
-  box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5), -0.38em 0 0 chocolate,
-    inset 0.1em 0 0 chocolate, inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
-    0.3em 2em 2em rgba(0, 0, 0, 0.8),
-    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
+  will-change: transform, box-shadow;
+  /* box-shadow: var(--active-box-shadow); */
 }
 
 /* For Shine */
@@ -240,13 +254,14 @@ span.ripple {
 }
 
 .active div.grid-item {
-  box-shadow: 0.1em 0.3em 0em 0.125em rgba(255, 237, 237, 0.1);
+  font-size: inherit;
+  /* box-shadow: 0.1em 0.3em 0em 0.125em rgba(255, 237, 237, 0.1); */
 }
 
 .active .grid-item img {
   transition: all 750ms ease;
   transform: rotate(0) translate3d(0em, -0.2em, 6.25em);
-  will-change: transform;
+  /* will-change: transform; */
 }
 
 /* add on pointer down and remove on pointer up */
@@ -255,7 +270,7 @@ span.ripple {
   pointer-events: none;
   transform: rotate(-5deg) scale(1.25);
   animation: pulse var(--animation-duration) 1;
-  will-change: transform;
+  /* will-change: transform; */
 }
 
 /* add on pointer move after cloning and remove on pointer up */
@@ -264,13 +279,13 @@ span.ripple {
   z-index: 999;
   top: auto;
   left: auto;
-  will-change: left, top;
+  /* will-change: left, top; */
 }
 
 /* grid items animation on pointer down and romoved on move and/or pointer up */
 .pulse {
   animation: pulse var(--animation-duration) infinite;
-  will-change: transform, border;
+  /* will-change: transform, border; */
   border: inherit;
 }
 
@@ -294,16 +309,14 @@ span.ripple {
   100% {
     transform: rotate(0.75deg);
     border: 5px solid transparent;
-    background: rgba(205, 174, 236, 0.99)
-      radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
-      center/0%;
+    /* background: var(--pulse-bg-gradient); */
   }
 }
 
 /* pulse other grid items on move */
 .pulse-griditems {
   animation: pulse-gridItems var(--animation-duration) infinite;
-  will-change: transform, border;
+  /* will-change: transform, border; */
   border: inherit;
 }
 
@@ -329,12 +342,7 @@ span.ripple {
 @keyframes shine {
   0% {
     /* background-size: 10000%; */
-    background: linear-gradient(
-      75deg,
-      transparent 10%,
-      rgba(255, 255, 255, 0.2) 90%,
-      transparent 10%
-    );
+    /* background: var(--shine-bg-gradient); */
     background-repeat: no-repeat;
     background-position: -50vw;
   }
