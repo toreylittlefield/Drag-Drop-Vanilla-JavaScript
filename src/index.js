@@ -1,9 +1,11 @@
 // import iconsArray from "./Icons";
 
 // scroll to middle of page on load
-const scroll = () =>
+const scroll = () => {
+  console.log("scrolled on load");
   window.scrollTo(0, Math.ceil(document.body.clientHeight / 4));
-document.body.addEventListener("load", scroll, { once: true });
+};
+window.addEventListener("load", scroll, { once: true });
 
 const gridItems = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
@@ -16,35 +18,6 @@ gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
 const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
   (rule) => rule.selectorText === ".grid-container::after"
 );
-
-// // generate random background colors and fonts
-// const generateRandomRGBA = () => {
-//   let [h, s, l] = Array(3)
-//     .fill(0)
-//     .map((color, idx) =>
-//       idx === 0
-//         ? 0 + Math.ceil(Math.random() * 50)
-//         : 70 + Math.ceil(Math.random() * 30)
-//     );
-//   let fontColor = `hsla(${0},${s >= 60 ? 50 : 10}%,${l >= 60 ? 10 : 100}%,1)`;
-//   return { rgbaBG: `hsla(${h},${s}%,${l}%,0.8)`, rgbaFontColor: fontColor };
-// };
-
-// // label and add styles to grid-items at runtime
-// gridItems.forEach((gridItem, index) => {
-//   const { rgbaBG, rgbaFontColor } = generateRandomRGBA();
-//   const icon = document.createElement("img");
-//   gridItem.textContent = "";
-//   icon.src = iconsArray[index];
-//   icon.height = gridItem.clientWidth / 2;
-//   icon.width = gridItem.clientHeight / 2;
-//   icon.id = `icon-${index}`;
-//   gridItem.appendChild(icon);
-//   gridItem.id = index;
-//   gridItem.style.backgroundColor = rgbaBG;
-//   gridItem.style.color = rgbaFontColor;
-//   gridItem.onpointerdown = down;
-// });
 
 /**
  * @description swaps in the DOM the cloned element with the grid-item that the pointer is currently over
