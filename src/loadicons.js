@@ -29,4 +29,5 @@ gridItems.forEach((gridItem, index) => {
   gridItem.id = index;
   gridItem.style.backgroundColor = rgbaBG;
   gridItem.style.color = rgbaFontColor;
+  gridItem.style.opacity = 1;
 });
