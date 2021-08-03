@@ -115,6 +115,58 @@ body {
   animation: 20s glow ease-in-out infinite 0ms;
 } */
 
+.fullscreen-video {
+  position: fixed;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: -10;
+  opacity: 0;
+  animation: videofade 9.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1000ms 1
+    forwards;
+  /* transition: opacity 10s cubic-bezier(0.25, 0.46, 0.45, 0.94); */
+}
+@keyframes videofade {
+  20% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 1;
+  z-index: -9;
+  animation: fadeout 9.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 500ms 1 forwards;
+}
+
+@keyframes fadeout {
+  20% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* Page Wrapper */
 .page-wrapper {
   display: flex;
