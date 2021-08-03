@@ -223,7 +223,7 @@ function down(event) {
       pageWrapperSelector().scrollIntoView();
       currentPos += 200;
     }, 300);
-    showHideBtn.style.visibility = "visible";
+    showHideBtn.style.opacity = 1;
     // document.body.style.minHeight = window.innerHeight + 50 + "px";
   }
   // clear the timer if pointerup event occurs and cancel / remove
@@ -247,7 +247,7 @@ showHideBtn.addEventListener("pointerdown", (event) => {
     gridContainer.classList.remove("active");
     document.body.style.overflow = "";
     document.body.classList.remove("active-body");
-    showHideBtn.style.visibility = "hidden";
+    showHideBtn.style.opacity = 0;
   }
 });
 

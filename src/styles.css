@@ -143,10 +143,10 @@ button {
   word-wrap: normal;
   box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
   transition: background 400ms,
-    visibility var(--animation-duration) linear var(--animation-duration);
+    opacity var(--animation-duration) linear var(--animation-duration);
   color: rgba(231, 218, 218, 0.795);
   background-color: hsla(280, 5%, 12%, 0.95);
-  visibility: hidden;
+  opacity: 0;
 }
 .btn.change-view:hover {
   transform: scale(1.05);
