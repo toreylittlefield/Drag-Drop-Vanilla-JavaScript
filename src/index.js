@@ -1,4 +1,4 @@
-import iconsArray from "./Icons";
+// import iconsArray from "./Icons";
 
 // scroll to middle of page on load
 const scroll = () =>
@@ -8,6 +8,37 @@ document.body.addEventListener("load", scroll, { once: true });
 const gridItems = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
 const gridContainer = document.querySelector(".grid-container");
+
+gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
+
+// // generate random background colors and fonts
+// const generateRandomRGBA = () => {
+//   let [h, s, l] = Array(3)
+//     .fill(0)
+//     .map((color, idx) =>
+//       idx === 0
+//         ? 0 + Math.ceil(Math.random() * 50)
+//         : 70 + Math.ceil(Math.random() * 30)
+//     );
+//   let fontColor = `hsla(${0},${s >= 60 ? 50 : 10}%,${l >= 60 ? 10 : 100}%,1)`;
+//   return { rgbaBG: `hsla(${h},${s}%,${l}%,0.8)`, rgbaFontColor: fontColor };
+// };
+
+// // label and add styles to grid-items at runtime
+// gridItems.forEach((gridItem, index) => {
+//   const { rgbaBG, rgbaFontColor } = generateRandomRGBA();
+//   const icon = document.createElement("img");
+//   gridItem.textContent = "";
+//   icon.src = iconsArray[index];
+//   icon.height = gridItem.clientWidth / 2;
+//   icon.width = gridItem.clientHeight / 2;
+//   icon.id = `icon-${index}`;
+//   gridItem.appendChild(icon);
+//   gridItem.id = index;
+//   gridItem.style.backgroundColor = rgbaBG;
+//   gridItem.style.color = rgbaFontColor;
+//   gridItem.onpointerdown = down;
+// });
 
 /**
  * @description swaps in the DOM the cloned element with the grid-item that the pointer is currently over
@@ -141,8 +172,8 @@ function down(event) {
     element = event.target.parentElement;
   }
   // optional add the css transition img / svg
-  element.querySelector("img").classList.add("pulse");
-  element.classList.add("dragging-active-item-down");
+  // element.querySelector("img").classList.add("pulse");
+  // element.classList.add("dragging-active-item-down");
   element.setPointerCapture(event.pointerId);
 
   // from css variable
@@ -172,6 +203,7 @@ function down(event) {
     window.scrollTo(0, 0);
     gridContainer.classList.add("active");
     // document.body.style.background = "";
+
     document.body.classList.add("active-body");
     // remove the scroll
     // document.body.style.overflow = "hidden";
@@ -208,35 +240,6 @@ function down(event) {
   };
   element.addEventListener("pointerup", clearTimer, { once: true });
 }
-
-// generate random background colors and fonts
-const generateRandomRGBA = () => {
-  let [h, s, l] = Array(3)
-    .fill(0)
-    .map((color, idx) =>
-      idx === 0
-        ? 0 + Math.ceil(Math.random() * 50)
-        : 70 + Math.ceil(Math.random() * 30)
-    );
-  let fontColor = `hsla(${0},${s >= 60 ? 50 : 10}%,${l >= 60 ? 10 : 100}%,1)`;
-  return { rgbaBG: `hsla(${h},${s}%,${l}%,0.8)`, rgbaFontColor: fontColor };
-};
-
-// label and add styles to grid-items at runtime
-gridItems.forEach((gridItem, index) => {
-  const { rgbaBG, rgbaFontColor } = generateRandomRGBA();
-  const icon = document.createElement("img");
-  gridItem.textContent = "";
-  icon.src = iconsArray[index];
-  icon.height = gridItem.clientWidth / 2;
-  icon.width = gridItem.clientHeight / 2;
-  icon.id = `icon-${index}`;
-  gridItem.appendChild(icon);
-  gridItem.id = index;
-  gridItem.style.backgroundColor = rgbaBG;
-  gridItem.style.color = rgbaFontColor;
-  gridItem.onpointerdown = down;
-});
 
 showHideBtn.addEventListener("pointerdown", (event) => {
   event.stopPropagation();
