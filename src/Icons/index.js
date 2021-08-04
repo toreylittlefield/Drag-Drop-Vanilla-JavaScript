@@ -1,6 +1,8 @@
 // export { default as airplay } from "./airplay.svg";
 // export { default as codepen } from "./codepen.svg";
 
+export { default as dashedlineIcon } from "./dashedline.svg";
+
 import airplay from "./airplay.svg";
 import codepen from "./codepen.svg";
 import codesandbox from "./codesandbox.svg";
