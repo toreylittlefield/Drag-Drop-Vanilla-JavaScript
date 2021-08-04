@@ -1,5 +1,7 @@
 // import iconsArray from "./Icons";
 
+import { dashedlineIcon } from "./Icons/index";
+
 // scroll to middle of page on load
 const scroll = () => {
   console.log("scrolled on load");
@@ -31,28 +33,34 @@ const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
  * @param {PointerEvent} event
  * @param {HTMLElement} element
  */
-const isOverElement = (event = PointerEvent, element = HTMLElement) => {
-  let { width, height, left, top } = document
-    .querySelector(".grid-container")
-    .getBoundingClientRect()
-    .toJSON();
-  const x = event.pageX;
-  const y = event.pageY;
+const isOverElement = (
+  event = PointerEvent,
+  element = HTMLElement,
+  width = 0,
+  height = 0
+) => {
+  // let { width, height, left, top } = document
+  //   .querySelector(".grid-container")
+  //   .getBoundingClientRect()
+  //   .toJSON();
+  const x = event.clientX - height / 2;
+  const y = event.clientY - width / 2;
 
   //top + pageYOffset +
-  const checkYPositions =
-    y <= pageYOffset + top - 150 || y >= height + pageYOffset + top;
-  const checkXPosition = x <= left || x >= width + left;
-  if (checkXPosition && checkYPositions) {
-    // console.log("edge case");
-    return "all";
-  }
-  // hit top-bottom boundary
-  if (checkYPositions) return "left-right";
-  // hit left-right boundary
-  if (checkXPosition) return "top-bottom";
+  // const checkYPositions =
+  //   y <= pageYOffset + top || y >= height + pageYOffset + top;
+  // const checkXPosition = x <= left || x >= width + left;
+  // if (checkXPosition && checkYPositions) {
+  //   // console.log("edge case");
+  //   return "all";
+  // }
+  // // hit top-bottom boundary
+  // if (checkYPositions) return "left-right";
+  // // hit left-right boundary
+  // if (checkXPosition) return "top-bottom";
 
   const currentClosetElement = document.elementFromPoint(x, y);
+  // console.log({ currentClosetElement });
   if (!currentClosetElement) return "all";
   if (
     !currentClosetElement.className.startsWith("grid-item") ||
@@ -73,25 +81,49 @@ const isOverElement = (event = PointerEvent, element = HTMLElement) => {
 const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
+  // const indicatorSelector = document.querySelector(
+  //   "svg#dashed-lines-svg.active-icon"
+  // );
+  // if (!indicatorSelector) {
+  //   const indicator = document.querySelector("svg#dashed-lines-svg");
+  //   indicator.classList.add("active-icon");
+  //   indicator.classList.add("active-icon");
+  //   indicatorSelector.style.left =
+  //     parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
+  //   indicatorSelector.style.top =
+  //     parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
+  // } else {
+  //   indicatorSelector.style.left =
+  //     parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
+  //   indicatorSelector.style.top =
+  //     parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
+  // }
   // const { width, height } = element.getBoundingClientRect().toJSON();
   const { clientHeight: width, clientWidth: height } = element;
 
-  const canMove = isOverElement(event, element);
+  const canMove = isOverElement(event, element, width, height);
   if (canMove === "all") {
     // element.style.top = event.pageY - height / 3 + "px";
-    element.style.top = event.y - height + "px";
+    element.style.top = event.clientY - height / 2 + "px";
     // element.style.left = event.pageX - width / 3 + "px";
-    element.style.left = event.x - width + "px";
+    element.style.left = event.clientX - width / 2 + "px";
   }
   if (canMove === "top-bottom") {
     // element.style.top = event.pageY - height / 3 + "px";
-    element.style.top = event.y - height + "px";
+    element.style.top = event.pageY - height / 2 + "px";
   }
   if (canMove === "left-right") {
     // element.style.left = event.pageX - width / 3 + "px";
-    element.style.left = event.x - width + "px";
+    element.style.left = event.pageX - width / 2 + "px";
   }
-  // console.log({ event });
+  // console.log({
+  //   elementTop: element.style.top,
+  //   elementLeft: element.style.left,
+  //   width,
+  //   height,
+  //   offsetX: event.offsetX,
+  //   offsetY: event.offsetY
+  // });
 };
 
 /**
@@ -182,10 +214,10 @@ function down(event) {
       once: true
     });
   }, pressDuration);
+
   const gridContainer = document.querySelector(".grid-container");
   if (!gridContainer.classList.contains("active")) {
-    window.scrollTo(0, 0);
-    console.log(gridContainer.getAttribute("after"));
+    // window.scrollTo(0, 0);
     gridContainer.classList.add("active");
     // add opacity to grid-container::after
     gridAfterSelector.style.opacity = 1;
@@ -202,7 +234,7 @@ function down(event) {
       document.body.clientHeight - pageWrapperSelector().clientHeight
     );
     const moveToCenterInverval = setInterval(() => {
-      console.log(currentPos, point, pageWrapperSelector());
+      // console.log(currentPos, point, pageWrapperSelector());
       if (currentPos >= point) {
         console.log("clear");
         clearInterval(moveToCenterInverval);
@@ -251,9 +283,9 @@ darkModeToggle.addEventListener("pointerdown", (event) => {
     // return;
   }
   if (!isActive) {
-    document.body.classList.add("active-body");
+    document.body?.classList?.add("active-body");
     // setBackgroundStyle(darkStyle);
-    // return;
+    return;
   }
   if (getBackgroundStyle === darkStyle) return setBackgroundStyle(lightStyle);
   if (getBackgroundStyle === lightStyle) return setBackgroundStyle(darkStyle);
@@ -290,3 +322,23 @@ const videoPlayBackRate = (videoSelector.playbackRate = 2.5);
 videoSelector.addEventListener("ended", (event) => {
   event.defaultPrevented;
 });
+
+window.onpointermove = (event) => {
+  const indicatorSelector = document.querySelector(
+    "svg#dashed-lines-svg.active-icon"
+  );
+  if (!indicatorSelector) {
+    const indicator = document.querySelector("svg#dashed-lines-svg");
+    indicator.classList.add("active-icon");
+    indicator.classList.add("active-icon");
+    indicatorSelector.style.left =
+      parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
+    indicatorSelector.style.top =
+      parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
+  } else {
+    indicatorSelector.style.left =
+      parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
+    indicatorSelector.style.top =
+      parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
+  }
+};
