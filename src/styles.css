@@ -6,7 +6,9 @@
 }
 
 :root {
-  --animation-duration: 1000ms;
+  --animation-duration-flip: 1000ms;
+  --animation-bg-layout-duration: 10s;
+  --animation-bg-layout-delay: 2000ms;
   --bg-color: ;
   --bg-gradient: linear-gradient(
     190deg,
@@ -79,13 +81,15 @@
 html,
 body {
   margin: 0em;
+  padding: 0em;
   min-height: 100vh;
+
   font-family: sans-serif;
   font-size: 16px;
   scroll-behavior: smooth;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  overscroll-behavior: none;
+  /* overflow-y: visible;
+  overflow-x: visible; */
+  /* overscroll-behavior: none; */
 }
 
 body {
@@ -98,6 +102,8 @@ body {
 /* background: inherit; */
 .active-body {
   background-image: var(--active-bg-gradient);
+  background-size: 100vw 100vw;
+
   /* margin-bottom: 0; */
   /* contain: paint; */
 }
@@ -115,23 +121,115 @@ body {
   animation: 20s glow ease-in-out infinite 0ms;
 } */
 
+/****************************
+      Buttons
+****************************/
+button {
+  outline: none;
+  border: none;
+  border-style: none;
+  cursor: pointer;
+}
+
+.btn {
+  font-size: 2.25vw;
+  z-index: 999;
+  padding: 0.75em 0.5em;
+  border-radius: 0.5em;
+  word-wrap: normal;
+  overflow: hidden;
+  box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
+  transition: background 400ms,
+    opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
+  color: rgba(231, 218, 218, 0.795);
+  background-color: hsla(280, 5%, 12%, 0.95);
+}
+.change-view {
+  position: sticky;
+  top: 20%;
+  left: 80%;
+  opacity: 0;
+  width: max-content;
+}
+.btn.change-view:hover {
+  transform: scale(1.05);
+  background-color: hsla(280, 5%, 12%, 0.8);
+}
+
+.btn.dark-mode {
+  position: sticky;
+  top: 20%;
+  left: 5%;
+  width: max-content;
+}
+
+.btn.dark-mode:hover {
+  transform: scale(1.05);
+  background-color: hsla(280, 5%, 12%, 0.8);
+}
+
+/* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
+
+span.ripple {
+  position: absolute; /* The absolute position we mentioned earlier */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(230, 204, 204, 0.75);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/****************************
+      End Buttons
+****************************/
+
 .fullscreen-video {
   z-index: -10;
   width: 100%;
-  transform: translateX(10%);
+  /* transform: translateX(10%); */
   height: 100%;
   position: absolute;
   object-fit: cover;
   border-radius: 2em;
   /* z-index: 0; */
   opacity: 0.8;
-  animation: videofade 9.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1000ms 1
-    forwards;
+  /* animation: videofade calc(var(--animation-bg-layout-duration) / 2.2)
+    cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    calc(var(--animation-bg-layout-delay) / 2) 1 forwards; */
+  animation: videofade calc(var(--animation-bg-layout-duration) * 1.25) linear
+    calc(var(--animation-bg-layout-delay) / 2) 1 forwards;
   /* transition: opacity 10s cubic-bezier(0.25, 0.46, 0.45, 0.94); */
 }
 @keyframes videofade {
+  10% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0;
+  }
   70% {
     opacity: 0.8;
+  }
+  80% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0.2;
   }
   100% {
     opacity: 0.2;
@@ -146,8 +244,9 @@ body {
   bottom: 0;
   background-color: rgba(0, 0, 0, 1);
   opacity: 1;
-  z-index: 999;
-  animation: fadeout 20s ease 2000ms 1 forwards;
+  z-index: -9;
+  animation: videofade var(--animation-bg-layout-duration) linear
+    var(--animation-bg-layout-delay) 1 forwards;
 }
 /* cubic-bezier(0.25, 0.46, 0.45, 0.94) */
 @keyframes fadeout {
@@ -174,7 +273,7 @@ body {
   }
   90% {
     opacity: 0.3;
-    z-index: 5;
+    /* z-index: -9; */
   }
   95% {
     opacity: 0.1;
@@ -182,79 +281,45 @@ body {
   }
   100% {
     opacity: 0;
-    z-index: -9;
+    /* z-index: -9; */
   }
 }
 
 /* Page Wrapper */
 .page-wrapper {
-  display: flex;
-  flex-direction: column;
-  /* background: transparent; */
+  /* display: grid;
+  place-content: center;
+  justify-content: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr; */
+  /* height: 100vw;
+  padding: 3vw; */
+  /* height: 100vw; */
+  padding: 1vw 2vw;
+  height: auto;
 }
 
 section {
   /* background: transparent; */
   font-size: inherit;
+  display: grid;
+  place-content: center;
+  justify-content: center;
+  grid-template-columns: 1fr;
+  /* grid-template-rows: 1fr; */
+  /* height: 100vw;
+  padding: 3vw; */
+  /* max-height: 100vw; */
+  /* height: clamp(100vw, 100vh, 100vh); */
+  transform: translateY(45%);
+  /* height: 100vw; */
+  height: inherit;
+  width: 100%;
+  padding: 1vw 2vw;
 }
 
-button {
-  outline: none;
-  border: none;
-  border-style: none;
-  cursor: pointer;
-}
-
-.btn {
-  font-size: 2.25vw;
-  z-index: 999;
-  padding: 0.75em 0.5em;
-  border-radius: 0.5em;
-  word-wrap: normal;
-  overflow: hidden;
-  box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
-  transition: background 400ms,
-    opacity var(--animation-duration) linear var(--animation-duration);
-  color: rgba(231, 218, 218, 0.795);
-  background-color: hsla(280, 5%, 12%, 0.95);
-}
-.change-view {
-  position: sticky;
-  top: 5%;
-  left: 80%;
-  opacity: 0;
-}
-.btn.change-view:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 5%, 12%, 0.8);
-}
-
-.btn.dark-mode {
-  position: sticky;
-  top: 5%;
-  left: 0%;
-}
-
-.btn.dark-mode:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 5%, 12%, 0.8);
-}
-
-/* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
-
-span.ripple {
-  position: absolute; /* The absolute position we mentioned earlier */
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 600ms linear;
-  background-color: rgba(230, 204, 204, 0.75);
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+section.active {
+  transform: translateY(0%);
 }
 
 /* The Grid */
@@ -280,19 +345,30 @@ span.ripple {
   padding: 3.2vw 3vw 3.2vw 6vw;
   border-radius: 3.125em;
   pointer-events: none;
-  transform: translateY(50%) rotate(90deg);
+  /* transform: translateY(50%) rotate(90deg); */
+  transform: rotate(90deg);
   transform-style: preserve-3d;
   transition: transform 500ms linear;
   /* will-change: transform; */
-  overflow: hidden;
   position: relative;
   opacity: 0;
-  animation: showGridContainer 5000ms ease 1s forwards;
+  animation: showGridContainer calc(var(--animation-bg-layout-duration) / 4)
+    ease calc(var(--animation-bg-layout-delay) / 2) forwards;
 }
 
 @keyframes showGridContainer {
+  40% {
+    background-color: rebeccapurple;
+  }
+  60% {
+    background-color: crimson;
+  }
+  80% {
+    background-color: chocolate;
+  }
   100% {
     opacity: 1;
+    /* background-color: chocolate; */
   }
 }
 
@@ -310,7 +386,7 @@ span.ripple {
   background-image: var(--bg-gradient);
   overflow: hidden;
   opacity: 0;
-  transition: opacity var(--animation-duration) ease;
+  transition: opacity var(--animation-duration-flip) ease;
   z-index: -1;
 }
 
@@ -319,7 +395,9 @@ span.ripple {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 5000ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 15s;
+  transition: opacity calc(var(--animation-bg-layout-duration) / 4)
+    cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    calc(var(--animation-bg-layout-duration) * 0.75);
   /* box-shadow: -0.31em 3.15em 30em 0.625em rgba(102, 51, 153, 0.8); */
   border-radius: 1.25em;
   height: var(--grid-item-height);
@@ -350,9 +428,13 @@ span.ripple {
   background-position: center, center;
   background-origin: border-box, border-box; */
 .active {
-  transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
-  transform: perspective(157em) rotateX(45deg) scale3d(0.9, 1.05, 2)
+  /* position: relative; */
+  transform: perspective(157em) rotateX(45deg) scale3d(0.95, 1.1, 2)
     translate3d(0em, -7.5em, -3.5em);
+  transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
+
+  /* transform: perspective(300em) rotateX(45deg) scale3d(0.95, 1.1, 2)
+    translate3d(0em, -100%, -1em); */
   outline: none;
   /* background-blend-mode: overlay; */
   will-change: transform, box-shadow;
@@ -385,7 +467,7 @@ span.ripple {
   cursor: grabbing;
   pointer-events: none;
   transform: rotate(-5deg) scale(1.25);
-  animation: pulse var(--animation-duration) 1;
+  animation: pulse var(--animation-duration-flip) 1;
   /* will-change: transform; */
 }
 
@@ -400,7 +482,7 @@ span.ripple {
 
 /* grid items animation on pointer down and romoved on move and/or pointer up */
 .pulse {
-  animation: pulse var(--animation-duration) infinite;
+  animation: pulse var(--animation-duration-flip) infinite;
   /* will-change: transform, border; */
   border: inherit;
 }
@@ -431,7 +513,7 @@ span.ripple {
 
 /* pulse other grid items on move */
 .pulse-griditems {
-  animation: pulse-gridItems var(--animation-duration) infinite;
+  animation: pulse-gridItems var(--animation-duration-flip) infinite;
   /* will-change: transform, border; */
   border: inherit;
 }
