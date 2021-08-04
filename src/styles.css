@@ -96,30 +96,9 @@ body {
   background: var(--body-bg-gradient);
 }
 
-/* added on pointer down event */
-/* min-height: 200vh; */
-/* overflow-y: hidden; */
-/* background: inherit; */
 .active-body {
   background-image: var(--active-bg-gradient);
-  /* background-size: 100vw 100vw; */
-
-  /* margin-bottom: 0; */
-  /* contain: paint; */
 }
-
-/* body.active-body::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  background: var(--bg-gradient);
-  animation: 20s glow ease-in-out infinite 0ms;
-} */
 
 /****************************
       Buttons
