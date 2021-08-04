@@ -6,8 +6,8 @@
 }
 
 :root {
-  --animation-duration-flip: 1000ms;
-  --animation-bg-layout-duration: 10s;
+  --animation-duration-flip: 10000ms;
+  --animation-bg-layout-duration: 0s;
   --animation-bg-layout-delay: 2000ms;
   --bg-color: ;
   --bg-gradient: linear-gradient(
@@ -102,7 +102,7 @@ body {
 /* background: inherit; */
 .active-body {
   background-image: var(--active-bg-gradient);
-  background-size: 100vw 100vw;
+  /* background-size: 100vw 100vw; */
 
   /* margin-bottom: 0; */
   /* contain: paint; */
@@ -295,8 +295,9 @@ span.ripple {
   /* height: 100vw;
   padding: 3vw; */
   /* height: 100vw; */
-  padding: 1vw 2vw;
+  padding: 40vw 2vw;
   height: auto;
+  margin: auto auto;
 }
 
 section {
@@ -311,15 +312,11 @@ section {
   padding: 3vw; */
   /* max-height: 100vw; */
   /* height: clamp(100vw, 100vh, 100vh); */
-  transform: translateY(45%);
+  /* transform: translateY(45%); */
   /* height: 100vw; */
-  height: inherit;
+  /* height: auto; */
   width: 100%;
   padding: 1vw 2vw;
-}
-
-section.active {
-  transform: translateY(0%);
 }
 
 /* The Grid */
@@ -346,9 +343,9 @@ section.active {
   border-radius: 3.125em;
   pointer-events: none;
   /* transform: translateY(50%) rotate(90deg); */
-  transform: rotate(90deg);
+  transform: rotateZ(90deg);
   transform-style: preserve-3d;
-  transition: transform 500ms linear;
+  transition: transform 1s linear 300ms;
   /* will-change: transform; */
   position: relative;
   opacity: 0;
@@ -368,7 +365,7 @@ section.active {
   }
   100% {
     opacity: 1;
-    /* background-color: chocolate; */
+    background-color: initial;
   }
 }
 
@@ -388,6 +385,8 @@ section.active {
   opacity: 0;
   transition: opacity var(--animation-duration-flip) ease;
   z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .grid-item {
@@ -405,7 +404,7 @@ section.active {
   touch-action: none;
   user-select: none;
   cursor: grab;
-  pointer-events: all;
+  pointer-events: visible;
   z-index: 0;
 }
 
@@ -419,25 +418,10 @@ section.active {
 }
 
 /* active states activated on pointer down event */
-/* outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
-  outline-offset: -2.3vw; */
-/* background-image: var(--bg-gradient),
-    url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
-  background-repeat: no-repeat, no-repeat;
-  background-size: 100%, contain;
-  background-position: center, center;
-  background-origin: border-box, border-box; */
-.active {
-  /* position: relative; */
-  transform: perspective(157em) rotateX(45deg) scale3d(0.95, 1.1, 2)
-    translate3d(0em, -7.5em, -3.5em);
-  transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
-
-  /* transform: perspective(300em) rotateX(45deg) scale3d(0.95, 1.1, 2)
-    translate3d(0em, -100%, -1em); */
-  outline: none;
-  /* background-blend-mode: overlay; */
-  will-change: transform, box-shadow;
+.grid-container.active {
+  transform: perspective(157em) rotateX(45deg) rotateZ(0deg)
+    scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em);
+  transition: transform 2000ms ease-in-out 30ms;
 }
 
 /* For Shine */
@@ -445,10 +429,11 @@ section.active {
   content: "";
   position: absolute;
   top: 0%;
-  left: -5vw;
-  width: 105vw;
-  height: 100vh;
-  animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  animation: 2200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
+  border-radius: inherit;
 }
 
 .active .grid-item {
@@ -457,7 +442,8 @@ section.active {
 }
 
 .active .grid-item img {
-  transition: all 750ms ease;
+  /* transition: transform 750ms ease; */
+  transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transform: rotate(0) translate3d(0em, -0.2em, 6.25em);
   /* will-change: transform; */
 }
@@ -556,5 +542,36 @@ section.active {
   }
   100% {
     opacity: 0;
+  }
+}
+
+.active-icon {
+  position: absolute;
+  height: 10em;
+  width: 10em;
+  z-index: 999;
+  color: rebeccapurple;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: translateX(25%) translateY(-50%);
+  animation: rotateIcon 500ms linear infinite;
+}
+svg {
+  position: absolute;
+  top: inherit;
+  left: inherit;
+}
+
+svg.active-icon line {
+  stroke: rebeccapurple;
+  stroke-width: 2;
+}
+
+@keyframes rotateIcon {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
