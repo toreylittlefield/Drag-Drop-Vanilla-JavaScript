@@ -14,6 +14,13 @@ const darkModeToggle = document.querySelector(".btn.dark-mode");
 
 gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
 
+// scroll to center of grid on load
+gridContainer.scrollIntoView({
+  behavior: "smooth",
+  block: "center",
+  inline: "center"
+});
+
 // add opacity to grid-container::after
 const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
   (rule) => rule.selectorText === ".grid-container::after"
