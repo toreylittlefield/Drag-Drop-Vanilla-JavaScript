@@ -1,3 +1,5 @@
+import { moveViewPortToCenter } from "./Utils";
+
 const gridItems = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
 const gridContainer = document.querySelector(".grid-container");
@@ -216,34 +218,15 @@ function down(event) {
   }, pressDuration);
 
   const gridContainer = document.querySelector(".grid-container");
-  if (!gridContainer.classList.contains("active")) {
-    // window.scrollTo(0, 0);
+  if (!gridContainer.getAttribute("class")?.includes("active")) {
     gridContainer.classList.add("active");
     // add opacity to grid-container::after
     gridAfterSelector.style.opacity = 1;
-    // document.body.style.background = "";
 
     document.body.classList.add("active-body");
-    // remove the scroll
-    // document.body.style.overflow = "hidden";
     //show our button
-    // const middleOfPage = Math.ceil(document.body.clientHeight / 4);
-    const pageWrapperSelector = () => document.querySelector("section");
-    let currentPos = event.pageY;
-    const point = Math.ceil(
-      document.body.clientHeight - pageWrapperSelector().clientHeight
-    );
-    const moveToCenterInverval = setInterval(() => {
-      // console.log(currentPos, point, pageWrapperSelector());
-      if (currentPos >= point) {
-        console.log("clear");
-        clearInterval(moveToCenterInverval);
-      }
-      pageWrapperSelector().scrollIntoView();
-      currentPos += 200;
-    }, 300);
     showHideBtn.style.opacity = 1;
-    // document.body.style.minHeight = window.innerHeight + 50 + "px";
+    moveViewPortToCenter(event);
   }
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
@@ -259,14 +242,17 @@ function down(event) {
   element.addEventListener("pointerup", clearTimer, { once: true });
 }
 
-showHideBtn.addEventListener("pointerdown", (event) => {
+showHideBtn.addEventListener("pointerdown", async (event) => {
   event.stopPropagation();
-  if (gridContainer.classList.contains("active")) {
-    gridContainer.classList.remove("active");
-    document.body.style.overflow = "";
-    document.body.classList.remove("active-body");
-    showHideBtn.style.opacity = 0;
-  }
+  if (!gridContainer.getAttribute("class")?.includes("active")) return;
+  console.log("clicked view...");
+  const centered = await moveViewPortToCenter(event);
+  console.log(centered);
+  console.log("done centering");
+  gridContainer.classList.remove("active");
+  document.body.style.overflow = "";
+  document.body.classList.remove("active-body");
+  showHideBtn.style.opacity = 0;
 });
 
 darkModeToggle.addEventListener("pointerdown", (event) => {
