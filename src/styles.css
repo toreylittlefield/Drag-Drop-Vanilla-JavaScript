@@ -124,11 +124,12 @@ button {
   background-color: hsla(280, 5%, 12%, 0.95);
 }
 .change-view {
-  position: sticky;
+  position: fixed;
   top: 20%;
   left: 80%;
   opacity: 0;
   width: max-content;
+  user-select: none;
 }
 .btn.change-view:hover {
   transform: scale(1.05);
@@ -136,10 +137,11 @@ button {
 }
 
 .btn.dark-mode {
-  position: sticky;
+  position: fixed;
   top: 20%;
   left: 5%;
   width: max-content;
+  user-select: none;
 }
 
 .btn.dark-mode:hover {
