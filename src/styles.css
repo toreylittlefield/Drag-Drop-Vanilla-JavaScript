@@ -536,6 +536,7 @@ section {
   will-change: transform;
   transform: translateX(25%) translateY(-50%);
   animation: rotateIcon 500ms linear infinite;
+  pointer-events: none;
 }
 svg {
   position: absolute;

@@ -1,4 +1,5 @@
-import iconsArray from "./Icons";
+// import iconsArray from "./Icons";
+import { iconsFilePath } from "./Icons";
 
 const gridItems = document.querySelectorAll(".grid-item");
 const [standardGridItem] = gridItems;
@@ -22,7 +23,9 @@ gridItems.forEach((gridItem, index) => {
   const { rgbaBG, rgbaFontColor } = generateRandomRGBA();
   const icon = document.createElement("img");
   gridItem.textContent = "";
-  icon.src = iconsArray[index];
+  icon.src = iconsFilePath[index];
+  // iconsArray[index];
+  icon.type = "image/svg+xml";
   icon.height = clientHeight / 2;
   icon.width = clientWidth / 2;
   icon.id = `icon-${index}`;

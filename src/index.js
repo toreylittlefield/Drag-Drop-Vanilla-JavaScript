@@ -55,9 +55,11 @@ const isOverElement = (
   const currentClosetElement = document.elementFromPoint(x, y);
   // console.log({ currentClosetElement });
   if (!currentClosetElement) return "all";
+  if (currentClosetElement.className === "") return "all";
+  // console.log(currentClosetElement.className, currentClosetElement.id);
   if (
-    !currentClosetElement.className.startsWith("grid-item") ||
-    currentClosetElement.id === "active-clone"
+    !currentClosetElement.getAttribute("class")?.includes("grid-item") ||
+    currentClosetElement.getAttribute("id") === "active-clone"
   )
     return "all";
   const clondedNode = document.querySelector("#active-clone");
@@ -175,11 +177,14 @@ const up = (event, element) => {
 function down(event) {
   event.preventDefault();
   let element;
-  if (event.target.parentElement.className === "grid-container") {
+  if (
+    event.target.parentElement.getAttribute("class")?.includes("grid-container")
+  ) {
     element = event.target;
   } else {
     element = event.target.parentElement;
   }
+  console.log({ element });
   // optional add the css transition img / svg
   element.querySelector("img").classList.add("pulse");
   element.classList.add("dragging-active-item-down");
@@ -189,12 +194,14 @@ function down(event) {
   const pressDuration = parseInt(
     getComputedStyle(document.documentElement).getPropertyValue(
       "--animation-duration"
-    )
+    ),
+    10
   );
   // from css variable
-  const bgGradientOnActive = getComputedStyle(
-    document.documentElement
-  ).getPropertyValue("--active-bg-gradient");
+  // const bgGradientOnActive =
+  getComputedStyle(document.documentElement).getPropertyValue(
+    "--active-bg-gradient"
+  );
   const longPress = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
     [...gridItems].forEach((item) => {
@@ -275,8 +282,8 @@ darkModeToggle.addEventListener("pointerdown", (event) => {
     // setBackgroundStyle(lightStyle);
     // return;
   }
-  if (!isActive) {
-    document.body?.classList?.add("active-body");
+  if (!isActive && document.body.classList === "") {
+    document.body.classList.add("active-body");
     // setBackgroundStyle(darkStyle);
     return;
   }
@@ -311,9 +318,10 @@ for (const button of buttons) {
   button.addEventListener("click", createRipple);
 }
 const videoSelector = document.querySelector("video");
-const videoPlayBackRate = (videoSelector.playbackRate = 2.5);
+// const videoPlayBackRate =
+videoSelector.playbackRate = 2.5;
 videoSelector.addEventListener("ended", (event) => {
-  event.defaultPrevented;
+  event.preventDefault();
 });
 
 window.onpointermove = (event) => {
@@ -323,15 +331,25 @@ window.onpointermove = (event) => {
   if (!indicatorSelector) {
     const indicator = document.querySelector("svg#dashed-lines-svg");
     indicator.classList.add("active-icon");
-    indicator.classList.add("active-icon");
-    indicatorSelector.style.left =
-      parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
-    indicatorSelector.style.top =
-      parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
   } else {
     indicatorSelector.style.left =
       parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
     indicatorSelector.style.top =
       parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
+    const closestElement = document.elementFromPoint(
+      parseInt(indicatorSelector.style.left, 10),
+      parseInt(indicatorSelector.style.top, 10)
+    );
+    // console.log({
+    //   closestElement,
+    //   left: parseInt(indicatorSelector.style.left, 10),
+    //   top: parseInt(indicatorSelector.style.top, 10)
+    // });
+    if (!closestElement) return;
+    // console.log(
+    //   closestElement.tagName,
+    //   closestElement.className,
+    //   closestElement.id
+    // );
   }
 };
