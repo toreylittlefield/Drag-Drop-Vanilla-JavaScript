@@ -6,8 +6,8 @@
 }
 
 :root {
-  --animation-duration-flip: 10000ms;
-  --animation-bg-layout-duration: 0s;
+  --animation-duration-flip: 1000ms;
+  --animation-bg-layout-duration: 10s;
   --animation-bg-layout-delay: 2000ms;
   --bg-color: ;
   --bg-gradient: linear-gradient(
