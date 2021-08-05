@@ -4,7 +4,11 @@ const GRIDITEMS = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
 const gridContainer = document.querySelector(".grid-container");
 const darkModeToggle = document.querySelector(".btn.dark-mode");
-// from css variable
+
+/**
+ * @description returns the --animation-duration-flip duration from css stylesheet
+ * @returns {Number} PRESS_DURATION is in ms
+ */
 const PRESS_DURATION = Math.ceil(
   parseInt(
     getComputedStyle(document.documentElement).getPropertyValue(
@@ -17,11 +21,6 @@ const PRESS_DURATION = Math.ceil(
 // Scroll to middle of grid container
 (() => {
   console.log("scrolled on load");
-  // gridContainer.scrollIntoView({
-  //   behavior: "smooth",
-  //   block: "center",
-  //   inline: "center"
-  // });
   window.scrollTo(0, Math.ceil(window.innerWidth / 2));
 })();
 
@@ -174,10 +173,11 @@ const up = (event, element) => {
     clonedElement.remove();
     clonedElement.removeEventListener("pointerup", up);
   }
-  [...GRIDITEMS].forEach((item) => {
-    item.classList.remove("pulse");
-    item.classList.remove("pulse-griditems");
-  });
+  addOrRemoveClassFromGridItems({ remove: true }, ["pulse", "pulse-griditems"]);
+  // [...GRIDITEMS].forEach((item) => {
+  //   item.classList.remove("pulse");
+  //   item.classList.remove("pulse-griditems");
+  // });
   element.removeEventListener("pointermove", move);
   element.classList.remove("dragging-active-item-move");
   element.classList.remove("dragging-active-item-down");
@@ -221,9 +221,32 @@ const removeClassesFromDown = (element) => {
   element.classList.remove("dragging-active-item-down");
   element.querySelector("img").classList.remove("pulse");
 };
+HTMLElement;
+/**
+ *
+ * @param {Object} Object - or remove a target classname
+ * @param {Boolean} Object.add - add classnames to all grid-items
+ * @param {Boolean} Object.remove - remove classnames to all grid items
+ * @param {(string|string[])} targetClasses the classname from the element
+ */
+const addOrRemoveClassFromGridItems = (
+  { add = (Boolean = false), remove = (Boolean = false) },
+  targetClasses = "" || []
+) => {
+  if (!targetClasses) {
+    throw Error("targetClasses is a comma seperated array");
+  }
+  if (typeof targetClasses === "string") targetClasses = [targetClasses];
+  console.log({ targetClasses });
+  [...GRIDITEMS].forEach((item) => {
+    const classList = item.classList;
+    if (add) return classList.add(...targetClasses);
+    if (remove) return classList.remove(...targetClasses);
+  });
+};
 
 /**
- * @description selecting an element on pointer down
+ * @description selecting an element, our grid-items, on pointer down listener
  * @param {PointerEvent} event
  */
 function down(event) {
@@ -232,11 +255,9 @@ function down(event) {
   element.setPointerCapture(event.pointerId);
   addClassesOnDown(element);
 
-  const longPress = setTimeout(() => {
+  const longPressToMove = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
-    [...GRIDITEMS].forEach((item) => {
-      item.classList.add("pulse");
-    });
+    addOrRemoveClassFromGridItems({ add: true }, "pulse");
 
     // add our listener events to move and drag
     element.addEventListener("pointermove", move);
@@ -257,11 +278,8 @@ function down(event) {
   }
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
-    clearTimeout(longPress);
-    [...GRIDITEMS].forEach((item) => {
-      item.classList.remove("pulse");
-    });
-    // optional add the css transition img / svg
+    clearTimeout(longPressToMove);
+    addOrRemoveClassFromGridItems({ remove: true }, "pulse");
     removeClassesFromDown(element);
     element.releasePointerCapture(event.pointerId);
   };
