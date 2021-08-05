@@ -1,9 +1,18 @@
 import { moveViewPortToCenter } from "./Utils";
 
-const gridItems = document.querySelectorAll(".grid-item");
+const GRIDITEMS = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
 const gridContainer = document.querySelector(".grid-container");
 const darkModeToggle = document.querySelector(".btn.dark-mode");
+// from css variable
+const PRESS_DURATION = Math.ceil(
+  parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue(
+      "--animation-duration-flip"
+    ),
+    10
+  )
+);
 
 // Scroll to middle of grid container
 (() => {
@@ -16,9 +25,14 @@ const darkModeToggle = document.querySelector(".btn.dark-mode");
   window.scrollTo(0, Math.ceil(window.innerWidth / 2));
 })();
 
-gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
+/**
+ * @description add pointerdown event listeners
+ */
+[...GRIDITEMS].forEach((gridItem) => (gridItem.onpointerdown = down));
 
-// add opacity to grid-container::after
+/**
+ * @description add opacity to grid-container::after
+ */
 const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
   (rule) => rule.selectorText === ".grid-container::after"
 );
@@ -137,7 +151,7 @@ const addRemoveClonedNode = (element) => {
   element.classList.add("dragging-active-item-move");
   if (nextSibling) nextSibling.before(clonedElement);
   if (!nextSibling) element.parentElement.append(clonedElement);
-  [...gridItems].forEach((item) => {
+  [...GRIDITEMS].forEach((item) => {
     if (
       item.id === "active-clone" ||
       item.classList.contains("dragging-active-item-move")
@@ -160,7 +174,7 @@ const up = (event, element) => {
     clonedElement.remove();
     clonedElement.removeEventListener("pointerup", up);
   }
-  [...gridItems].forEach((item) => {
+  [...GRIDITEMS].forEach((item) => {
     item.classList.remove("pulse");
     item.classList.remove("pulse-griditems");
   });
@@ -173,11 +187,11 @@ const up = (event, element) => {
 };
 
 /**
- * @description selecting an element on pointer down
+ *
  * @param {PointerEvent} event
+ * @returns {HTMLElement} element
  */
-function down(event) {
-  event.preventDefault();
+const getTargetElementOnDown = (event = {}) => {
   let element;
   if (
     event.target.parentElement.getAttribute("class")?.includes("grid-container")
@@ -186,27 +200,41 @@ function down(event) {
   } else {
     element = event.target.parentElement;
   }
-  console.log({ element });
+  return element;
+};
+
+/**
+ * @description adds animations and dragging-active-item-down
+ * @param {HTMLElement} element
+ */
+const addClassesOnDown = (element) => {
   // optional add the css transition img / svg
   element.querySelector("img").classList.add("pulse");
   element.classList.add("dragging-active-item-down");
-  element.setPointerCapture(event.pointerId);
+};
 
-  // from css variable
-  const pressDuration = parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(
-      "--animation-duration"
-    ),
-    10
-  );
-  // from css variable
-  // const bgGradientOnActive =
-  getComputedStyle(document.documentElement).getPropertyValue(
-    "--active-bg-gradient"
-  );
+/**
+ * @description removes animations and dragging-active-item-down
+ * @param {HTMLElement} element
+ */
+const removeClassesFromDown = (element) => {
+  element.classList.remove("dragging-active-item-down");
+  element.querySelector("img").classList.remove("pulse");
+};
+
+/**
+ * @description selecting an element on pointer down
+ * @param {PointerEvent} event
+ */
+function down(event) {
+  event.preventDefault();
+  const element = getTargetElementOnDown(event);
+  element.setPointerCapture(event.pointerId);
+  addClassesOnDown(element);
+
   const longPress = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
-    [...gridItems].forEach((item) => {
+    [...GRIDITEMS].forEach((item) => {
       item.classList.add("pulse");
     });
 
@@ -215,9 +243,8 @@ function down(event) {
     element.addEventListener("pointerup", (event) => up(event, element), {
       once: true
     });
-  }, pressDuration);
+  }, PRESS_DURATION);
 
-  const gridContainer = document.querySelector(".grid-container");
   if (!gridContainer.getAttribute("class")?.includes("active")) {
     gridContainer.classList.add("active");
     // add opacity to grid-container::after
@@ -231,12 +258,11 @@ function down(event) {
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
     clearTimeout(longPress);
-    [...gridItems].forEach((item) => {
+    [...GRIDITEMS].forEach((item) => {
       item.classList.remove("pulse");
     });
-    element.classList.remove("dragging-active-item-down");
     // optional add the css transition img / svg
-    element.querySelector("img").classList.remove("pulse");
+    removeClassesFromDown(element);
     element.releasePointerCapture(event.pointerId);
   };
   element.addEventListener("pointerup", clearTimer, { once: true });
@@ -245,12 +271,8 @@ function down(event) {
 showHideBtn.addEventListener("pointerdown", async (event) => {
   event.stopPropagation();
   if (!gridContainer.getAttribute("class")?.includes("active")) return;
-  console.log("clicked view...");
-  const centered = await moveViewPortToCenter(event);
-  console.log(centered);
-  console.log("done centering");
+  await moveViewPortToCenter(event);
   gridContainer.classList.remove("active");
-  document.body.style.overflow = "";
   document.body.classList.remove("active-body");
   showHideBtn.style.opacity = 0;
 });
