@@ -1,5 +1,7 @@
-// import iconsArray from "./Icons";
-import { iconsFilePath } from "./Icons";
+import iconsArray from "./Icons";
+
+// use paths for codesandbox
+// import { iconsFilePath } from "./Icons";
 
 const gridItems = document.querySelectorAll(".grid-item");
 const [standardGridItem] = gridItems;
@@ -23,8 +25,11 @@ gridItems.forEach((gridItem, index) => {
   const { rgbaBG, rgbaFontColor } = generateRandomRGBA();
   const icon = document.createElement("img");
   gridItem.textContent = "";
-  icon.src = iconsFilePath[index];
-  // iconsArray[index];
+  // for codesandbox use **
+  //*********************//
+  // icon.src = iconsFilePath[index];
+  //*********************//
+  icon.src = iconsArray[index];
   icon.type = "image/svg+xml";
   icon.height = clientHeight / 2;
   icon.width = clientWidth / 2;
