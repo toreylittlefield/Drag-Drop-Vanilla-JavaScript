@@ -1,27 +1,20 @@
-// import iconsArray from "./Icons";
-
-import { dashedlineIcon } from "./Icons/index";
-
-// scroll to middle of page on load
-const scroll = () => {
-  console.log("scrolled on load");
-  window.scrollTo(0, Math.ceil(document.body.clientHeight / 4));
-};
-window.addEventListener("load", scroll, { once: true });
-
 const gridItems = document.querySelectorAll(".grid-item");
 const showHideBtn = document.querySelector(".btn.change-view");
 const gridContainer = document.querySelector(".grid-container");
 const darkModeToggle = document.querySelector(".btn.dark-mode");
 
-gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
+// Scroll to middle of grid container
+(() => {
+  console.log("scrolled on load");
+  // gridContainer.scrollIntoView({
+  //   behavior: "smooth",
+  //   block: "center",
+  //   inline: "center"
+  // });
+  window.scrollTo(0, Math.ceil(window.innerWidth / 2));
+})();
 
-// scroll to center of grid on load
-gridContainer.scrollIntoView({
-  behavior: "smooth",
-  block: "center",
-  inline: "center"
-});
+gridItems.forEach((gridItem) => (gridItem.onpointerdown = down));
 
 // add opacity to grid-container::after
 const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
