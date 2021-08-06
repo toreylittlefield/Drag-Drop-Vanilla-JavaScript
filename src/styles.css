@@ -396,7 +396,10 @@ section {
 .dragging-active-item-move {
   position: absolute;
   z-index: 999;
-  /* will-change: left, top; */
+  top: auto;
+  left: auto;
+  transform: translateX(25%) translateY(-50%);
+  will-change: left, top;
 }
 
 /* grid items animation on pointer down and romoved on move and/or pointer up */
