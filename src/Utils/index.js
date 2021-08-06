@@ -50,4 +50,12 @@ const createRipple = (event) => {
   button.appendChild(circle);
 };
 
-export { moveViewPortToCenter, createRipple };
+/**
+ * @description scroll to near the middle of the page on load
+ */
+const scrollOnLoad = () => {
+  console.log("scrolled on load");
+  window.scrollTo(0, Math.ceil(window.innerWidth / 2));
+};
+
+export { moveViewPortToCenter, createRipple, scrollOnLoad };
