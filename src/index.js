@@ -1,4 +1,4 @@
-import { moveViewPortToCenter, createRipple } from "./Utils";
+import { moveViewPortToCenter, createRipple, scrollOnLoad } from "./Utils";
 
 /**
  * @description map with classnames and ids
@@ -28,6 +28,7 @@ class classNamesAndId {
     ).style;
   }
 }
+
 const {
   _gridItemClass,
   _gridContainerClass,
@@ -70,10 +71,7 @@ const PRESS_DURATION = Math.ceil(
 );
 
 // Scroll to middle of grid container
-(() => {
-  console.log("scrolled on load");
-  window.scrollTo(0, Math.ceil(window.innerWidth / 2));
-})();
+scrollOnLoad();
 
 /**
  * @description add pointerdown event listeners
@@ -238,7 +236,7 @@ const up = (event, element) => {
     remove: [_pulseAnimationClassNameStr, _pulseGridClassNameStr]
   });
   element.removeEventListener("pointermove", move);
-  element.classList.remove("dragging-active-item-move");
+  element.classList.remove(_dragMoveClassNameStr);
   element.classList.remove(_dragActiveDownClassNameStr);
   element.style.top = "";
   element.style.left = "";
@@ -325,7 +323,7 @@ function down(event) {
     });
   }, PRESS_DURATION);
 
-  if (!GRID_CONTAINER.getAttribute("class")?.includes("active")) {
+  if (!GRID_CONTAINER.getAttribute("class")?.includes(_activeClassNameStr)) {
     GRID_CONTAINER.classList.add(_activeClassNameStr);
     // add opacity to grid-container::after
     gridAfterSelector.style.opacity = 1;
