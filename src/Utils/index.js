@@ -1,3 +1,5 @@
+import { selectors } from "../MapAndClasses";
+
 /**
  * @description Move the viewport to the center of the page using an interval
  * @param {PointerEvent}
@@ -58,4 +60,35 @@ const scrollOnLoad = () => {
   window.scrollTo(0, Math.ceil(window.innerWidth / 2));
 };
 
-export { moveViewPortToCenter, createRipple, scrollOnLoad };
+/**
+ *
+ * @param {Object} Object - or remove a target classname
+ * @param {(string|string[])} Object.add - add classnames to all grid-items
+ * @param {(string|string[])} Object.remove - remove classnames to all grid items
+ * @param {Object)} conditions set conditional arguments
+ * @param {string} conditions.id the item id from the element to skip
+ * @param {string)} conditions.className the classname from the element to skip
+ */
+const addOrRemoveClassFromGridItems = (
+  { add = "" || [], remove = "" || [] },
+  _conditions = { id: "", className: "" }
+) => {
+  const { id, className } = _conditions;
+  if (typeof add === "string") add = [add];
+  if (typeof remove === "remove") remove = [remove];
+
+  [...selectors.GRID_ITEMS].forEach((item) => {
+    const classList = item.classList;
+    if (id && item.getAttribute("id") === id) return;
+    if (className && item.getAttribute("class").includes(className)) return;
+    if (add) classList.add(...add);
+    if (remove) classList.remove(...remove);
+  });
+};
+
+export {
+  moveViewPortToCenter,
+  createRipple,
+  scrollOnLoad,
+  addOrRemoveClassFromGridItems
+};
