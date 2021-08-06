@@ -11,6 +11,19 @@ class classNamesAndId {
   static _btnViewClass = ".btn.change-view";
   static _btnDarkModeClass = ".btn.dark-mode";
   static _pressDurationCSSVar = "--animation-duration-flip";
+  static _draggingActiveItemMoveClass = ".dragging-active-item-move";
+  static _pulseAnimationStr = "pulse";
+  static _pulseGridclassNameStr = "pulse-griditems";
+  static _gridItemClassNameStr = this._gridItemClass.substr(1);
+  static _gridContainerClassNameStr = this._gridContainerClass.substr(1);
+  static _activeCloneIdStr = this._activeCloneId.substr(1);
+  static _dragMoveClassNameStr = this._draggingActiveItemMoveClass.substr(1);
+  static _dragActiveDownClassNameStr = "dragging-active-item-down";
+  activeMoveCSSIndex() {
+    return [...document.styleSheets[0].cssRules].find(
+      (rule) => rule.selectorText === _draggingActiveItemMoveClass
+    ).style;
+  }
 }
 const {
   _gridItemClass,
@@ -19,8 +32,17 @@ const {
   _activeCloneId,
   _btnViewClass,
   _btnDarkModeClass,
-  _pressDurationCSSVar
+  _pressDurationCSSVar,
+  _draggingActiveItemMoveClass,
+  _pulseAnimationStr,
+  _pulseGridclassNameStr,
+  _gridItemClassNameStr,
+  _gridContainerClassNameStr,
+  _activeCloneIdStr,
+  _dragMoveClassNameStr,
+  _dragActiveDownClassNameStr
 } = classNamesAndId;
+const activeMoveCSSIndex = new classNamesAndId().activeMoveCSSIndex();
 
 const GRID_ITEMS = document.querySelectorAll(_gridItemClass);
 const GRID_CONTAINER = document.querySelector(_gridContainerClass);
@@ -95,13 +117,13 @@ const isOverElement = (
   // if (checkXPosition) return "top-bottom";
 
   const currentClosetElement = document.elementFromPoint(x, y);
-  // console.log({ currentClosetElement });
   if (!currentClosetElement) return moveDirection;
   if (currentClosetElement.className === "") return moveDirection;
-  // console.log(currentClosetElement.className, currentClosetElement.id);
   if (
-    !currentClosetElement.getAttribute("class")?.includes("grid-item") ||
-    currentClosetElement.getAttribute("id") === "active-clone"
+    !currentClosetElement
+      .getAttribute("class")
+      ?.includes(_gridItemClassNameStr) ||
+    currentClosetElement.getAttribute("id") === _activeCloneIdStr
   )
     return moveDirection;
   const clondedNode = document.querySelector(_activeCloneId);
@@ -141,10 +163,15 @@ const move = (event) => {
   const { all } = isOverElement(event, element, width, height);
 
   if (all) {
+    console.log(activeMoveCSSIndex);
+    console.log(activeMoveCSSIndex["top"]);
+    activeMoveCSSIndex.top = event.clientY - height / 2 + "px";
+    activeMoveCSSIndex.left = event.clientX - width / 2 + "px";
     // element.style.top = event.pageY - height / 3 + "px";
-    element.style.top = event.clientY - height / 2 + "px";
+    // element.style.top = event.clientY - height / 2 + "px";
     // element.style.left = event.pageX - width / 3 + "px";
-    element.style.left = event.clientX - width / 2 + "px";
+    // element.style.left = event.clientX - width / 2 + "px";
+    // console.log(element.style.cssText);
   }
   // if (canMove === "top-bottom") {
   //   // element.style.top = event.pageY - height / 3 + "px";
@@ -170,17 +197,17 @@ const move = (event) => {
  * @returns
  */
 const addRemoveClonedNode = (element) => {
-  if (element.classList.contains("dragging-active-item-move")) return;
+  if (element.classList.contains(_dragMoveClassNameStr)) return;
 
   const nextSibling = element.nextElementSibling;
   const clonedElement = element.cloneNode();
-  clonedElement.id = "active-clone";
-  element.classList.add("dragging-active-item-move");
+  clonedElement.id = _activeCloneIdStr;
+  element.classList.add(_dragMoveClassNameStr);
   if (nextSibling) nextSibling.before(clonedElement);
   if (!nextSibling) element.parentElement.append(clonedElement);
   addOrRemoveClassFromGridItems(
-    { add: "pulse-griditems", remove: "pulse" },
-    { id: "active-clone", className: "dragging-active-item-move" }
+    { add: _pulseGridclassNameStr, remove: _pulseAnimationStr },
+    { id: _activeCloneIdStr, className: _dragMoveClassNameStr }
   );
 };
 
@@ -202,14 +229,16 @@ const removeAndReplaceActiveClone = (element) => {
  */
 const up = (event, element) => {
   removeAndReplaceActiveClone(element);
-  addOrRemoveClassFromGridItems({ remove: ["pulse", "pulse-griditems"] });
+  addOrRemoveClassFromGridItems({
+    remove: [_pulseAnimationStr, _pulseGridclassNameStr]
+  });
   element.removeEventListener("pointermove", move);
   element.classList.remove("dragging-active-item-move");
-  element.classList.remove("dragging-active-item-down");
+  element.classList.remove(_dragActiveDownClassNameStr);
   element.style.top = "";
   element.style.left = "";
   // optional add the css transition img / svg
-  element.querySelector("img").classList.remove("pulse");
+  element.querySelector("img").classList.remove(_pulseAnimationStr);
   element.releasePointerCapture(event.pointerId);
 };
 
@@ -220,7 +249,7 @@ const up = (event, element) => {
  */
 const getTargetElementOnDown = (event = {}) => {
   const { parentElement } = event.target;
-  if (parentElement.getAttribute("class")?.includes("grid-container"))
+  if (parentElement.getAttribute("class")?.includes(_gridContainerClassNameStr))
     return event.target;
   return parentElement;
 };
@@ -231,8 +260,8 @@ const getTargetElementOnDown = (event = {}) => {
  */
 const addClassesOnDown = (element) => {
   // optional add the css transition img / svg
-  element.querySelector("img").classList.add("pulse");
-  element.classList.add("dragging-active-item-down");
+  element.querySelector("img").classList.add(_pulseAnimationStr);
+  element.classList.add(_dragActiveDownClassNameStr);
 };
 
 /**
@@ -240,8 +269,8 @@ const addClassesOnDown = (element) => {
  * @param {HTMLElement} element
  */
 const removeClassesFromDown = (element) => {
-  element.classList.remove("dragging-active-item-down");
-  element.querySelector("img").classList.remove("pulse");
+  element.classList.remove(_dragActiveDownClassNameStr);
+  element.querySelector("img").classList.remove(_pulseAnimationStr);
 };
 
 /**
@@ -282,7 +311,7 @@ function down(event) {
 
   const longPressToMove = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
-    addOrRemoveClassFromGridItems({ add: "pulse" });
+    addOrRemoveClassFromGridItems({ add: _pulseAnimationStr });
 
     // add our listener events to move and drag
     element.addEventListener("pointermove", move);
@@ -304,7 +333,7 @@ function down(event) {
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
     clearTimeout(longPressToMove);
-    addOrRemoveClassFromGridItems({ remove: "pulse" });
+    addOrRemoveClassFromGridItems({ remove: _pulseAnimationStr });
     removeClassesFromDown(element);
     element.releasePointerCapture(event.pointerId);
   };
