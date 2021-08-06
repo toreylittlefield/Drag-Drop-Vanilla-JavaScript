@@ -35,6 +35,7 @@ export const {
   _btnViewClass,
   _btnDarkModeClass,
   _pressDurationCSSVar,
+  _darkModeCSSVar,
   _draggingActiveItemMoveClass,
   _activeClassNameStr,
   _activeBodyClassNameStr,
