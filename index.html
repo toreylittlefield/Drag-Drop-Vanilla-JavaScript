@@ -5,28 +5,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/styles.css" />
-    <script src="src/index.js" defer></script>
+    <script src="src/index.js" type="module" defer></script>
   </head>
 
   <body>
-    <button class="btn change-view">Set View</button>
     <div class="page-wrapper">
+      <svg
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        id="dashed-lines-svg"
+        viewBox="0 0 50 100"
+      >
+        <g id="dashed-lines-svg-line">
+          <line stroke-dasharray="5, 5" x1="0" y1="0" x2="1" y2="100"></line>
+        </g>
+      </svg>
+      <button class="btn change-view">Set View</button>
+      <button class="btn dark-mode">Light Mode</button>
+      <div class="bg-overlay"></div>
       <section>
         <div class="grid-container">
-          <div class="grid-item">Item 1</div>
-          <div class="grid-item">Item 2</div>
-          <div class="grid-item">Item 3</div>
-          <div class="grid-item">Item 4</div>
-          <div class="grid-item">Item 5</div>
-          <div class="grid-item">Item 6</div>
-          <div class="grid-item">Item 7</div>
-          <div class="grid-item">Item 8</div>
-          <div class="grid-item">Item 9</div>
-          <div class="grid-item">Item 10</div>
-          <div class="grid-item">Item 11</div>
-          <div class="grid-item">Item 12</div>
+          <video
+            class="fullscreen-video"
+            id="myVideo"
+            autoplay="autoplay"
+            muted
+          >
+            <source
+              src="https://cdn.videvo.net/videvo_files/video/free/2015-07/small_watermarked/A0485_F1507_P2_Pink_Comp_1_preview.webm"
+              type="video/webm"
+              media="(max-width: 480px)"
+            />
+            <source
+              src="https://content.videvo.net/videvo_files/video/free/2015-07/originalContent/A0485_F1507_P2_Pink_Comp_1.mov"
+              type="video/mp4"
+              media="(min-width: 480.01px)"
+            />
+            Your browser does not support the video tag.
+          </video>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
         </div>
       </section>
     </div>
+    <script src="src/loadicons.js" type="module"></script>
   </body>
 </html>

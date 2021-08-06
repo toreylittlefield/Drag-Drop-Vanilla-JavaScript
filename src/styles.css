@@ -6,9 +6,12 @@
 }
 
 :root {
-  --animation-duration: 1000ms;
+  --animation-duration-flip: 1000ms;
+  --animation-bg-layout-duration: 10s;
+  --animation-bg-layout-delay: 2000ms;
   --bg-color: ;
   --bg-gradient: linear-gradient(
+    190deg,
     hsla(290, 50%, 8%) 0%,
     hsla(290, 50%, 8%, 0.978) 9.5%,
     hsla(290, 50%, 8%, 0.925) 17.7%,
@@ -46,67 +49,57 @@
   );
   --active-bg-gradient: linear-gradient(
     130deg,
-    rgba(203, 203, 241, 0.9) 30%,
+    rgba(148, 148, 206, 0.9) 30%,
     rgba(5, 4, 56, 0.5) 45%,
     rgba(0, 77, 64, 0.8) 75%,
     rgba(0, 212, 255, 1) 100%
   );
-  --grid-item-width: 10vw;
-  --grid-item-height: 11vw;
-}
-
-body {
-  font-family: sans-serif;
-  font-size: 16px;
-  min-height: 100vh;
-  scroll-behavior: smooth;
-  margin: 2em;
-  margin-bottom: 0;
-  margin-top: 0;
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
+  --body-bg-gradient: linear-gradient(
     90deg,
     rgba(1, 0, 36, 1) 0%,
     rgba(0, 77, 64, 1) 77%,
     rgba(0, 212, 255, 1) 100%
   );
-  overflow-y: scroll;
-  overflow-x: hidden;
+  --pulse-bg-gradient: rgba(205, 174, 236, 0.99)
+    radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
+    center/0%;
+  --shine-bg-gradient: linear-gradient(
+    75deg,
+    transparent 10%,
+    rgba(255, 255, 255, 0.2) 90%,
+    transparent 10%
+  );
+  --active-box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5),
+    -0.38em 0 0 chocolate, inset 0.1em 0 0 chocolate,
+    inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
+    0.1em 2em 1.5em rgba(0, 0, 0, 0.8),
+    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
+  --grid-item-width: 10vw;
+  --grid-item-height: 11vw;
 }
 
-/* added on pointer down event */
+html,
+body {
+  margin: 0em;
+  padding: 0em;
+  min-height: 100vh;
+  font-family: sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: visible;
+}
+
+body {
+  background: var(--body-bg-gradient);
+}
+
 .active-body {
-  /* background: inherit; */
   background-image: var(--active-bg-gradient);
-  margin-bottom: 0;
-  min-height: 200vh;
-  /* overflow-y: hidden; */
 }
 
-/* body.active-body::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  background: var(--bg-gradient);
-  animation: 20s glow ease-in-out infinite 0ms;
-} */
-
-/* Page Wrapper */
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-}
-
-section {
-  background: transparent;
-}
-
+/****************************
+      Buttons
+****************************/
 button {
   outline: none;
   border: none;
@@ -114,24 +107,41 @@ button {
   cursor: pointer;
 }
 
-.btn.change-view {
-  position: sticky;
-  top: 5%;
-  left: 80%;
-  font-size: 1.5em;
-  padding: 0.75em 0.5em;
+.btn {
+  font-size: 2.25vw;
   z-index: 999;
-  overflow: hidden;
+  padding: 0.75em 0.5em;
   border-radius: 0.5em;
   word-wrap: normal;
+  overflow: hidden;
   box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
   transition: background 400ms,
-    visibility var(--animation-duration) linear var(--animation-duration);
+    opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
   color: rgba(231, 218, 218, 0.795);
   background-color: hsla(280, 5%, 12%, 0.95);
-  visibility: hidden;
+}
+.change-view {
+  position: fixed;
+  top: 20%;
+  left: 80%;
+  opacity: 0;
+  width: max-content;
+  user-select: none;
 }
 .btn.change-view:hover {
+  transform: scale(1.05);
+  background-color: hsla(280, 5%, 12%, 0.8);
+}
+
+.btn.dark-mode {
+  position: fixed;
+  top: 20%;
+  left: 5%;
+  width: max-content;
+  user-select: none;
+}
+
+.btn.dark-mode:hover {
   transform: scale(1.05);
   background-color: hsla(280, 5%, 12%, 0.8);
 }
@@ -153,109 +163,233 @@ span.ripple {
   }
 }
 
+/****************************
+      End Buttons
+****************************/
+
+/****************************
+      Video and Onload
+****************************/
+.fullscreen-video {
+  z-index: -10;
+  width: 100%;
+  /* transform: translateX(10%); */
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  border-radius: 2em;
+  opacity: 0.8;
+  animation: videofade calc(var(--animation-bg-layout-duration) * 1.25) linear
+    calc(var(--animation-bg-layout-delay) / 2) 1 forwards;
+}
+@keyframes videofade {
+  10% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 1;
+  z-index: -9;
+  animation: videofade var(--animation-bg-layout-duration) linear
+    var(--animation-bg-layout-delay) 1 forwards;
+}
+
+/****************************
+      End Video and Onload
+****************************/
+
+/****************************
+      Wrappers 
+****************************/
+.page-wrapper {
+  padding: 40vw 2vw;
+  height: auto;
+}
+
+section {
+  font-size: inherit;
+  display: grid;
+  place-content: center;
+  justify-content: center;
+  grid-template-columns: 1fr;
+  width: 100%;
+  padding: 1vw 2vw;
+}
+
+/****************************
+      End Wrappers 
+****************************/
+
+/****************************
+  Grid Container And Items 
+****************************/
 /* The Grid */
 /* grid-template-columns: repeat(auto-fit, minmax(19em, 1fr)); */
 /* grid-auto-rows: minmax(3.125em, auto); */
+/* outline: 0.5vw solid rgba(194, 189, 231, 0.3); */
+/* box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2); */
 .grid-container {
-  background-color: rgba(15, 1, 1, 0.2);
+  background-color: rgba(236, 227, 227, 0.2);
   background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-
+  z-index: 5;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3vw;
   grid-template-rows: repeat(3, 1fr);
   place-items: center;
   justify-content: center;
-  outline: 0.5vw solid rgba(194, 189, 231, 0.3);
   border: 1vw outset rgba(194, 189, 231, 0.418);
-  box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2);
-  /* padding: 3em; */
-  /* padding: 3vw 3.5vw; */
+  box-shadow: var(--active-box-shadow);
   padding: 3.2vw 3vw 3.2vw 6vw;
   border-radius: 3.125em;
   pointer-events: none;
-  transform: rotate(90deg);
+  transform: rotateZ(90deg);
   transform-style: preserve-3d;
-  transition: transform 500ms linear;
-  will-change: transform;
-  overflow: hidden;
+  transition: transform 1s linear 300ms;
+  /* will-change: transform; */
   position: relative;
+  opacity: 0;
+  animation: showGridContainer calc(var(--animation-bg-layout-duration) / 4)
+    ease calc(var(--animation-bg-layout-delay) / 2) forwards;
+}
+
+@keyframes showGridContainer {
+  40% {
+    background-color: rebeccapurple;
+  }
+  60% {
+    background-color: crimson;
+  }
+  80% {
+    background-color: chocolate;
+  }
+  100% {
+    opacity: 1;
+    background-color: initial;
+  }
+}
+
+/* Gradient For Coloring */
+.grid-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--bg-gradient);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--animation-duration-flip) ease;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .grid-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: -0.31em 3.15em 30em 0.625em rgba(102, 51, 153, 0.8);
+  opacity: 0;
+  transition: opacity calc(var(--animation-bg-layout-duration) / 4)
+    cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    calc(var(--animation-bg-layout-duration) * 0.75);
+  /* box-shadow: -0.31em 3.15em 30em 0.625em rgba(102, 51, 153, 0.8); */
   border-radius: 1.25em;
   height: var(--grid-item-height);
   width: var(--grid-item-width);
   touch-action: none;
   user-select: none;
   cursor: grab;
-  pointer-events: all;
+  pointer-events: visible;
   z-index: 0;
 }
 
 .grid-item img {
-  transition: all 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transform: rotate(-90deg);
-  will-change: transform;
+  opacity: 1;
+  user-select: none;
+  touch-action: none;
+  /* will-change: transform; */
 }
 
 /* active states activated on pointer down event */
-/* outline: rgba(194, 189, 231, 0.3) groove 0.2vw;
-  outline-offset: -2.3vw; */
-.active {
-  background-image: var(--bg-gradient),
-    url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
-  background-repeat: no-repeat, no-repeat;
-  background-size: 100%, contain;
-  background-position: center, center;
-  background-origin: border-box, border-box;
-  transition: transform 1000ms cubic-bezier(0.785, 0.135, 0.15, 0.86) 0ms;
-  transform: perspective(157em) rotateX(45deg) scale3d(0.9, 1.05, 2)
-    translate3d(0em, -7.5em, -3.5em);
-  outline: none;
-  background-blend-mode: overlay;
-  will-change: transform;
-  box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5), -0.38em 0 0 chocolate,
-    inset 0.1em 0 0 chocolate, inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
-    0.3em 2em 2em rgba(0, 0, 0, 0.8),
-    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
+.grid-container.active {
+  transform: perspective(157em) rotateX(45deg) rotateZ(0deg)
+    scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em);
+  transition: transform 2000ms ease-in-out 30ms;
 }
 
-/* For Shine */
+/* For Shine Effect */
 .active:before {
   content: "";
   position: absolute;
   top: 0%;
-  left: -5vw;
-  width: 105vw;
-  height: 100vh;
-  animation: 1200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  animation: 2200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
+  border-radius: inherit;
 }
 
-.active div.grid-item {
+.active .grid-item {
+  font-size: inherit;
   box-shadow: 0.1em 0.3em 0em 0.125em rgba(255, 237, 237, 0.1);
 }
 
 .active .grid-item img {
-  transition: all 750ms ease;
+  /* transition: transform 750ms ease; */
+  transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transform: rotate(0) translate3d(0em, -0.2em, 6.25em);
-  will-change: transform;
+  /* will-change: transform; */
 }
+
+/****************************
+  End Grid Container And Items 
+****************************/
 
 /* add on pointer down and remove on pointer up */
 .dragging-active-item-down {
   cursor: grabbing;
   pointer-events: none;
   transform: rotate(-5deg) scale(1.25);
-  animation: pulse var(--animation-duration) 1;
-  will-change: transform;
+  animation: pulse var(--animation-duration-flip) 1;
+  /* will-change: transform; */
 }
 
 /* add on pointer move after cloning and remove on pointer up */
@@ -264,13 +398,14 @@ span.ripple {
   z-index: 999;
   top: auto;
   left: auto;
+  /* transform: translateX(25%) translateY(-50%); */
   will-change: left, top;
 }
 
 /* grid items animation on pointer down and romoved on move and/or pointer up */
 .pulse {
-  animation: pulse var(--animation-duration) infinite;
-  will-change: transform, border;
+  animation: pulse var(--animation-duration-flip) infinite;
+  /* will-change: transform, border; */
   border: inherit;
 }
 
@@ -294,16 +429,14 @@ span.ripple {
   100% {
     transform: rotate(0.75deg);
     border: 5px solid transparent;
-    background: rgba(205, 174, 236, 0.99)
-      radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
-      center/0%;
+    background: var(--pulse-bg-gradient);
   }
 }
 
 /* pulse other grid items on move */
 .pulse-griditems {
-  animation: pulse-gridItems var(--animation-duration) infinite;
-  will-change: transform, border;
+  animation: pulse-gridItems var(--animation-duration-flip) infinite;
+  /* will-change: transform, border; */
   border: inherit;
 }
 
@@ -328,13 +461,8 @@ span.ripple {
 /* shine for rotation transition of section .grid-container */
 @keyframes shine {
   0% {
-    /* background-size: 10000%; */
-    background: linear-gradient(
-      75deg,
-      transparent 10%,
-      rgba(255, 255, 255, 0.2) 90%,
-      transparent 10%
-    );
+    background-size: 10000%;
+    background: var(--shine-bg-gradient);
     background-repeat: no-repeat;
     background-position: -50vw;
   }
@@ -350,5 +478,37 @@ span.ripple {
   }
   100% {
     opacity: 0;
+  }
+}
+
+.active-icon {
+  position: absolute;
+  height: 10em;
+  width: 10em;
+  z-index: 999;
+  color: rebeccapurple;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform: translateX(25%) translateY(-50%);
+  animation: rotateIcon 500ms linear infinite;
+  pointer-events: none;
+}
+svg {
+  position: absolute;
+  top: inherit;
+  left: inherit;
+}
+
+svg.active-icon line {
+  stroke: rebeccapurple;
+  stroke-width: 2;
+}
+
+@keyframes rotateIcon {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
