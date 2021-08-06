@@ -10,7 +10,6 @@ const moveViewPortToCenter = (event) => {
       document.body.clientHeight - pageWrapperSelector().clientHeight
     );
     const moveToCenterInverval = setInterval(() => {
-      console.log("centering");
       if (currentPos >= point) {
         resolve(currentPos);
         clearInterval(moveToCenterInverval);
