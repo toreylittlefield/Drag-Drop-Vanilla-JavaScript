@@ -12,6 +12,7 @@ import activeMoveCSSIndex, {
   _btnViewClass,
   _btnDarkModeClass,
   _pressDurationCSSVar,
+  _darkModeCSSVar,
   _draggingActiveItemMoveClass,
   _activeClassNameStr,
   _activeBodyClassNameStr,
@@ -26,6 +27,7 @@ import activeMoveCSSIndex, {
   PRESS_DURATION,
   gridAfterSelector
 } from "./MapAndClasses";
+import onWindowLoad from "./Listeners/onWindowLoad";
 
 const {
   GRID_ITEMS,
@@ -36,11 +38,6 @@ const {
 } = selectors;
 
 scrollOnLoad();
-
-/**
- * @description add pointerdown event listeners
- */
-[...GRID_ITEMS].forEach((gridItem) => (gridItem.onpointerdown = down));
 
 /**
  * @description swaps in the DOM the cloned element with the grid-item that the pointer is currently over
@@ -157,24 +154,9 @@ const getTargetElementOnDown = (event = {}) => {
 };
 
 /**
- * @description adds animations and dragging-active-item-down
+ * @description adds or remove animations and dragging-active-item-down
  * @param {HTMLElement} element
  */
-const addClassesOnDown = (element) => {
-  // optional add the css transition img / svg
-  element.querySelector("img").classList.add(_pulseAnimationClassNameStr);
-  element.classList.add(_dragActiveDownClassNameStr);
-};
-
-/**
- * @description removes animations and dragging-active-item-down
- * @param {HTMLElement} element
- */
-const removeClassesFromDown = (element) => {
-  element.classList.remove(_dragActiveDownClassNameStr);
-  element.querySelector("img").classList.remove(_pulseAnimationClassNameStr);
-};
-
 const toggleClassesInDownEvent = (element) => {
   element.classList.toggle(_dragActiveDownClassNameStr);
   element.querySelector("img").classList.toggle(_pulseAnimationClassNameStr);
@@ -184,7 +166,7 @@ const toggleClassesInDownEvent = (element) => {
  * @description selecting an element, our grid-items, on pointer down listener
  * @param {PointerEvent} event
  */
-function down(event) {
+const down = (event) => {
   event.preventDefault();
   const element = getTargetElementOnDown(event);
   element.setPointerCapture(event.pointerId);
@@ -201,14 +183,15 @@ function down(event) {
     });
   }, PRESS_DURATION);
 
+  const makeA
   if (!GRID_CONTAINER.getAttribute("class")?.includes(_activeClassNameStr)) {
     GRID_CONTAINER.classList.add(_activeClassNameStr);
-    // add opacity to grid-container::after
+    // add opacity to grid-container::after for shine effect
     gridAfterSelector.style.opacity = 1;
-
-    document.body.classList.add(_activeBodyClassNameStr);
     //show our button
     showHideBtn.style.opacity = 1;
+
+    document.body.classList.add(_activeBodyClassNameStr);
     moveViewPortToCenter(event);
   }
   // clear the timer if pointerup event occurs and cancel / remove
@@ -219,7 +202,7 @@ function down(event) {
     element.releasePointerCapture(event.pointerId);
   };
   element.addEventListener("pointerup", clearTimer, { once: true });
-}
+};
 
 showHideBtn.addEventListener("pointerdown", async (event) => {
   event.stopPropagation();
@@ -254,43 +237,4 @@ darkModeToggle.addEventListener("pointerdown", (event) => {
     return setBackgroundStyle(_darkModeCSSVar);
 });
 
-const buttons = document.getElementsByTagName("button");
-for (const button of buttons) {
-  button.addEventListener("click", createRipple);
-}
-const videoSelector = document.querySelector("video");
-// const videoPlayBackRate =
-videoSelector.playbackRate = 2.5;
-videoSelector.addEventListener("ended", (event) => {
-  event.preventDefault();
-});
-
-window.onpointermove = (event) => {
-  const indicatorSelector = document.querySelector(
-    "svg#dashed-lines-svg.active-icon"
-  );
-  if (!indicatorSelector) {
-    const indicator = document.querySelector("svg#dashed-lines-svg");
-    indicator.classList.add("active-icon");
-  } else {
-    indicatorSelector.style.left =
-      parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
-    indicatorSelector.style.top =
-      parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
-    const closestElement = document.elementFromPoint(
-      parseInt(indicatorSelector.style.left, 10),
-      parseInt(indicatorSelector.style.top, 10)
-    );
-    // console.log({
-    //   closestElement,
-    //   left: parseInt(indicatorSelector.style.left, 10),
-    //   top: parseInt(indicatorSelector.style.top, 10)
-    // });
-    if (!closestElement) return;
-    // console.log(
-    //   closestElement.tagName,
-    //   closestElement.className,
-    //   closestElement.id
-    // );
-  }
-};
+onWindowLoad(down);
