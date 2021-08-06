@@ -1,35 +1,10 @@
-import { moveViewPortToCenter, createRipple, scrollOnLoad } from "./Utils";
-
-/**
- * @description map with classnames and ids
- */
-class classNamesAndId {
-  static _gridItemClass = ".grid-item";
-  static _gridContainerClass = ".grid-container";
-  static _gridContainerAfterClass = ".grid-container::after";
-  static _activeCloneId = "#active-clone";
-  static _btnViewClass = ".btn.change-view";
-  static _btnDarkModeClass = ".btn.dark-mode";
-  static _pressDurationCSSVar = "--animation-duration-flip";
-  static _darkModeCSSVar = "var(--body-bg-gradient)";
-  static _draggingActiveItemMoveClass = ".dragging-active-item-move";
-  static _activeBodyClassNameStr = "active-body";
-  static _activeClassNameStr = "active";
-  static _pulseAnimationClassNameStr = "pulse";
-  static _pulseGridClassNameStr = "pulse-griditems";
-  static _gridItemClassNameStr = this._gridItemClass.substr(1);
-  static _gridContainerClassNameStr = this._gridContainerClass.substr(1);
-  static _activeCloneIdStr = this._activeCloneId.substr(1);
-  static _dragMoveClassNameStr = this._draggingActiveItemMoveClass.substr(1);
-  static _dragActiveDownClassNameStr = "dragging-active-item-down";
-  activeMoveCSSIndex() {
-    return [...document.styleSheets[0].cssRules].find(
-      (rule) => rule.selectorText === _draggingActiveItemMoveClass
-    ).style;
-  }
-}
-
-const {
+import {
+  moveViewPortToCenter,
+  createRipple,
+  scrollOnLoad,
+  addOrRemoveClassFromGridItems
+} from "./Utils";
+import activeMoveCSSIndex, {
   _gridItemClass,
   _gridContainerClass,
   _gridContainerAfterClass,
@@ -46,44 +21,26 @@ const {
   _gridContainerClassNameStr,
   _activeCloneIdStr,
   _dragMoveClassNameStr,
-  _dragActiveDownClassNameStr
-} = classNamesAndId;
-const activeMoveCSSIndex = new classNamesAndId().activeMoveCSSIndex();
+  _dragActiveDownClassNameStr,
+  selectors,
+  PRESS_DURATION,
+  gridAfterSelector
+} from "./MapAndClasses";
 
-const GRID_ITEMS = document.querySelectorAll(_gridItemClass);
-const GRID_CONTAINER = document.querySelector(_gridContainerClass);
-const activeClonedElementSelector = () =>
-  document.querySelector(_activeCloneId);
-const showHideBtn = document.querySelector(_btnViewClass);
-const darkModeToggle = document.querySelector(_btnDarkModeClass);
+const {
+  GRID_ITEMS,
+  GRID_CONTAINER,
+  activeClonedElementSelector,
+  showHideBtn,
+  darkModeToggle
+} = selectors;
 
-/**
- * @description returns the --animation-duration-flip duration from css stylesheet
- * @returns {Number} PRESS_DURATION is in ms
- */
-const PRESS_DURATION = Math.ceil(
-  parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(
-      _pressDurationCSSVar
-    ),
-    10
-  )
-);
-
-// Scroll to middle of grid container
 scrollOnLoad();
 
 /**
  * @description add pointerdown event listeners
  */
 [...GRID_ITEMS].forEach((gridItem) => (gridItem.onpointerdown = down));
-
-/**
- * @description add opacity to grid-container::after
- */
-const gridAfterSelector = [...document.styleSheets[0].cssRules].find(
-  (rule) => rule.selectorText === _gridContainerAfterClass
-);
 
 /**
  * @description swaps in the DOM the cloned element with the grid-item that the pointer is currently over
@@ -99,25 +56,8 @@ const isOverElement = (
   height = 0
 ) => {
   const moveDirection = { all: true };
-  // let { width, height, left, top } = document
-  //   .querySelector(".grid-container")
-  //   .getBoundingClientRect()
-  //   .toJSON();
   const x = event.clientX - height / 2;
   const y = event.clientY - width / 2;
-
-  //top + pageYOffset +
-  // const checkYPositions =
-  //   y <= pageYOffset + top || y >= height + pageYOffset + top;
-  // const checkXPosition = x <= left || x >= width + left;
-  // if (checkXPosition && checkYPositions) {
-  //   // console.log("edge case");
-  //   return "all";
-  // }
-  // // hit top-bottom boundary
-  // if (checkYPositions) return "left-right";
-  // // hit left-right boundary
-  // if (checkXPosition) return "top-bottom";
 
   const currentClosetElement = document.elementFromPoint(x, y);
   if (!currentClosetElement) return moveDirection;
@@ -143,55 +83,14 @@ const isOverElement = (
 const move = (event) => {
   const element = event.target;
   addRemoveClonedNode(element, false);
-  // const indicatorSelector = document.querySelector(
-  //   "svg#dashed-lines-svg.active-icon"
-  // );
-  // if (!indicatorSelector) {
-  //   const indicator = document.querySelector("svg#dashed-lines-svg");
-  //   indicator.classList.add("active-icon");
-  //   indicator.classList.add("active-icon");
-  //   indicatorSelector.style.left =
-  //     parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
-  //   indicatorSelector.style.top =
-  //     parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
-  // } else {
-  //   indicatorSelector.style.left =
-  //     parseFloat(event.pageX - indicatorSelector.clientWidth / 2) + "px";
-  //   indicatorSelector.style.top =
-  //     parseFloat(event.pageY - indicatorSelector.clientHeight / 2) + "px";
-  // }
-  // const { width, height } = element.getBoundingClientRect().toJSON();
   const { clientHeight: width, clientWidth: height } = element;
-
   const { all } = isOverElement(event, element, width, height);
-
   if (all) {
     console.log(activeMoveCSSIndex);
     console.log(activeMoveCSSIndex["top"]);
     activeMoveCSSIndex.top = event.clientY - height / 2 + "px";
     activeMoveCSSIndex.left = event.clientX - width / 2 + "px";
-    // element.style.top = event.pageY - height / 3 + "px";
-    // element.style.top = event.clientY - height / 2 + "px";
-    // element.style.left = event.pageX - width / 3 + "px";
-    // element.style.left = event.clientX - width / 2 + "px";
-    // console.log(element.style.cssText);
   }
-  // if (canMove === "top-bottom") {
-  //   // element.style.top = event.pageY - height / 3 + "px";
-  //   element.style.top = event.pageY - height / 2 + "px";
-  // }
-  // if (canMove === "left-right") {
-  //   // element.style.left = event.pageX - width / 3 + "px";
-  //   element.style.left = event.pageX - width / 2 + "px";
-  // }
-  // console.log({
-  //   elementTop: element.style.top,
-  //   elementLeft: element.style.left,
-  //   width,
-  //   height,
-  //   offsetX: event.offsetX,
-  //   offsetY: event.offsetY
-  // });
 };
 
 /**
@@ -276,30 +175,9 @@ const removeClassesFromDown = (element) => {
   element.querySelector("img").classList.remove(_pulseAnimationClassNameStr);
 };
 
-/**
- *
- * @param {Object} Object - or remove a target classname
- * @param {(string|string[])} Object.add - add classnames to all grid-items
- * @param {(string|string[])} Object.remove - remove classnames to all grid items
- * @param {Object)} conditions set conditional arguments
- * @param {string} conditions.id the item id from the element to skip
- * @param {string)} conditions.className the classname from the element to skip
- */
-const addOrRemoveClassFromGridItems = (
-  { add = "" || [], remove = "" || [] },
-  _conditions = { id: "", className: "" }
-) => {
-  const { id, className } = _conditions;
-  if (typeof add === "string") add = [add];
-  if (typeof remove === "remove") remove = [remove];
-
-  [...GRID_ITEMS].forEach((item) => {
-    const classList = item.classList;
-    if (id && item.getAttribute("id") === id) return;
-    if (className && item.getAttribute("class").includes(className)) return;
-    if (add) classList.add(...add);
-    if (remove) classList.remove(...remove);
-  });
+const toggleClassesInDownEvent = (element) => {
+  element.classList.toggle(_dragActiveDownClassNameStr);
+  element.querySelector("img").classList.toggle(_pulseAnimationClassNameStr);
 };
 
 /**
@@ -310,7 +188,7 @@ function down(event) {
   event.preventDefault();
   const element = getTargetElementOnDown(event);
   element.setPointerCapture(event.pointerId);
-  addClassesOnDown(element);
+  toggleClassesInDownEvent(element);
 
   const longPressToMove = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
@@ -337,7 +215,7 @@ function down(event) {
   const clearTimer = () => {
     clearTimeout(longPressToMove);
     addOrRemoveClassFromGridItems({ remove: _pulseAnimationClassNameStr });
-    removeClassesFromDown(element);
+    toggleClassesInDownEvent(element);
     element.releasePointerCapture(event.pointerId);
   };
   element.addEventListener("pointerup", clearTimer, { once: true });

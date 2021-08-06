@@ -398,7 +398,7 @@ section {
   z-index: 999;
   top: auto;
   left: auto;
-  transform: translateX(25%) translateY(-50%);
+  /* transform: translateX(25%) translateY(-50%); */
   will-change: left, top;
 }
 
