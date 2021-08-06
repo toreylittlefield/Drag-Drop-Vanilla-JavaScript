@@ -1,4 +1,4 @@
-import { moveViewPortToCenter } from "./Utils";
+import { moveViewPortToCenter, createRipple } from "./Utils";
 
 /**
  * @description map with classnames and ids
@@ -11,9 +11,12 @@ class classNamesAndId {
   static _btnViewClass = ".btn.change-view";
   static _btnDarkModeClass = ".btn.dark-mode";
   static _pressDurationCSSVar = "--animation-duration-flip";
+  static _darkModeCSSVar = "var(--body-bg-gradient)";
   static _draggingActiveItemMoveClass = ".dragging-active-item-move";
-  static _pulseAnimationStr = "pulse";
-  static _pulseGridclassNameStr = "pulse-griditems";
+  static _activeBodyClassNameStr = "active-body";
+  static _activeClassNameStr = "active";
+  static _pulseAnimationClassNameStr = "pulse";
+  static _pulseGridClassNameStr = "pulse-griditems";
   static _gridItemClassNameStr = this._gridItemClass.substr(1);
   static _gridContainerClassNameStr = this._gridContainerClass.substr(1);
   static _activeCloneIdStr = this._activeCloneId.substr(1);
@@ -34,8 +37,10 @@ const {
   _btnDarkModeClass,
   _pressDurationCSSVar,
   _draggingActiveItemMoveClass,
-  _pulseAnimationStr,
-  _pulseGridclassNameStr,
+  _activeClassNameStr,
+  _activeBodyClassNameStr,
+  _pulseAnimationClassNameStr,
+  _pulseGridClassNameStr,
   _gridItemClassNameStr,
   _gridContainerClassNameStr,
   _activeCloneIdStr,
@@ -206,7 +211,7 @@ const addRemoveClonedNode = (element) => {
   if (nextSibling) nextSibling.before(clonedElement);
   if (!nextSibling) element.parentElement.append(clonedElement);
   addOrRemoveClassFromGridItems(
-    { add: _pulseGridclassNameStr, remove: _pulseAnimationStr },
+    { add: _pulseGridClassNameStr, remove: _pulseAnimationClassNameStr },
     { id: _activeCloneIdStr, className: _dragMoveClassNameStr }
   );
 };
@@ -230,7 +235,7 @@ const removeAndReplaceActiveClone = (element) => {
 const up = (event, element) => {
   removeAndReplaceActiveClone(element);
   addOrRemoveClassFromGridItems({
-    remove: [_pulseAnimationStr, _pulseGridclassNameStr]
+    remove: [_pulseAnimationClassNameStr, _pulseGridClassNameStr]
   });
   element.removeEventListener("pointermove", move);
   element.classList.remove("dragging-active-item-move");
@@ -238,7 +243,7 @@ const up = (event, element) => {
   element.style.top = "";
   element.style.left = "";
   // optional add the css transition img / svg
-  element.querySelector("img").classList.remove(_pulseAnimationStr);
+  element.querySelector("img").classList.remove(_pulseAnimationClassNameStr);
   element.releasePointerCapture(event.pointerId);
 };
 
@@ -260,7 +265,7 @@ const getTargetElementOnDown = (event = {}) => {
  */
 const addClassesOnDown = (element) => {
   // optional add the css transition img / svg
-  element.querySelector("img").classList.add(_pulseAnimationStr);
+  element.querySelector("img").classList.add(_pulseAnimationClassNameStr);
   element.classList.add(_dragActiveDownClassNameStr);
 };
 
@@ -270,7 +275,7 @@ const addClassesOnDown = (element) => {
  */
 const removeClassesFromDown = (element) => {
   element.classList.remove(_dragActiveDownClassNameStr);
-  element.querySelector("img").classList.remove(_pulseAnimationStr);
+  element.querySelector("img").classList.remove(_pulseAnimationClassNameStr);
 };
 
 /**
@@ -311,7 +316,7 @@ function down(event) {
 
   const longPressToMove = setTimeout(() => {
     element.removeEventListener("pointerup", clearTimer);
-    addOrRemoveClassFromGridItems({ add: _pulseAnimationStr });
+    addOrRemoveClassFromGridItems({ add: _pulseAnimationClassNameStr });
 
     // add our listener events to move and drag
     element.addEventListener("pointermove", move);
@@ -321,11 +326,11 @@ function down(event) {
   }, PRESS_DURATION);
 
   if (!GRID_CONTAINER.getAttribute("class")?.includes("active")) {
-    GRID_CONTAINER.classList.add("active");
+    GRID_CONTAINER.classList.add(_activeClassNameStr);
     // add opacity to grid-container::after
     gridAfterSelector.style.opacity = 1;
 
-    document.body.classList.add("active-body");
+    document.body.classList.add(_activeBodyClassNameStr);
     //show our button
     showHideBtn.style.opacity = 1;
     moveViewPortToCenter(event);
@@ -333,7 +338,7 @@ function down(event) {
   // clear the timer if pointerup event occurs and cancel / remove
   const clearTimer = () => {
     clearTimeout(longPressToMove);
-    addOrRemoveClassFromGridItems({ remove: _pulseAnimationStr });
+    addOrRemoveClassFromGridItems({ remove: _pulseAnimationClassNameStr });
     removeClassesFromDown(element);
     element.releasePointerCapture(event.pointerId);
   };
@@ -342,10 +347,11 @@ function down(event) {
 
 showHideBtn.addEventListener("pointerdown", async (event) => {
   event.stopPropagation();
-  if (!GRID_CONTAINER.getAttribute("class")?.includes("active")) return;
+  if (!GRID_CONTAINER.getAttribute("class")?.includes(_activeClassNameStr))
+    return;
   await moveViewPortToCenter(event);
-  GRID_CONTAINER.classList.remove("active");
-  document.body.classList.remove("active-body");
+  GRID_CONTAINER.classList.remove(_activeClassNameStr);
+  document.body.classList.remove(_activeBodyClassNameStr);
   showHideBtn.style.opacity = 0;
 });
 
@@ -354,44 +360,23 @@ darkModeToggle.addEventListener("pointerdown", (event) => {
   const getBackgroundStyle = document.body.style.background;
   const setBackgroundStyle = (style) =>
     (document.body.style.background = style);
-  const darkStyle = "var(--body-bg-gradient)";
   const lightStyle = "initial";
-  const isActive = document.body.classList.contains("active-body");
+  const isActive = document.body.classList.contains(_activeBodyClassNameStr);
   if (isActive) {
-    document.body.classList.remove("active-body");
+    document.body.classList.remove(_activeBodyClassNameStr);
     // setBackgroundStyle(lightStyle);
     // return;
   }
   if (!isActive && document.body.classList === "") {
-    document.body.classList.add("active-body");
+    document.body.classList.add(_activeBodyClassNameStr);
     // setBackgroundStyle(darkStyle);
     return;
   }
-  if (getBackgroundStyle === darkStyle) return setBackgroundStyle(lightStyle);
-  if (getBackgroundStyle === lightStyle) return setBackgroundStyle(darkStyle);
+  if (getBackgroundStyle === _darkModeCSSVar)
+    return setBackgroundStyle(lightStyle);
+  if (getBackgroundStyle === lightStyle)
+    return setBackgroundStyle(_darkModeCSSVar);
 });
-
-// https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/
-const createRipple = (event) => {
-  const button = event.currentTarget;
-
-  const circle = document.createElement("span");
-  const diameter = Math.max(button.clientWidth, button.clientHeight);
-  const radius = diameter / 2;
-
-  circle.style.width = circle.style.height = `${diameter}px`;
-  circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-  circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-  circle.classList.add("ripple");
-
-  const ripple = button.getElementsByClassName("ripple")[0];
-
-  if (ripple) {
-    ripple.remove();
-  }
-
-  button.appendChild(circle);
-};
 
 const buttons = document.getElementsByTagName("button");
 for (const button of buttons) {
