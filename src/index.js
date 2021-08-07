@@ -1,11 +1,7 @@
 import { down } from "./Listeners/onPointerDown";
 import onWindowLoad from "./Listeners/onWindowLoad";
+import { scrollOnLoad } from "./Utils";
 import {
-  moveViewPortToCenter,
-  scrollOnLoad,
-  addOrRemoveClassFromGridItems
-} from "./Utils";
-import activeMoveCSSIndex, {
   _gridItemClass,
   _gridContainerClass,
   _gridContainerAfterClass,
@@ -23,19 +19,8 @@ import activeMoveCSSIndex, {
   _gridContainerClassNameStr,
   _activeCloneIdStr,
   _dragMoveClassNameStr,
-  _dragActiveDownClassNameStr,
-  selectors,
-  PRESS_DURATION,
-  gridAfterSelector
+  _dragActiveDownClassNameStr
 } from "./MapAndClasses";
-
-const {
-  GRID_ITEMS,
-  GRID_CONTAINER,
-  activeClonedElementSelector,
-  showHideBtn,
-  darkModeToggle
-} = selectors;
 
 scrollOnLoad();
 
