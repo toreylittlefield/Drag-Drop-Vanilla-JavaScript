@@ -1,16 +1,14 @@
 import iconsArray from "../Icons";
 import { selectors } from "../MapAndClasses";
-import { generateRandomHSLA } from "../Utils";
+import { generateRandomHSLA, getAltImgString } from "../Utils";
 // use paths for codesandbox
 // import { iconsFilePath } from "./Icons";
 
-const [standardGridItem] = gridItems;
+const [standardGridItem] = selectors.GRID_ITEMS;
 const { clientHeight, clientWidth } = standardGridItem;
 
-
-
 // label and add styles to grid-items at runtime
-[...selectors.GRID_ITEMS.forEach((gridItem, index) => {
+selectors.GRID_ITEMS.forEach((gridItem, index) => {
   const { hslaBackgroundColor, hslaFontColor } = generateRandomHSLA();
   const icon = document.createElement("img");
   gridItem.textContent = "";
@@ -20,10 +18,10 @@ const { clientHeight, clientWidth } = standardGridItem;
   //*********************//
   icon.src = iconsArray[index];
   icon.type = "image/svg+xml";
-  icon.height = clientHeight / 2;
+  icon.height = clientWidth / 2;
   icon.width = clientWidth / 2;
   icon.id = `icon-${index}`;
-  icon.alt = icon.src
+  icon.alt = getAltImgString(icon);
   gridItem.appendChild(icon);
   gridItem.id = index;
   gridItem.style.backgroundColor = hslaBackgroundColor;

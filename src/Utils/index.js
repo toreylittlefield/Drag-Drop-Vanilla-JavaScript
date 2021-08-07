@@ -4,7 +4,7 @@ import { selectors } from "../MapAndClasses";
  * @description Move the viewport to the center of the page using an interval
  * @param {PointerEvent}
  */
-const moveViewPortToCenter = (event) => {
+export const moveViewPortToCenter = (event) => {
   return new Promise((resolve) => {
     const pageWrapperSelector = () => document.querySelector("section");
     let currentPos = event.pageY;
@@ -31,7 +31,7 @@ const moveViewPortToCenter = (event) => {
  * @link https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/
  * @param {Event} event
  */
-const createRipple = (event) => {
+export const createRipple = (event) => {
   const button = event.currentTarget;
 
   const circle = document.createElement("span");
@@ -55,7 +55,7 @@ const createRipple = (event) => {
 /**
  * @description scroll to near the middle of the page on load
  */
-const scrollOnLoad = () => {
+export const scrollOnLoad = () => {
   console.log("scrolled on load");
   window.scrollTo(0, Math.ceil(window.innerWidth / 2));
 };
@@ -69,7 +69,7 @@ const scrollOnLoad = () => {
  * @param {string} conditions.id the item id from the element to skip
  * @param {string)} conditions.className the classname from the element to skip
  */
-const addOrRemoveClassFromGridItems = (
+export const addOrRemoveClassFromGridItems = (
   { add = "" || [], remove = "" || [] },
   _conditions = { id: "", className: "" }
 ) => {
@@ -90,7 +90,7 @@ const addOrRemoveClassFromGridItems = (
  * @description generate random background colors and fonts in hsla
  * @returns {{hslaBackgroundColor: string,  hslaFontColor: fontColor}}
  */
-const generateRandomHSLA = () => {
+export const generateRandomHSLA = () => {
   let [h, s, l] = Array(3)
     .fill(0)
     .map((color, idx) =>
@@ -105,10 +105,51 @@ const generateRandomHSLA = () => {
   };
 };
 
-export {
-  moveViewPortToCenter,
-  createRipple,
-  scrollOnLoad,
-  addOrRemoveClassFromGridItems,
-  generateRandomHSLA
+/**
+ * @description Enter and Exit Full Screen Mode
+ * @link https://developers.google.com/web/fundamentals/native-hardware/fullscreen
+ *
+ */
+export const toggleFullScreen = () => {
+  const doc = window.document;
+  const docEl = doc.documentElement;
+
+  const requestFullScreen =
+    docEl.requestFullscreen ||
+    docEl.mozRequestFullScreen ||
+    docEl.webkitRequestFullScreen ||
+    docEl.msRequestFullscreen;
+  const cancelFullScreen =
+    doc.exitFullscreen ||
+    doc.mozCancelFullScreen ||
+    doc.webkitExitFullscreen ||
+    doc.msExitFullscreen;
+
+  if (
+    !doc.fullscreenElement &&
+    !doc.mozFullScreenElement &&
+    !doc.webkitFullscreenElement &&
+    !doc.msFullscreenElement
+  ) {
+    requestFullScreen.call(docEl);
+    window.screen.orientation.lock("landscape");
+  } else {
+    cancelFullScreen.call(doc);
+  }
+};
+
+/**
+ *
+ * @param {HTMLElement} icon Icon with a filename that can be used to derive the alt attribute from the file name string
+ * @returns {string} a string to be used as the alt attribute
+ */
+export const getAltImgString = (icon = HTMLElement) => {
+  try {
+    const srcNameArr = icon.src?.split("/");
+    const iconName = srcNameArr[srcNameArr.length - 1]?.split(".")[0];
+    return `${iconName} icon`;
+  } catch (error) {
+    console.error("could not split src into an alt name");
+    return "mobile icon";
+  }
 };
