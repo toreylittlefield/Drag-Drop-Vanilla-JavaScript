@@ -86,9 +86,29 @@ const addOrRemoveClassFromGridItems = (
   });
 };
 
+/**
+ * @description generate random background colors and fonts in hsla
+ * @returns {{hslaBackgroundColor: string,  hslaFontColor: fontColor}}
+ */
+const generateRandomHSLA = () => {
+  let [h, s, l] = Array(3)
+    .fill(0)
+    .map((color, idx) =>
+      idx === 0
+        ? 0 + Math.ceil(Math.random() * 50)
+        : 70 + Math.ceil(Math.random() * 30)
+    );
+  let fontColor = `hsla(${0},${s >= 60 ? 50 : 10}%,${l >= 60 ? 10 : 100}%,1)`;
+  return {
+    hslaBackgroundColor: `hsla(${h},${s}%,${l}%,0.8)`,
+    hslaFontColor: fontColor
+  };
+};
+
 export {
   moveViewPortToCenter,
   createRipple,
   scrollOnLoad,
-  addOrRemoveClassFromGridItems
+  addOrRemoveClassFromGridItems,
+  generateRandomHSLA
 };
