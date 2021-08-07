@@ -8,6 +8,7 @@ class classNamesAndId {
   static _activeCloneId = "#active-clone";
   static _btnViewClass = ".btn.change-view";
   static _btnDarkModeClass = ".btn.dark-mode";
+  static _btnFullScreenClass = ".btn.toggle-fullscreen";
   static _pressDurationCSSVar = "--animation-duration-flip";
   static _darkModeCSSVar = "var(--body-bg-gradient)";
   static _draggingActiveItemMoveClass = ".dragging-active-item-move";
@@ -34,6 +35,7 @@ export const {
   _activeCloneId,
   _btnViewClass,
   _btnDarkModeClass,
+  _btnFullScreenClass,
   _pressDurationCSSVar,
   _darkModeCSSVar,
   _draggingActiveItemMoveClass,
@@ -53,6 +55,7 @@ export const selectors = {
   GRID_CONTAINER: document.querySelector(_gridContainerClass),
   showHideBtn: document.querySelector(_btnViewClass),
   darkModeToggle: document.querySelector(_btnDarkModeClass),
+  fullScreenBtn: document.querySelector(_btnFullScreenClass),
   activeClonedElementSelector: () => document.querySelector(_activeCloneId)
 };
 
