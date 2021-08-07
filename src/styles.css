@@ -6,6 +6,9 @@
 }
 
 :root {
+  /* --animation-duration-flip: 1000ms;
+  --animation-bg-layout-duration: 10s;
+  --animation-bg-layout-delay: 2000ms; */
   --animation-duration-flip: 1000ms;
   --animation-bg-layout-duration: 10s;
   --animation-bg-layout-delay: 2000ms;
@@ -131,6 +134,22 @@ button {
 .btn.change-view:hover {
   transform: scale(1.05);
   background-color: hsla(280, 5%, 12%, 0.8);
+}
+
+.btn.toggle-fullscreen {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  /* opacity: 0; */
+  color: whitesmoke;
+  background-color: hsla(280, 93%, 23%, 0.8);
+  width: max-content;
+  user-select: none;
+}
+
+.btn.toggle-fullscreen:hover {
+  transform: scale(1.05);
+  background-color: hsla(280, 93%, 23%, 0.5);
 }
 
 .btn.dark-mode {
@@ -260,7 +279,7 @@ section {
 /* outline: 0.5vw solid rgba(194, 189, 231, 0.3); */
 /* box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2); */
 .grid-container {
-  background-color: rgba(236, 227, 227, 0.2);
+  /* background-color: rgba(236, 227, 227, 0.2); */
   background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
   background-repeat: no-repeat;
   background-size: contain;
