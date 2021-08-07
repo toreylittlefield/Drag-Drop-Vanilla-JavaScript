@@ -1,6 +1,7 @@
 import { selectors } from "../MapAndClasses";
 import { createRipple } from "../Utils";
 import { buttonsActions } from "../Actions/Buttons";
+import { resizeImgsOnOrientationChange } from "./onOrientationChange";
 
 export default (down = () => {}) => {
   window.onload = () => {
@@ -9,6 +10,8 @@ export default (down = () => {}) => {
       button.addEventListener("click", createRipple);
     }
     buttonsActions();
+
+    resizeImgsOnOrientationChange();
 
     const videoSelector = document.querySelector("video");
     videoSelector.playbackRate = 2.5;
