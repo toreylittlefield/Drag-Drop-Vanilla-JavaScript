@@ -2,6 +2,7 @@
  * @description static (Read-only) map with classnames and ids
  */
 class classNamesAndId {
+  static _gridIconSelector = "img[id^=icon]";
   static _gridItemClass = ".grid-item";
   static _gridContainerClass = ".grid-container";
   static _gridContainerAfterClass = ".grid-container::after";
@@ -29,6 +30,7 @@ class classNamesAndId {
 }
 
 export const {
+  _gridIconSelector,
   _gridItemClass,
   _gridContainerClass,
   _gridContainerAfterClass,
