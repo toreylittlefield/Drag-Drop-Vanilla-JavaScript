@@ -4,11 +4,10 @@ import { generateRandomHSLA, getAltImgString } from "../Utils";
 // use paths for codesandbox
 // import { iconsFilePath } from "./Icons";
 
-const [standardGridItem] = selectors.GRID_ITEMS;
-const { clientHeight, clientWidth } = standardGridItem;
-
 // label and add styles to grid-items at runtime
 selectors.GRID_ITEMS.forEach((gridItem, index) => {
+  const [standardGridItem] = selectors.GRID_ITEMS;
+  const { clientHeight, clientWidth } = standardGridItem;
   const { hslaBackgroundColor, hslaFontColor } = generateRandomHSLA();
   const icon = document.createElement("img");
   gridItem.textContent = "";
@@ -28,14 +27,3 @@ selectors.GRID_ITEMS.forEach((gridItem, index) => {
   gridItem.style.color = hslaFontColor;
   gridItem.style.opacity = 1;
 });
-
-window.addEventListener(
-  "orientationchange",
-  (event) => {
-    document.querySelectorAll(".grid-item.img").forEach((icon) => {
-      icon.height = clientHeight / 2;
-      icon.width = clientWidth / 2;
-    });
-  },
-  { passive: true }
-);
