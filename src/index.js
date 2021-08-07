@@ -83,8 +83,6 @@ const move = (event) => {
   const { clientHeight: width, clientWidth: height } = element;
   const { all } = isOverElement(event, element, width, height);
   if (all) {
-    console.log(activeMoveCSSIndex);
-    console.log(activeMoveCSSIndex["top"]);
     activeMoveCSSIndex.top = event.clientY - height / 2 + "px";
     activeMoveCSSIndex.left = event.clientX - width / 2 + "px";
   }
@@ -172,18 +170,14 @@ const down = (event) => {
   element.setPointerCapture(event.pointerId);
   toggleClassesInDownEvent(element);
 
-  const longPressToMove = setTimeout(() => {
-    element.removeEventListener("pointerup", clearTimer);
-    addOrRemoveClassFromGridItems({ add: _pulseAnimationClassNameStr });
+  const vibrationDelay = 500;
+  // const vibrationPatternArray = [300, 100, 500, 100, 300];
+  const startVibrate = (duration) => navigator.vibrate(duration);
+  const vibrationDelayTimer = setInterval(() => {
+    startVibrate([300]);
+  }, vibrationDelay);
 
-    // add our listener events to move and drag
-    element.addEventListener("pointermove", move);
-    element.addEventListener("pointerup", (event) => up(event, element), {
-      once: true
-    });
-  }, PRESS_DURATION);
-
-  const makeA
+  // const makeA
   if (!GRID_CONTAINER.getAttribute("class")?.includes(_activeClassNameStr)) {
     GRID_CONTAINER.classList.add(_activeClassNameStr);
     // add opacity to grid-container::after for shine effect
@@ -194,14 +188,29 @@ const down = (event) => {
     document.body.classList.add(_activeBodyClassNameStr);
     moveViewPortToCenter(event);
   }
+
+  const longPressToMove = setTimeout(() => {
+    element.removeEventListener("pointerup", clearLongPressTimer);
+    clearInterval(vibrationDelayTimer);
+    navigator.vibrate(200);
+    addOrRemoveClassFromGridItems({ add: _pulseAnimationClassNameStr });
+
+    // add our listener events to move and drag
+    element.addEventListener("pointermove", move);
+    element.addEventListener("pointerup", (event) => up(event, element), {
+      once: true
+    });
+  }, PRESS_DURATION);
+
   // clear the timer if pointerup event occurs and cancel / remove
-  const clearTimer = () => {
+  const clearLongPressTimer = () => {
     clearTimeout(longPressToMove);
+    clearInterval(vibrationDelayTimer);
     addOrRemoveClassFromGridItems({ remove: _pulseAnimationClassNameStr });
     toggleClassesInDownEvent(element);
     element.releasePointerCapture(event.pointerId);
   };
-  element.addEventListener("pointerup", clearTimer, { once: true });
+  element.addEventListener("pointerup", clearLongPressTimer, { once: true });
 };
 
 showHideBtn.addEventListener("pointerdown", async (event) => {
