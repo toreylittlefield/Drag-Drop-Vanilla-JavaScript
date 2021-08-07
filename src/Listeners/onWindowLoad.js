@@ -1,5 +1,6 @@
 import { selectors } from "../MapAndClasses";
 import { createRipple } from "../Utils";
+import { buttonsActions } from "../Actions/Buttons";
 
 export default (down = () => {}) => {
   window.onload = () => {
@@ -7,6 +8,7 @@ export default (down = () => {}) => {
     for (const button of buttons) {
       button.addEventListener("click", createRipple);
     }
+    buttonsActions();
 
     const videoSelector = document.querySelector("video");
     videoSelector.playbackRate = 2.5;
