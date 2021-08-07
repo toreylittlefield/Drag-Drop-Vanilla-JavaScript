@@ -28,3 +28,14 @@ selectors.GRID_ITEMS.forEach((gridItem, index) => {
   gridItem.style.color = hslaFontColor;
   gridItem.style.opacity = 1;
 });
+
+window.addEventListener(
+  "orientationchange",
+  (event) => {
+    document.querySelectorAll(".grid-item.img").forEach((icon) => {
+      icon.height = clientHeight / 2;
+      icon.width = clientWidth / 2;
+    });
+  },
+  { passive: true }
+);
