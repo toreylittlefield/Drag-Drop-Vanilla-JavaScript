@@ -53,11 +53,14 @@ export const createRipple = (event) => {
 };
 
 /**
- * @description scroll to near the middle of the page on load
+ * @description scroll to near the middle of the page on load or at the top for portrait
  */
 export const scrollOnLoad = () => {
-  console.log("scrolled on load");
+  console.log(window.screen.orientation.type);
+  if (window.screen.orientation.type.startsWith("portrait"))
+    return window.scrollTo(0, 1);
   window.scrollTo(0, Math.ceil(window.innerWidth / 2));
+  console.log("scrolled on load");
 };
 
 /**
