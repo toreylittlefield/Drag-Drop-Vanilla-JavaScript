@@ -11,6 +11,7 @@ import linkedin from "./linkedin.svg";
 import mail from "./mail.svg";
 import map from "./map.svg";
 import phone from "./phone.svg";
+import target from "./target.svg";
 import trello from "./trello.svg";
 import twitch from "./twitch.svg";
 import twitter from "./twitter.svg";
