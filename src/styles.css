@@ -176,10 +176,10 @@ button {
 ****************************/
 .fab-container {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
-  width: 7rem;
-  height: 7rem;
+  bottom: 24px;
+  right: 24px;
+  width: 5rem;
+  height: 5rem;
 }
 
 .overlay {
@@ -246,8 +246,8 @@ button {
   color: hsla(0, 0%, 100%, 0.6);
   display: grid;
   place-content: center;
-  width: 7rem;
-  height: 7rem;
+  width: inherit;
+  height: inherit;
   overflow: hidden;
   z-index: 100;
   border-radius: 50%;
