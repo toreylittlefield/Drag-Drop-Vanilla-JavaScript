@@ -67,7 +67,7 @@ export const down = (event) => {
 
   // const makeA
   if (!GRID_CONTAINER.getAttribute("class")?.includes(_activeClassNameStr)) {
-    GRID_CONTAINER.classList.add(_activeClassNameStr);
+    GRID_CONTAINER.classList.add(_activeClassNameStr, "will-change");
     // add opacity to grid-container::after for shine effect
     gridAfterSelector.style.opacity = 1;
     //show our button
