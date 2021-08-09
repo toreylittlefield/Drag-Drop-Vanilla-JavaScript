@@ -57,6 +57,7 @@ export const createRipple = (event) => {
  */
 export const scrollOnLoad = () => {
   console.log(window.screen.orientation.type);
+  // # create modal to ask user to enter fullscreen-landscape
   if (window.screen.orientation.type.startsWith("portrait"))
     return window.scrollTo(0, 1);
   window.scrollTo(0, Math.ceil(window.innerWidth / 2));
