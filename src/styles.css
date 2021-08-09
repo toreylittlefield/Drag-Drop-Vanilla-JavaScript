@@ -577,6 +577,7 @@ section {
   cursor: grab;
   pointer-events: visible;
   z-index: 0;
+  object-fit: cover;
 }
 
 .grid-item img {
@@ -585,7 +586,7 @@ section {
   opacity: 1;
   user-select: none;
   touch-action: none;
-  /* will-change: transform; */
+  width: 50%;
 }
 
 /* active states activated on pointer down event */

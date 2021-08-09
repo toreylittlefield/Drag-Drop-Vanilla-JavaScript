@@ -11,8 +11,6 @@ export default (down = () => {}) => {
     }
     buttonsActions();
 
-    resizeImgsOnOrientationChange();
-
     const videoSelector = document.querySelector("video");
     videoSelector.playbackRate = 2.5;
 

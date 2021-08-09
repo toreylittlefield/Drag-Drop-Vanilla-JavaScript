@@ -17,8 +17,6 @@ selectors.GRID_ITEMS.forEach((gridItem, index) => {
   //*********************//
   icon.src = iconsArray[index];
   icon.type = "image/svg+xml";
-  icon.height = clientWidth / 2;
-  icon.width = clientWidth / 2;
   icon.id = `icon-${index}`;
   icon.alt = getAltImgString(icon);
   gridItem.appendChild(icon);
