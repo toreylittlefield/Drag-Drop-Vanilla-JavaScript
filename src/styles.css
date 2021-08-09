@@ -18,7 +18,7 @@
 /****************************
     Animation Variables 
 ****************************/
-root {
+:root {
   --animation-duration-flip: 1000ms;
   --animation-bg-layout-duration: 10s;
   --animation-bg-layout-delay: 2000ms;
@@ -33,7 +33,7 @@ root {
 /****************************
     Variables Gradients
 ****************************/
-root {
+:root {
   --bg-gradient: linear-gradient(
     190deg,
     hsla(290, 50%, 8%) 0%,
@@ -53,6 +53,7 @@ root {
     hsla(290, 50%, 8%, 0.019) 91.2%,
     hsla(290, 50%, 8%, 0) 100%
   );
+
   --bg-glow: linear-gradient(
     hsl(283, 77%, 31%) 0%,
     hsla(283, 77%, 31%, 0.978) 9.5%,
@@ -71,6 +72,7 @@ root {
     hsla(283, 77%, 31%, 0.019) 91.2%,
     hsla(283, 77%, 31%, 0) 100%
   );
+
   --active-bg-gradient: linear-gradient(
     130deg,
     rgba(148, 148, 206, 0.9) 30%,
@@ -78,15 +80,18 @@ root {
     rgba(0, 77, 64, 0.8) 75%,
     rgba(0, 212, 255, 1) 100%
   );
+
   --body-bg-gradient: linear-gradient(
     90deg,
     rgba(1, 0, 36, 1) 0%,
     rgba(0, 77, 64, 1) 77%,
     rgba(0, 212, 255, 1) 100%
   );
+
   --pulse-bg-gradient: rgba(205, 174, 236, 0.99)
     radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
     center/0%;
+
   --shine-bg-gradient: linear-gradient(
     75deg,
     transparent 10%,
@@ -458,7 +463,6 @@ section {
   transition: background 200ms linear;
   z-index: -5;
   opacity: 0;
-  border-radius: 0% 0% 0% 0%;
 }
 
 .overlay.open {
