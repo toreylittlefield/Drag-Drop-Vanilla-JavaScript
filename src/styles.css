@@ -1,24 +1,31 @@
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v8.3.6,
-* Autoprefixer: v10.3.1
-* Browsers: last 4 version
-*/
-
 /* Box sizing rules */
 *,
 *::before,
 *::after {
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
+/****************************
+    Fonts & Colors
+****************************/
 :root {
-  --active-box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5),
-    -0.38em 0 0 chocolate, inset 0.1em 0 0 chocolate,
-    inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
-    0.1em 2em 1.5em rgba(0, 0, 0, 0.8),
-    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
+  --clr-dark: 0, 0%, 0%;
+  --clr-light: 0, 0%, 100%;
+  --clr-primary: 25, 75%, 47%;
+  --clr-secondary: 270, 50%, 40%;
+  --clr-alternate: 348, 83%, 47%;
+}
+/****************************
+    End Fonts & Colors
+****************************/
+
+:root {
+  --active-box-shadow: -0.28em 1.25em 0em 0em hsla(var(--clr-dark), 0.5),
+    -0.38em 0 0 hsla(var(--clr-primary), 1),
+    inset 0.1em 0 0 hsla(var(--clr-primary), 1),
+    inset -0.3em 0 0em 0em hsla(var(--clr-dark), 0.5),
+    0.1em 2em 1.5em hsla(var(--clr-dark), 0.8),
+    inset -0.5em -0.1em 0 hsla(var(--clr-light), 0.8);
   --grid-item-width: 10vw;
   --grid-item-height: 11vw;
 }
@@ -132,13 +139,6 @@ body {
 }
 
 /****************************
-  Will Change (Animation Performance)
-****************************/
-.will-change {
-  will-change: auto;
-}
-
-/****************************
       Buttons
 ****************************/
 button {
@@ -155,12 +155,7 @@ button {
   border-radius: 0.5em;
   word-wrap: normal;
   overflow: hidden;
-  -webkit-box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
-  box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
-  -webkit-transition: background 400ms,
-    opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
-  -o-transition: background 400ms,
-    opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
+  box-shadow: -0.2em 0.25em 0.25rem 0 hsla(var(--clr-dark), 0.3);
   transition: background 400ms,
     opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
   color: rgba(231, 218, 218, 0.795);
@@ -169,15 +164,10 @@ button {
 
 .btn.change-view {
   opacity: 1;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
 .btn.change-view:hover {
-  -webkit-transform: scale(1.05);
-  -ms-transform: scale(1.05);
   transform: scale(1.05);
   background-color: hsla(280, 5%, 12%, 0.8);
 }
@@ -185,29 +175,19 @@ button {
 .btn.toggle-fullscreen {
   color: whitesmoke;
   background-color: hsla(280, 93%, 23%, 0.8);
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
 .btn.toggle-fullscreen:hover {
-  -webkit-transform: scale(1.05);
-  -ms-transform: scale(1.05);
   transform: scale(1.05);
   background-color: hsla(280, 93%, 23%, 0.5);
 }
 
 .btn.dark-mode {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
 .btn.dark-mode:hover {
-  -webkit-transform: scale(1.05);
-  -ms-transform: scale(1.05);
   transform: scale(1.05);
   background-color: hsla(280, 5%, 12%, 0.8);
 }
@@ -223,12 +203,10 @@ button {
   padding: 0;
   margin: 0;
   border-radius: 50%;
-  -webkit-box-shadow: none;
   box-shadow: none;
   border: none;
   outline: none;
   color: hsla(0, 0%, 100%, 0.6);
-  display: -ms-grid;
   display: grid;
   place-content: center;
   width: inherit;
@@ -253,8 +231,6 @@ button {
 
 .fab-list {
   opacity: 0;
-  -webkit-transition: opacity 500ms ease 100ms;
-  -o-transition: opacity 500ms ease 100ms;
   transition: opacity 500ms ease 100ms;
 }
 
@@ -283,7 +259,6 @@ button {
   margin: auto;
   width: inherit;
   height: inherit;
-  -o-text-overflow: clip;
   text-overflow: clip;
 }
 
@@ -291,11 +266,7 @@ svg.feather.feather-target {
   stroke-width: 6;
   fill: transparent;
   stroke: rgba(210, 105, 30, 0.65);
-  -webkit-transform: scale(1) rotateZ(-180deg);
-  -ms-transform: scale(1) rotate(-180deg);
   transform: scale(1) rotateZ(-180deg);
-  -webkit-transition: all var(--animationFeatherSVGLongTiming) linear;
-  -o-transition: all var(--animationFeatherSVGLongTiming) linear;
   transition: all var(--animationFeatherSVGLongTiming) linear;
 }
 
@@ -309,15 +280,11 @@ svg.feather.feather-target:hover {
   stroke: hsla(0, 0%, 100%, 1);
   stroke-width: 0;
   stroke-opacity: 1;
-  -webkit-transform: scale(1.15) rotateZ(180deg);
-  -ms-transform: scale(1.15) rotate(180deg);
   transform: scale(1.15) rotateZ(180deg);
   will-change: auto;
 }
 
 .overlay.open ~ .fab-container .btn.fab:hover svg.feather.feather-target {
-  -webkit-transform: rotateZ(-1deg);
-  -ms-transform: rotate(-1deg);
   transform: rotateZ(-1deg);
 }
 
@@ -326,8 +293,6 @@ svg.feather.feather-target circle.outer {
   stroke-width: 1;
   stroke: rgba(210, 105, 30, 0.9);
   stroke-dasharray: 21;
-  -webkit-transition: all var(--animationFeatherSVGShortTiming) linear;
-  -o-transition: all var(--animationFeatherSVGShortTiming) linear;
   transition: all var(--animationFeatherSVGShortTiming) linear;
 }
 
@@ -342,41 +307,13 @@ svg.feather.feather-target:hover circle.outer {
   circle.outer {
   fill-opacity: 0.2;
   stroke: hsla(0, 0%, 100%, 1);
-  -webkit-transition: all 300ms linear;
-  -o-transition: all 300ms linear;
   transition: all 300ms linear;
   fill: rebeccapurple;
   stroke-width: 2.5;
   stroke-dasharray: 63;
   will-change: auto;
-  -webkit-animation: outerStrokeColor 20000ms ease infinite 5000ms;
   animation: outerStrokeColor 20000ms ease infinite 5000ms;
-  -webkit-transform-origin: center;
-  -ms-transform-origin: center;
   transform-origin: center;
-}
-
-@-webkit-keyframes outerStrokeColor {
-  10% {
-    stroke: hsla(0, 0%, 100%, 1);
-    stroke-dasharray: 6;
-    stroke-width: 0.1;
-  }
-  40% {
-    stroke: chocolate;
-    stroke-dasharray: 0.1;
-  }
-  80% {
-    stroke: rgb(143, 32, 255);
-    stroke-dasharray: 63;
-  }
-  100% {
-    stroke: hsla(0, 0%, 100%, 1);
-    stroke-width: 2.5;
-    -webkit-transform: rotate(1080deg);
-    transform: rotate(1080deg);
-    stroke-dasharray: 63;
-  }
 }
 
 @keyframes outerStrokeColor {
@@ -396,7 +333,6 @@ svg.feather.feather-target:hover circle.outer {
   100% {
     stroke: hsla(0, 0%, 100%, 1);
     stroke-width: 2.5;
-    -webkit-transform: rotate(1080deg);
     transform: rotate(1080deg);
     stroke-dasharray: 63;
   }
@@ -405,14 +341,8 @@ svg.feather.feather-target:hover circle.outer {
 svg.feather.feather-target line {
   stroke: rgba(102, 51, 153, 0.5);
   stroke-width: 0;
-  -webkit-transform: scale(0.5);
-  -ms-transform: scale(0.5);
   transform: scale(0.5);
-  -webkit-transform-origin: center;
-  -ms-transform-origin: center;
   transform-origin: center;
-  -webkit-transition: all var(--animationFeatherSVGShortTiming) linear;
-  -o-transition: all var(--animationFeatherSVGShortTiming) linear;
   transition: all var(--animationFeatherSVGShortTiming) linear;
 }
 
@@ -424,8 +354,6 @@ svg.feather.feather-target:hover line {
   stroke-opacity: 1;
   stroke-width: 1.5;
   stroke: hsla(0, 0%, 0%, 0.6);
-  -webkit-transform: scale(0.3) rotate(45deg);
-  -ms-transform: scale(0.3) rotate(45deg);
   transform: scale(0.3) rotate(45deg);
 }
 
@@ -438,25 +366,13 @@ svg.feather.feather-target:hover line {
 span.ripple {
   position: absolute; /* The absolute position we mentioned earlier */
   border-radius: 50%;
-  -webkit-transform: scale(0);
-  -ms-transform: scale(0);
   transform: scale(0);
-  -webkit-animation: ripple 600ms linear;
   animation: ripple 600ms linear;
   background-color: rgba(230, 204, 204, 0.75);
 }
 
-@-webkit-keyframes ripple {
-  to {
-    -webkit-transform: scale(4);
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
 @keyframes ripple {
   to {
-    -webkit-transform: scale(4);
     transform: scale(4);
     opacity: 0;
   }
@@ -475,43 +391,11 @@ span.ripple {
   /* transform: translateX(10%); */
   height: 100%;
   position: absolute;
-  -o-object-fit: cover;
   object-fit: cover;
   border-radius: 2em;
   opacity: 0.8;
-  -webkit-animation: videofade calc(var(--animation-bg-layout-duration) * 1.25)
-    linear calc(var(--animation-bg-layout-delay) / 2) 1 forwards;
   animation: videofade calc(var(--animation-bg-layout-duration) * 1.25) linear
     calc(var(--animation-bg-layout-delay) / 2) 1 forwards;
-}
-@-webkit-keyframes videofade {
-  10% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.8;
-  }
-  30% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 0;
-  }
-  70% {
-    opacity: 0.8;
-  }
-  80% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 0.2;
-  }
-  100% {
-    opacity: 0.2;
-  }
 }
 @keyframes videofade {
   10% {
@@ -552,8 +436,6 @@ span.ripple {
   background-color: rgba(0, 0, 0, 1);
   opacity: 1;
   z-index: -9;
-  -webkit-animation: videofade var(--animation-bg-layout-duration) linear
-    var(--animation-bg-layout-delay) 1 forwards;
   animation: videofade var(--animation-bg-layout-duration) linear
     var(--animation-bg-layout-delay) 1 forwards;
 }
@@ -572,13 +454,9 @@ span.ripple {
 
 section {
   font-size: inherit;
-  display: -ms-grid;
   display: grid;
   place-content: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -ms-grid-columns: 1fr;
   grid-template-columns: 1fr;
   width: 100%;
   padding: 1vw 2vw;
@@ -590,8 +468,6 @@ section {
   width: 100%;
   height: 100%;
   top: 0;
-  -webkit-transition: background 200ms linear;
-  -o-transition: background 200ms linear;
   transition: background 200ms linear;
   z-index: -5;
   opacity: 0;
@@ -615,56 +491,24 @@ section {
   background-size: contain;
   background-position: center;
   z-index: 5;
-  display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 3vw 1fr 3vw 1fr 3vw 1fr;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3vw;
-  -ms-grid-rows: 1fr 3vw 1fr 3vw 1fr;
   grid-template-rows: repeat(3, 1fr);
   place-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
   border: 1vw outset rgba(194, 189, 231, 0.418);
-  -webkit-box-shadow: var(--active-box-shadow);
   box-shadow: var(--active-box-shadow);
   padding: 3.2vw 3vw 3.2vw 6vw;
   border-radius: 3.125em;
   pointer-events: none;
-  -webkit-transform: rotateZ(90deg);
-  -ms-transform: rotate(90deg);
   transform: rotateZ(90deg);
-  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: -webkit-transform 1s linear 300ms;
-  transition: -webkit-transform 1s linear 300ms;
-  -o-transition: transform 1s linear 300ms;
   transition: transform 1s linear 300ms;
-  transition: transform 1s linear 300ms, -webkit-transform 1s linear 300ms;
   position: relative;
   opacity: 0;
-  -webkit-animation: showGridContainer
-    calc(var(--animation-bg-layout-duration) / 4) ease
-    calc(var(--animation-bg-layout-delay) / 2) forwards;
   animation: showGridContainer calc(var(--animation-bg-layout-duration) / 4)
     ease calc(var(--animation-bg-layout-delay) / 2) forwards;
-}
-
-@-webkit-keyframes showGridContainer {
-  40% {
-    background-color: rebeccapurple;
-  }
-  60% {
-    background-color: crimson;
-  }
-  80% {
-    background-color: chocolate;
-  }
-  100% {
-    opacity: 1;
-    background-color: initial;
-  }
 }
 
 @keyframes showGridContainer {
@@ -694,8 +538,6 @@ section {
   background-image: var(--bg-gradient);
   overflow: hidden;
   opacity: 0;
-  -webkit-transition: opacity var(--animation-duration-flip) ease;
-  -o-transition: opacity var(--animation-duration-flip) ease;
   transition: opacity var(--animation-duration-flip) ease;
   z-index: -1;
   border-radius: inherit;
@@ -703,22 +545,10 @@ section {
 }
 
 .grid-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
   opacity: 0;
-  -webkit-transition: opacity calc(var(--animation-bg-layout-duration) / 4)
-    cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    calc(var(--animation-bg-layout-duration) * 0.75);
-  -o-transition: opacity calc(var(--animation-bg-layout-duration) / 4)
-    cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    calc(var(--animation-bg-layout-duration) * 0.75);
   transition: opacity calc(var(--animation-bg-layout-duration) / 4)
     cubic-bezier(0.25, 0.46, 0.45, 0.94)
     calc(var(--animation-bg-layout-duration) * 0.75);
@@ -726,71 +556,38 @@ section {
   border-radius: 1.25em;
   height: var(--grid-item-height);
   width: var(--grid-item-width);
-  -ms-touch-action: none;
   touch-action: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-  cursor: -webkit-grab;
   cursor: grab;
   pointer-events: visible;
   z-index: 0;
-  -o-object-fit: cover;
   object-fit: cover;
 }
 
 .grid-item img {
-  -webkit-transition: -webkit-transform 2000ms
-    cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  transition: -webkit-transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  -o-transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95),
-    -webkit-transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
   opacity: 1;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-  -ms-touch-action: none;
   touch-action: none;
   width: 50%;
 }
 
 /* active states activated on pointer down event */
 .grid-container.active {
-  -webkit-transform: perspective(157em) rotateX(45deg) rotateZ(0deg)
-    scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em);
   transform: perspective(157em) rotateX(45deg) rotateZ(0deg)
     scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em);
-  -webkit-transition: -webkit-transform 2000ms ease-in-out 30ms;
-  transition: -webkit-transform 2000ms ease-in-out 30ms;
-  -o-transition: transform 2000ms ease-in-out 30ms;
   transition: transform 2000ms ease-in-out 30ms;
-  transition: transform 2000ms ease-in-out 30ms,
-    -webkit-transform 2000ms ease-in-out 30ms;
 }
 
 .active .grid-item {
   font-size: inherit;
-  -webkit-box-shadow: 0.1em 0.3em 0em 0.125em rgba(255, 237, 237, 0.1);
   box-shadow: 0.1em 0.3em 0em 0.125em rgba(255, 237, 237, 0.1);
 }
 
 .active .grid-item img {
   /* transition: transform 750ms ease; */
-  -webkit-transition: -webkit-transform 2000ms
-    cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  transition: -webkit-transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  -o-transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  transition: transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95),
-    -webkit-transform 2000ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  -webkit-transform: rotate(0) translate3d(0em, -0.2em, 6.25em);
   transform: rotate(0) translate3d(0em, -0.2em, 6.25em);
   /* will-change: transform; */
 }
@@ -803,23 +600,11 @@ section {
   left: 0%;
   width: 100%;
   height: 100%;
-  -webkit-animation: 2200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
   animation: 2200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
   border-radius: inherit;
 }
 
 /* shine for rotation transition of section .grid-container */
-@-webkit-keyframes shine {
-  0% {
-    background-size: 10000%;
-    background: var(--shine-bg-gradient);
-    background-repeat: no-repeat;
-    background-position: -50vw;
-  }
-  100% {
-    background-position: 300vw;
-  }
-}
 @keyframes shine {
   0% {
     background-size: 10000%;
@@ -842,13 +627,9 @@ section {
 
 /* add on pointer down and remove on pointer up */
 .dragging-active-item-down {
-  cursor: -webkit-grabbing;
   cursor: grabbing;
   pointer-events: none;
-  -webkit-transform: rotate(-5deg) scale(1.25);
-  -ms-transform: rotate(-5deg) scale(1.25);
   transform: rotate(-5deg) scale(1.25);
-  -webkit-animation: pulse var(--animation-duration-flip) 1;
   animation: pulse var(--animation-duration-flip) 1;
   /* will-change: transform; */
 }
@@ -865,64 +646,29 @@ section {
 
 /* grid items animation on pointer down and romoved on move and/or pointer up */
 .pulse {
-  -webkit-animation: pulse var(--animation-duration-flip) infinite;
   animation: pulse var(--animation-duration-flip) infinite;
   /* will-change: transform, border; */
   border: inherit;
 }
 
-@-webkit-keyframes pulse {
-  0% {
-    -webkit-transform: rotate(-0.75deg);
-    transform: rotate(-0.75deg);
-    border-left: 5px solid rgb(102, 51, 153);
-  }
-  25% {
-    -webkit-transform: rotate(0.75deg);
-    transform: rotate(0.75deg);
-    border-bottom: 5px solid rebeccapurple;
-  }
-  50% {
-    -webkit-transform: rotate(-0.75deg) scale(1.02);
-    transform: rotate(-0.75deg) scale(1.02);
-    border-right: 5px solid rebeccapurple;
-  }
-  75% {
-    -webkit-transform: rotate(-0.75deg);
-    transform: rotate(-0.75deg);
-    border-top: 5px solid rebeccapurple;
-  }
-  100% {
-    -webkit-transform: rotate(0.75deg);
-    transform: rotate(0.75deg);
-    border: 5px solid transparent;
-    background: var(--pulse-bg-gradient);
-  }
-}
-
 @keyframes pulse {
   0% {
-    -webkit-transform: rotate(-0.75deg);
     transform: rotate(-0.75deg);
     border-left: 5px solid rgb(102, 51, 153);
   }
   25% {
-    -webkit-transform: rotate(0.75deg);
     transform: rotate(0.75deg);
     border-bottom: 5px solid rebeccapurple;
   }
   50% {
-    -webkit-transform: rotate(-0.75deg) scale(1.02);
     transform: rotate(-0.75deg) scale(1.02);
     border-right: 5px solid rebeccapurple;
   }
   75% {
-    -webkit-transform: rotate(-0.75deg);
     transform: rotate(-0.75deg);
     border-top: 5px solid rebeccapurple;
   }
   100% {
-    -webkit-transform: rotate(0.75deg);
     transform: rotate(0.75deg);
     border: 5px solid transparent;
     background: var(--pulse-bg-gradient);
@@ -931,54 +677,25 @@ section {
 
 /* pulse other grid items on move */
 .pulse-griditems {
-  -webkit-animation: pulse-gridItems var(--animation-duration-flip) infinite;
   animation: pulse-gridItems var(--animation-duration-flip) infinite;
   /* will-change: transform, border; */
   border: inherit;
 }
 
-@-webkit-keyframes pulse-gridItems {
-  0% {
-    -webkit-transform: rotate(-0.75deg);
-    transform: rotate(-0.75deg);
-  }
-  25% {
-    -webkit-transform: rotate(0.75deg);
-    transform: rotate(0.75deg);
-  }
-  50% {
-    -webkit-transform: rotate(-0.75deg) scale(1.02);
-    transform: rotate(-0.75deg) scale(1.02);
-  }
-  75% {
-    -webkit-transform: rotate(-0.75deg);
-    transform: rotate(-0.75deg);
-  }
-  100% {
-    -webkit-transform: rotate(0.75deg);
-    transform: rotate(0.75deg);
-  }
-}
-
 @keyframes pulse-gridItems {
   0% {
-    -webkit-transform: rotate(-0.75deg);
     transform: rotate(-0.75deg);
   }
   25% {
-    -webkit-transform: rotate(0.75deg);
     transform: rotate(0.75deg);
   }
   50% {
-    -webkit-transform: rotate(-0.75deg) scale(1.02);
     transform: rotate(-0.75deg) scale(1.02);
   }
   75% {
-    -webkit-transform: rotate(-0.75deg);
     transform: rotate(-0.75deg);
   }
   100% {
-    -webkit-transform: rotate(0.75deg);
     transform: rotate(0.75deg);
   }
 }
@@ -996,13 +713,9 @@ section {
   width: 10em;
   z-index: 999;
   color: rebeccapurple;
-  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   will-change: transform;
-  -webkit-transform: translateX(25%) translateY(-50%);
-  -ms-transform: translateX(25%) translateY(-50%);
   transform: translateX(25%) translateY(-50%);
-  -webkit-animation: rotateIcon 500ms linear infinite;
   animation: rotateIcon 500ms linear infinite;
   pointer-events: none;
 }
@@ -1017,15 +730,6 @@ svg.active-icon line {
   stroke-width: 2;
 }
 
-@-webkit-keyframes rotateIcon {
-  from {
-    stroke-dashoffset: 10;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 @keyframes rotateIcon {
   from {
     stroke-dashoffset: 10;
@@ -1038,3 +742,10 @@ svg.active-icon line {
 /****************************
     End Active Icon
 ****************************/
+
+/****************************
+  Will Change (Animation Performance)
+****************************/
+.will-change {
+  will-change: auto;
+}
