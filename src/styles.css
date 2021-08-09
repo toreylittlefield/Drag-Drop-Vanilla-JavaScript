@@ -180,6 +180,7 @@ button {
   right: 24px;
   width: 5rem;
   height: 5rem;
+  z-index: 900;
 }
 
 .overlay {
@@ -291,7 +292,8 @@ svg.feather.feather-target {
   transition: all 500ms linear;
   transform: scale(1) rotateZ(-180deg);
   stroke-width: 6;
-  stroke: hsla(0, 0%, 100%, 0.5);
+  fill: transparent;
+  stroke: rgba(210, 105, 30, 0.65);
 }
 
 svg.feather.feather-target:hover {
@@ -315,9 +317,9 @@ svg.feather.feather-target:hover {
 svg.feather.feather-target circle.outer {
   transition: all 500ms linear;
   stroke-width: 1;
-  stroke-dasharray: 10.5;
-  fill-opacity: 0.5;
-  stroke: hsla(0, 0%, 100%, 0.3);
+  stroke-dasharray: 20;
+  fill-opacity: 0.8;
+  stroke: rgba(210, 105, 30, 0.9);
 }
 
 svg.feather.feather-target:hover circle.outer {
@@ -365,7 +367,7 @@ svg.feather.feather-target:hover circle.outer {
 svg.feather.feather-target line {
   transition: all 300ms linear;
   stroke: rgba(102, 51, 153, 0.5);
-  stroke-width: 1;
+  stroke-width: 0;
   transform: scale(0.5);
   transform-origin: center;
 }
