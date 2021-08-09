@@ -27,18 +27,18 @@ scrollOnLoad();
 onWindowLoad(down);
 
 const btnFabSelector = document.querySelector(".btn.fab");
-console.log(btnFabSelector);
 const overlaySelector = document.querySelector(".overlay");
 const fablistSelector = document.querySelector(".fab-list");
 const fabListButtonsSelector = document.querySelectorAll(".fab-list button");
 btnFabSelector.onpointerdown = (event) => {
   event.stopPropagation();
+  console.log(event.target);
   overlaySelector.classList.toggle("open");
   const open = fablistSelector.classList.toggle("open");
   let rotateAngle = 5;
   let transitionTime = 300;
   fabListButtonsSelector.forEach((button) => {
-    const transition = `transition: all ${transitionTime}ms ease ${transitionTime}ms`;
+    const transition = `transition: all ${transitionTime}ms ease ${transitionTime}ms; will-change: transform;`;
     const translateXCSS = `translateX(-150%)`;
     const cssText = `transform: rotate(${-rotateAngle}deg) ${translateXCSS}; ${transition};`;
     if (open) {
