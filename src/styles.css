@@ -176,12 +176,10 @@ button {
 ****************************/
 .fab-container {
   position: fixed;
-  bottom: 100px;
-  right: 100px;
-  z-index: 5;
-  /* width: 7rem;
-  height: 7rem; */
-  /* border-radius: 50%; */
+  bottom: 16px;
+  right: 16px;
+  width: 7rem;
+  height: 7rem;
 }
 
 .overlay {
@@ -252,11 +250,13 @@ button {
   height: 7rem;
   overflow: hidden;
   z-index: 100;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .fab-list {
   opacity: 0;
-  transition: opacity 1000ms ease 500ms;
+  transition: opacity 500ms ease 100ms;
 }
 .fab-list.open {
   opacity: 1;
@@ -291,6 +291,15 @@ svg.feather.feather-target {
   transition: all 500ms linear;
   transform: scale(1) rotateZ(-180deg);
   stroke-width: 6;
+  stroke: hsla(0, 0%, 100%, 0.5);
+}
+
+svg.feather.feather-target:hover {
+  stroke: hsla(0, 0%, 100%, 0.8);
+}
+
+.overlay.open ~ .fab-container .btn.fab:hover svg.feather.feather-target {
+  transform: rotateZ(-1deg);
 }
 
 .overlay.open ~ .fab-container .btn.fab svg.feather.feather-target {
@@ -305,10 +314,14 @@ svg.feather.feather-target {
 
 svg.feather.feather-target circle.outer {
   transition: all 500ms linear;
-  stroke-width: 3;
+  stroke-width: 1;
   stroke-dasharray: 10.5;
   fill-opacity: 0.5;
-  stroke: rgba(0, 0, 0, 0.3);
+  stroke: hsla(0, 0%, 100%, 0.3);
+}
+
+svg.feather.feather-target:hover circle.outer {
+  stroke: hsla(0, 0%, 100%, 0.8);
 }
 
 .overlay.open
@@ -323,20 +336,48 @@ svg.feather.feather-target circle.outer {
   stroke-width: 2.5;
   stroke-dasharray: 63;
   will-change: auto;
+  animation: outerStrokeColor 20000ms ease infinite 5000ms;
+  transform-origin: center;
+}
+
+@keyframes outerStrokeColor {
+  10% {
+    stroke: hsla(0, 0%, 100%, 1);
+    stroke-dasharray: 6;
+    stroke-width: 0.1;
+  }
+  40% {
+    stroke: chocolate;
+    stroke-dasharray: 0.1;
+  }
+  80% {
+    stroke: rgb(143, 32, 255);
+    stroke-dasharray: 63;
+  }
+  100% {
+    stroke: hsla(0, 0%, 100%, 1);
+    stroke-width: 2.5;
+    transform: rotate(1080deg);
+    stroke-dasharray: 63;
+  }
 }
 
 svg.feather.feather-target line {
   transition: all 300ms linear;
-  stroke: hsla(9, 100%, 64%, 0.8);
+  stroke: rgba(102, 51, 153, 0.5);
   stroke-width: 1;
   transform: scale(0.5);
   transform-origin: center;
 }
 
+svg.feather.feather-target:hover line {
+  stroke: rgba(102, 51, 153, 0.8);
+}
+
 .overlay.open ~ .fab-container .btn.fab svg.feather.feather-target line {
   stroke-opacity: 1;
-  stroke-width: 2;
-  stroke: hsla(0, 0%, 0%, 0.3);
+  stroke-width: 1.5;
+  stroke: hsla(0, 0%, 0%, 0.6);
   transform: scale(0.3) rotate(45deg);
 }
 

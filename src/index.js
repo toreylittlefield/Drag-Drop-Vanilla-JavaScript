@@ -36,7 +36,7 @@ btnFabSelector.onpointerdown = (event) => {
   overlaySelector.classList.toggle("open");
   const open = fablistSelector.classList.toggle("open");
   let rotateAngle = 5;
-  let transitionTime = 300;
+  let transitionTime = 100;
   fabListButtonsSelector.forEach((button) => {
     const transition = `transition: all ${transitionTime}ms ease ${transitionTime}ms; will-change: transform;`;
     const translateXCSS = `translateX(-150%)`;
@@ -49,6 +49,6 @@ btnFabSelector.onpointerdown = (event) => {
       button.style.cssText = `transform: rotate(0deg); ${transition};`;
     }
     rotateAngle -= 50;
-    transitionTime += 300;
+    transitionTime += 100;
   });
 };
