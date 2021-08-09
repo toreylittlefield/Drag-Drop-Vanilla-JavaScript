@@ -89,7 +89,7 @@ body {
   font-family: sans-serif;
   font-size: 16px;
   scroll-behavior: smooth;
-  overflow-x: visible;
+  overflow-x: hidden;
 }
 
 body {
@@ -98,6 +98,13 @@ body {
 
 .active-body {
   background-image: var(--active-bg-gradient);
+}
+
+/****************************
+  Will Change (Animation Performance)
+****************************/
+.will-change {
+  will-change: auto;
 }
 
 /****************************
@@ -169,8 +176,9 @@ button {
 ****************************/
 .fab-container {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  bottom: 100px;
+  right: 100px;
+  z-index: 5;
   /* width: 7rem;
   height: 7rem; */
   /* border-radius: 50%; */
@@ -181,23 +189,22 @@ button {
   inset: 0;
   width: 100%;
   height: 100%;
+  top: 0;
   transition: background 200ms linear;
-  z-index: -1;
+  z-index: -5;
   opacity: 0;
+  border-radius: 0% 0% 0% 0%;
 }
 
 .overlay.open {
-  background-color: rgba(0, 0, 0, 0.5);
-  /* contain: paint; */
+  background-color: rgba(0, 0, 0, 0.35);
   opacity: 1;
+  /* z-index: 5; */
 }
 
-.change-view {
-  /* position: fixed;
-  top: 20%;
-  left: 80%; */
+.btn.change-view {
   opacity: 1;
-  /* width: max-content; */
+
   user-select: none;
 }
 .btn.change-view:hover {
@@ -206,13 +213,8 @@ button {
 }
 
 .btn.toggle-fullscreen {
-  /* position: fixed;
-  top: 20%;
-  left: 50%; */
-  /* opacity: 0; */
   color: whitesmoke;
   background-color: hsla(280, 93%, 23%, 0.8);
-  /* width: max-content; */
   user-select: none;
 }
 
@@ -222,10 +224,6 @@ button {
 }
 
 .btn.dark-mode {
-  /* position: fixed;
-  top: 20%;
-  left: 5%; */
-  /* width: max-content; */
   user-select: none;
 }
 
@@ -235,6 +233,11 @@ button {
 }
 
 .btn.fab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: transparent;
   padding: 0;
   margin: 0;
@@ -248,26 +251,16 @@ button {
   width: 7rem;
   height: 7rem;
   overflow: hidden;
-  z-index: 2;
+  z-index: 100;
 }
 
 .fab-list {
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  margin: 0;
-  opacity: 0;
-  height: inherit;
-  width: inherit;
-  list-style-type: none;
-  list-style: none; */
   opacity: 0;
   transition: opacity 1000ms ease 500ms;
-  /* z-index: -1; */
 }
 .fab-list.open {
   opacity: 1;
+  will-change: auto;
 }
 
 .fab-list li {
@@ -281,7 +274,7 @@ button {
   margin: auto;
   width: 80px;
   height: 80px;
-  z-index: -1;
+  z-index: 99;
 }
 
 .fab-list li button {
@@ -291,7 +284,6 @@ button {
   width: inherit;
   height: inherit;
   text-overflow: clip;
-  z-index: 2;
 }
 
 svg.feather.feather-target {
@@ -301,13 +293,14 @@ svg.feather.feather-target {
   stroke-width: 6;
 }
 
-.overlay.open ~ .btn.fab svg.feather.feather-target {
+.overlay.open ~ .fab-container .btn.fab svg.feather.feather-target {
   stroke-width: 0;
   fill: hsla(9, 100%, 64%, 0.8);
   stroke: hsla(0, 0%, 100%, 1);
   stroke-opacity: 1;
   fill-opacity: 1;
   transform: scale(1.15) rotateZ(180deg);
+  will-change: auto;
 }
 
 svg.feather.feather-target circle.outer {
@@ -318,13 +311,18 @@ svg.feather.feather-target circle.outer {
   stroke: rgba(0, 0, 0, 0.3);
 }
 
-.overlay.open ~ .btn.fab svg.feather.feather-target circle.outer {
+.overlay.open
+  ~ .fab-container
+  .btn.fab
+  svg.feather.feather-target
+  circle.outer {
   fill-opacity: 0.2;
   stroke: hsla(0, 0%, 100%, 1);
   transition: all 300ms linear;
   fill: rebeccapurple;
   stroke-width: 2.5;
-  stroke-dasharray: 0;
+  stroke-dasharray: 63;
+  will-change: auto;
 }
 
 svg.feather.feather-target line {
@@ -335,7 +333,7 @@ svg.feather.feather-target line {
   transform-origin: center;
 }
 
-.overlay.open ~ .btn.fab svg.feather.feather-target line {
+.overlay.open ~ .fab-container .btn.fab svg.feather.feather-target line {
   stroke-opacity: 1;
   stroke-width: 2;
   stroke: hsla(0, 0%, 0%, 0.3);
@@ -480,6 +478,7 @@ section {
   transform: rotateZ(90deg);
   transform-style: preserve-3d;
   transition: transform 1s linear 300ms;
+
   /* will-change: transform; */
   position: relative;
   opacity: 0;
