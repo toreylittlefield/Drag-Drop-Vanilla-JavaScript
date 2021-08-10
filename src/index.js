@@ -32,7 +32,6 @@ const fablistSelector = document.querySelector(".fab-list");
 const fabListButtonsSelector = document.querySelectorAll(".fab-list button");
 btnFabSelector.onpointerdown = (event) => {
   event.stopPropagation();
-  console.log(event.target);
   overlaySelector.classList.toggle("open");
   const open = fablistSelector.classList.toggle("open");
   let rotateAngle = 5;
