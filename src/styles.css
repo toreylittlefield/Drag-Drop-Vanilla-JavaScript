@@ -11,9 +11,16 @@
 :root {
   --clr-dark: 0, 0%, 0%;
   --clr-light: 0, 0%, 100%;
+  /* orange */
   --clr-primary: 25, 75%, 47%;
+  /* purple */
   --clr-secondary: 270, 50%, 40%;
+  /* red */
   --clr-alternate: 348, 83%, 47%;
+  --clr-ripple-bg: 0, 34%, 85%;
+
+  --font-family: sans-serif;
+  --font-size: 16px;
 }
 /****************************
     End Fonts & Colors
@@ -124,8 +131,8 @@ body {
   margin: 0em;
   padding: 0em;
   min-height: 100vh;
-  font-family: sans-serif;
-  font-size: 16px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
@@ -141,55 +148,61 @@ body {
 /****************************
       Buttons
 ****************************/
+:root {
+  --clr-light-btn: 0, 21%, 88%;
+  --clr-dark-btn: 280, 5%, 12%;
+  --clr-alt-btn: 280, 93%, 23%;
+}
+
 button {
   outline: none;
   border: none;
   border-style: none;
   cursor: pointer;
+  position: relative;
 }
 
 .btn {
   font-size: 1.5rem;
-  z-index: 1;
   padding: 0.75em 0.5em;
   border-radius: 0.5em;
   word-wrap: normal;
   overflow: hidden;
   box-shadow: -0.2em 0.25em 0.25rem 0 hsla(var(--clr-dark), 0.3);
   transition: background 400ms,
-    opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
-  color: rgba(231, 218, 218, 0.795);
-  background-color: hsla(280, 5%, 12%, 0.95);
+    opacity var(--animation-duration-flip) linear var(--animation-duration-flip),
+    transform 400ms linear;
+  color: hsla(var(--clr-light-btn), 0.795);
+  background-color: hsla(var(--clr-dark-btn), 0.95);
+  user-select: none;
+}
+
+.btn.hover {
+  transform: scale(1.05);
 }
 
 .btn.change-view {
   opacity: 1;
-  user-select: none;
 }
 
 .btn.change-view:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 5%, 12%, 0.8);
+  background-color: hsla(var(--clr-dark-btn), 0.8);
 }
 
 .btn.toggle-fullscreen {
-  color: whitesmoke;
-  background-color: hsla(280, 93%, 23%, 0.8);
-  user-select: none;
+  background-color: hsla(var(--clr-alt-btn), 0.8);
 }
 
 .btn.toggle-fullscreen:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 93%, 23%, 0.5);
+  background-color: hsla(var(--clr-alt-btn), 0.5);
 }
 
 .btn.dark-mode {
-  user-select: none;
+  background-color: hsla(var(--clr-alt-btn), 0.8);
 }
 
 .btn.dark-mode:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 5%, 12%, 0.8);
+  background-color: hsla(var(--clr-dark-btn), 0.8);
 }
 
 /* Fab Button */
@@ -206,16 +219,36 @@ button {
   box-shadow: none;
   border: none;
   outline: none;
-  color: hsla(0, 0%, 100%, 0.6);
   display: grid;
   place-content: center;
   width: inherit;
   height: inherit;
   overflow: hidden;
-  z-index: 100;
+  z-index: 1;
   border-radius: 50%;
   overflow: hidden;
 }
+
+/* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
+
+span.ripple {
+  position: absolute; /* The absolute position we mentioned earlier */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: hsla(var(--clr-ripple-bg), 0.75);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/****************************
+      End Buttons
+****************************/
 
 /***************************
   Floating (Circle) Menu
@@ -226,7 +259,7 @@ button {
   right: 24px;
   width: 5rem;
   height: 5rem;
-  z-index: 900;
+  z-index: 1;
 }
 
 .fab-list {
@@ -250,7 +283,7 @@ button {
   margin: auto;
   width: 80px;
   height: 80px;
-  z-index: 99;
+  /* z-index: 1; */
 }
 
 .fab-list li button {
@@ -262,22 +295,27 @@ button {
   text-overflow: clip;
 }
 
+:root {
+  --clr-primary-lighten: 9, 100%, 64%;
+  --clr-secondary-lighten: 270, 100%, 56%;
+}
+
 svg.feather.feather-target {
   stroke-width: 6;
   fill: transparent;
-  stroke: rgba(210, 105, 30, 0.65);
+  stroke: hsla(var(--clr-primary), 0.65);
   transform: scale(1) rotateZ(-180deg);
   transition: all var(--animationFeatherSVGLongTiming) linear;
 }
 
 svg.feather.feather-target:hover {
-  stroke: hsla(0, 0%, 100%, 0.8);
+  stroke: hsla(var(--clr-light), 0.8);
 }
 
 .overlay.open ~ .fab-container .btn.fab svg.feather.feather-target {
-  fill: hsla(9, 100%, 64%, 0.8);
+  fill: hsla(var(--clr-primary-lighten), 0.8);
   fill-opacity: 1;
-  stroke: hsla(0, 0%, 100%, 1);
+  stroke: hsla(var(--clr-light), 1);
   stroke-width: 0;
   stroke-opacity: 1;
   transform: scale(1.15) rotateZ(180deg);
@@ -291,13 +329,13 @@ svg.feather.feather-target:hover {
 svg.feather.feather-target circle.outer {
   fill-opacity: 0.8;
   stroke-width: 1;
-  stroke: rgba(210, 105, 30, 0.9);
+  stroke: hsla(var(--clr-primary), 0.9);
   stroke-dasharray: 21;
   transition: all var(--animationFeatherSVGShortTiming) linear;
 }
 
 svg.feather.feather-target:hover circle.outer {
-  stroke: hsla(0, 0%, 100%, 0.8);
+  stroke: hsla(var(--clr-light), 0.8);
 }
 
 .overlay.open
@@ -306,9 +344,9 @@ svg.feather.feather-target:hover circle.outer {
   svg.feather.feather-target
   circle.outer {
   fill-opacity: 0.2;
-  stroke: hsla(0, 0%, 100%, 1);
+  stroke: hsla(var(--clr-light), 1);
   transition: all 300ms linear;
-  fill: rebeccapurple;
+  fill: hsla(var(--clr-secondary), 1);
   stroke-width: 2.5;
   stroke-dasharray: 63;
   will-change: auto;
@@ -318,20 +356,20 @@ svg.feather.feather-target:hover circle.outer {
 
 @keyframes outerStrokeColor {
   10% {
-    stroke: hsla(0, 0%, 100%, 1);
+    stroke: hsla(var(--clr-light), 1);
     stroke-dasharray: 6;
     stroke-width: 0.1;
   }
   40% {
-    stroke: chocolate;
+    stroke: hsla(var(--clr-primary), 1);
     stroke-dasharray: 0.1;
   }
   80% {
-    stroke: rgb(143, 32, 255);
+    stroke: hsla(var(--clr-secondary-lighten), 1);
     stroke-dasharray: 63;
   }
   100% {
-    stroke: hsla(0, 0%, 100%, 1);
+    stroke: hsla(var(--clr-light), 1);
     stroke-width: 2.5;
     transform: rotate(1080deg);
     stroke-dasharray: 63;
@@ -339,21 +377,20 @@ svg.feather.feather-target:hover circle.outer {
 }
 
 svg.feather.feather-target line {
-  stroke: rgba(102, 51, 153, 0.5);
-  stroke-width: 0;
   transform: scale(0.5);
+  stroke-width: 0;
   transform-origin: center;
   transition: all var(--animationFeatherSVGShortTiming) linear;
 }
 
 svg.feather.feather-target:hover line {
-  stroke: rgba(102, 51, 153, 0.8);
+  stroke: hsla(var(--clr-secondary), 0.8);
 }
 
 .overlay.open ~ .fab-container .btn.fab svg.feather.feather-target line {
   stroke-opacity: 1;
   stroke-width: 1.5;
-  stroke: hsla(0, 0%, 0%, 0.6);
+  stroke: hsla(var(--clr-dark), 0.6);
   transform: scale(0.3) rotate(45deg);
 }
 
@@ -361,32 +398,11 @@ svg.feather.feather-target:hover line {
   End Floating (Circle) Menu
 ****************************/
 
-/* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
-
-span.ripple {
-  position: absolute; /* The absolute position we mentioned earlier */
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 600ms linear;
-  background-color: rgba(230, 204, 204, 0.75);
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-/****************************
-      End Buttons
-****************************/
-
 /****************************
       Video and Onload
 ****************************/
 .fullscreen-video {
-  z-index: -10;
+  z-index: -1;
   width: 100%;
   /* transform: translateX(10%); */
   height: 100%;
@@ -435,7 +451,7 @@ span.ripple {
   bottom: 0;
   background-color: rgba(0, 0, 0, 1);
   opacity: 1;
-  z-index: -9;
+  z-index: -1;
   animation: videofade var(--animation-bg-layout-duration) linear
     var(--animation-bg-layout-delay) 1 forwards;
 }
@@ -469,7 +485,7 @@ section {
   height: 100%;
   top: 0;
   transition: background 200ms linear;
-  z-index: -5;
+  z-index: -1;
   opacity: 0;
 }
 
@@ -490,7 +506,7 @@ section {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  z-index: 5;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3vw;
@@ -560,7 +576,7 @@ section {
   user-select: none;
   cursor: grab;
   pointer-events: visible;
-  z-index: 0;
+  /* z-index: 0; */
   object-fit: cover;
 }
 
