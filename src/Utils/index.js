@@ -33,14 +33,14 @@ export const moveViewPortToCenter = (event) => {
  */
 export const createRipple = (event) => {
   const button = event.currentTarget;
-
+  const { left, top } = button.getBoundingClientRect();
   const circle = document.createElement("span");
   const diameter = Math.max(button.clientWidth, button.clientHeight);
   const radius = diameter / 2;
 
   circle.style.width = circle.style.height = `${diameter}px`;
-  circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-  circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+  circle.style.left = `${event.clientX - left - radius}px`;
+  circle.style.top = `${event.clientY - top - radius}px`;
   circle.classList.add("ripple");
 
   const ripple = button.getElementsByClassName("ripple")[0];
