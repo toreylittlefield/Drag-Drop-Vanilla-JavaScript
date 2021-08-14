@@ -6,8 +6,6 @@ import { generateRandomHSLA, getAltImgString } from "../Utils";
 
 // label and add styles to grid-items at runtime
 selectors.GRID_ITEMS.forEach((gridItem, index) => {
-  const [standardGridItem] = selectors.GRID_ITEMS;
-  const { clientHeight, clientWidth } = standardGridItem;
   const { hslaBackgroundColor, hslaFontColor } = generateRandomHSLA();
   const icon = document.createElement("img");
   gridItem.textContent = "";
@@ -17,8 +15,6 @@ selectors.GRID_ITEMS.forEach((gridItem, index) => {
   //*********************//
   icon.src = iconsArray[index];
   icon.type = "image/svg+xml";
-  icon.height = clientWidth / 2;
-  icon.width = clientWidth / 2;
   icon.id = `icon-${index}`;
   icon.alt = getAltImgString(icon);
   gridItem.appendChild(icon);

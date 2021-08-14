@@ -5,14 +5,57 @@
   box-sizing: border-box;
 }
 
+/****************************
+    Fonts & Colors
+****************************/
 :root {
-  /* --animation-duration-flip: 1000ms;
-  --animation-bg-layout-duration: 10s;
-  --animation-bg-layout-delay: 2000ms; */
+  --clr-dark: 0, 0%, 0%;
+  --clr-light: 0, 0%, 100%;
+  /* orange */
+  --clr-primary: 25, 75%, 47%;
+  /* purple */
+  --clr-secondary: 270, 50%, 40%;
+  /* red */
+  --clr-alternate: 348, 83%, 47%;
+  --clr-ripple-bg: 0, 34%, 85%;
+
+  --font-family: sans-serif;
+  --font-size: 16px;
+}
+/****************************
+    End Fonts & Colors
+****************************/
+
+:root {
+  --active-box-shadow: -0.28em 1.25em 0em 0em hsla(var(--clr-dark), 0.5),
+    -0.38em 0 0 hsla(var(--clr-primary), 1),
+    inset 0.1em 0 0 hsla(var(--clr-primary), 1),
+    inset -0.3em 0 0em 0em hsla(var(--clr-dark), 0.5),
+    0.1em 2em 1.5em hsla(var(--clr-dark), 0.8),
+    inset -0.5em -0.1em 0 hsla(var(--clr-light), 0.8);
+  --grid-item-width: 10vw;
+  --grid-item-height: 11vw;
+}
+
+/****************************
+    Animation Variables 
+****************************/
+:root {
   --animation-duration-flip: 1000ms;
   --animation-bg-layout-duration: 10s;
   --animation-bg-layout-delay: 2000ms;
-  --bg-color: ;
+  /* SVG FAB */
+  --animationFeatherSVGShortTiming: 300ms;
+  --animationFeatherSVGLongTiming: 500ms;
+}
+/****************************
+  End Animation Variables 
+****************************/
+
+/****************************
+    Variables Gradients
+****************************/
+:root {
   --bg-gradient: linear-gradient(
     190deg,
     hsla(290, 50%, 8%) 0%,
@@ -32,6 +75,7 @@
     hsla(290, 50%, 8%, 0.019) 91.2%,
     hsla(290, 50%, 8%, 0) 100%
   );
+
   --bg-glow: linear-gradient(
     hsl(283, 77%, 31%) 0%,
     hsla(283, 77%, 31%, 0.978) 9.5%,
@@ -50,6 +94,7 @@
     hsla(283, 77%, 31%, 0.019) 91.2%,
     hsla(283, 77%, 31%, 0) 100%
   );
+
   --active-bg-gradient: linear-gradient(
     130deg,
     rgba(148, 148, 206, 0.9) 30%,
@@ -57,39 +102,39 @@
     rgba(0, 77, 64, 0.8) 75%,
     rgba(0, 212, 255, 1) 100%
   );
+
   --body-bg-gradient: linear-gradient(
     90deg,
     rgba(1, 0, 36, 1) 0%,
     rgba(0, 77, 64, 1) 77%,
     rgba(0, 212, 255, 1) 100%
   );
+
   --pulse-bg-gradient: rgba(205, 174, 236, 0.99)
     radial-gradient(circle, transparent 1%, rgba(255, 255, 255, 0.9) 1%)
     center/0%;
+
   --shine-bg-gradient: linear-gradient(
     75deg,
     transparent 10%,
     rgba(255, 255, 255, 0.2) 90%,
     transparent 10%
   );
-  --active-box-shadow: -0.28em 1.25em 0em 0em rgba(0, 0, 0, 0.5),
-    -0.38em 0 0 chocolate, inset 0.1em 0 0 chocolate,
-    inset -0.3em 0 0em 0em rgba(0, 0, 0, 0.5),
-    0.1em 2em 1.5em rgba(0, 0, 0, 0.8),
-    inset -0.5em -0.1em 0 rgba(255, 255, 255, 0.8);
-  --grid-item-width: 10vw;
-  --grid-item-height: 11vw;
 }
+
+/****************************
+  End Variables Gradients
+****************************/
 
 html,
 body {
   margin: 0em;
   padding: 0em;
   min-height: 100vh;
-  font-family: sans-serif;
-  font-size: 16px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
   scroll-behavior: smooth;
-  overflow-x: visible;
+  overflow-x: hidden;
 }
 
 body {
@@ -101,68 +146,132 @@ body {
 }
 
 /****************************
+      Header
+****************************/
+.logo-icon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  padding: 0em;
+}
+
+.logo-icon svg {
+  width: 15vmin;
+  margin: 3.5vmin 1.25rem;
+}
+
+.logo-icon #char-l-group path {
+  stroke-dasharray: 222;
+  stroke-dashoffset: 222;
+  stroke-width: 0.2;
+  animation: iconSVG 5s linear forwards;
+  /* fill: transparent; */
+  fill: url(#paint0_linear);
+  fill-opacity: 0.01;
+  stroke: white;
+}
+
+@keyframes iconSVG {
+  to {
+    fill-opacity: 1;
+    stroke-width: 0.05;
+    stroke: black;
+    stroke-dashoffset: 0;
+  }
+}
+/****************************
+      End Header
+****************************/
+
+/****************************
       Buttons
 ****************************/
+:root {
+  --clr-light-btn: 0, 21%, 88%;
+  --clr-dark-btn: 280, 5%, 12%;
+  --clr-alt-btn: 280, 93%, 23%;
+}
+
 button {
   outline: none;
   border: none;
   border-style: none;
   cursor: pointer;
+  position: relative;
 }
 
 .btn {
-  font-size: 2.25vw;
-  z-index: 999;
+  font-size: 1.5rem;
   padding: 0.75em 0.5em;
   border-radius: 0.5em;
   word-wrap: normal;
   overflow: hidden;
-  box-shadow: -0.2em 0.25em 0.25rem 0 rgba(0, 0, 0, 0.3);
+  box-shadow: -0.2em 0.25em 0.25rem 0 hsla(var(--clr-dark), 0.3);
   transition: background 400ms,
-    opacity var(--animation-duration-flip) linear var(--animation-duration-flip);
-  color: rgba(231, 218, 218, 0.795);
-  background-color: hsla(280, 5%, 12%, 0.95);
-}
-.change-view {
-  position: fixed;
-  top: 20%;
-  left: 80%;
-  opacity: 0;
-  width: max-content;
+    opacity var(--animation-duration-flip) linear var(--animation-duration-flip),
+    transform 400ms linear;
+  color: hsla(var(--clr-light-btn), 0.795);
+  background-color: hsla(var(--clr-dark-btn), 0.95);
   user-select: none;
 }
-.btn.change-view:hover {
+
+.btn.hover {
   transform: scale(1.05);
-  background-color: hsla(280, 5%, 12%, 0.8);
+}
+
+.btn.change-view {
+  opacity: 1;
+}
+
+.btn.change-view:hover {
+  background-color: hsla(var(--clr-dark-btn), 0.8);
 }
 
 .btn.toggle-fullscreen {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  /* opacity: 0; */
-  color: whitesmoke;
-  background-color: hsla(280, 93%, 23%, 0.8);
-  width: max-content;
-  user-select: none;
+  background-color: hsla(var(--clr-alt-btn), 0.8);
 }
 
 .btn.toggle-fullscreen:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 93%, 23%, 0.5);
+  background-color: hsla(var(--clr-alt-btn), 0.5);
 }
 
 .btn.dark-mode {
-  position: fixed;
-  top: 20%;
-  left: 5%;
-  width: max-content;
-  user-select: none;
+  background-color: hsla(var(--clr-alt-btn), 0.8);
 }
 
 .btn.dark-mode:hover {
-  transform: scale(1.05);
-  background-color: hsla(280, 5%, 12%, 0.8);
+  background-color: hsla(var(--clr-dark-btn), 0.8);
+}
+
+/* Fab Button */
+.btn.fab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  display: grid;
+  place-content: center;
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+  z-index: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.btn.skew {
+  background-color: hsla(var(--clr-alt-btn), 0.8);
+  font-size: 1rem;
 }
 
 /* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
@@ -172,7 +281,7 @@ span.ripple {
   border-radius: 50%;
   transform: scale(0);
   animation: ripple 600ms linear;
-  background-color: rgba(230, 204, 204, 0.75);
+  background-color: hsla(var(--clr-ripple-bg), 0.75);
 }
 
 @keyframes ripple {
@@ -186,11 +295,161 @@ span.ripple {
       End Buttons
 ****************************/
 
+/***************************
+  Floating (Circle) Menu
+****************************/
+.fab-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 5rem;
+  height: 5rem;
+  z-index: 1;
+}
+
+.fab-list {
+  opacity: 0;
+  transition: opacity 500ms ease 100ms;
+}
+
+.fab-list.open {
+  opacity: 1;
+  will-change: auto;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.fab-list li {
+  padding: 0;
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  width: 80px;
+  height: 80px;
+}
+
+.fab-list li button {
+  position: absolute;
+  display: block;
+  margin: auto;
+  width: inherit;
+  height: inherit;
+  text-overflow: clip;
+}
+
+:root {
+  --clr-primary-lighten: 9, 100%, 64%;
+  --clr-secondary-lighten: 270, 100%, 56%;
+}
+
+svg.feather.feather-target {
+  stroke-width: 6;
+  fill: transparent;
+  stroke: hsla(var(--clr-primary), 0.65);
+  transform: scale(1) rotateZ(-180deg);
+  transition: all var(--animationFeatherSVGLongTiming) linear;
+}
+
+svg.feather.feather-target:hover {
+  stroke: hsla(var(--clr-light), 0.8);
+}
+
+.overlay.open ~ .fab-container .btn.fab svg.feather.feather-target {
+  fill: hsla(var(--clr-primary-lighten), 0.8);
+  fill-opacity: 1;
+  stroke: hsla(var(--clr-light), 1);
+  stroke-width: 0;
+  stroke-opacity: 1;
+  transform: scale(1.15) rotateZ(180deg);
+  will-change: auto;
+}
+
+.overlay.open ~ .fab-container .btn.fab:hover svg.feather.feather-target {
+  transform: rotateZ(-1deg);
+}
+
+svg.feather.feather-target circle.outer {
+  fill-opacity: 0.8;
+  stroke-width: 1;
+  stroke: hsla(var(--clr-primary), 0.9);
+  stroke-dasharray: 21;
+  transition: all var(--animationFeatherSVGShortTiming) linear;
+}
+
+svg.feather.feather-target:hover circle.outer {
+  stroke: hsla(var(--clr-light), 0.8);
+}
+
+.overlay.open
+  ~ .fab-container
+  .btn.fab
+  svg.feather.feather-target
+  circle.outer {
+  fill-opacity: 0.2;
+  stroke: hsla(var(--clr-light), 1);
+  transition: all 300ms linear;
+  fill: hsla(var(--clr-secondary), 1);
+  stroke-width: 2.5;
+  stroke-dasharray: 63;
+  will-change: auto;
+  animation: outerStrokeColor 20000ms ease infinite 5000ms;
+  transform-origin: center;
+}
+
+@keyframes outerStrokeColor {
+  10% {
+    stroke: hsla(var(--clr-light), 1);
+    stroke-dasharray: 6;
+    stroke-width: 0.1;
+  }
+  40% {
+    stroke: hsla(var(--clr-primary), 1);
+    stroke-dasharray: 0.1;
+  }
+  80% {
+    stroke: hsla(var(--clr-secondary-lighten), 1);
+    stroke-dasharray: 63;
+  }
+  100% {
+    stroke: hsla(var(--clr-light), 1);
+    stroke-width: 2.5;
+    transform: rotate(1080deg);
+    stroke-dasharray: 63;
+  }
+}
+
+svg.feather.feather-target line {
+  transform: scale(0.5);
+  stroke-width: 0;
+  transform-origin: center;
+  transition: all var(--animationFeatherSVGShortTiming) linear;
+}
+
+svg.feather.feather-target:hover line {
+  stroke: hsla(var(--clr-secondary), 0.8);
+}
+
+.overlay.open ~ .fab-container .btn.fab svg.feather.feather-target line {
+  stroke-opacity: 1;
+  stroke-width: 1.5;
+  stroke: hsla(var(--clr-dark), 0.6);
+  transform: scale(0.3) rotate(45deg);
+}
+
+/***************************
+  End Floating (Circle) Menu
+****************************/
+
 /****************************
       Video and Onload
 ****************************/
 .fullscreen-video {
-  z-index: -10;
+  z-index: -1;
   width: 100%;
   /* transform: translateX(10%); */
   height: 100%;
@@ -239,7 +498,7 @@ span.ripple {
   bottom: 0;
   background-color: rgba(0, 0, 0, 1);
   opacity: 1;
-  z-index: -9;
+  z-index: -1;
   animation: videofade var(--animation-bg-layout-duration) linear
     var(--animation-bg-layout-delay) 1 forwards;
 }
@@ -249,14 +508,14 @@ span.ripple {
 ****************************/
 
 /****************************
-      Wrappers 
+    Wrappers & Overlays
 ****************************/
 .page-wrapper {
   padding: 40vw 2vw;
   height: auto;
 }
 
-section {
+.main-content {
   font-size: inherit;
   display: grid;
   place-content: center;
@@ -266,25 +525,46 @@ section {
   padding: 1vw 2vw;
 }
 
+.overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  transition: background 200ms linear;
+  z-index: -1;
+  opacity: 0;
+}
+
+.overlay.open {
+  background-color: rgba(0, 0, 0, 0.35);
+  opacity: 1;
+}
+
 /****************************
-      End Wrappers 
+  End Wrappers & Overlays
 ****************************/
 
 /****************************
   Grid Container And Items 
 ****************************/
-/* The Grid */
-/* grid-template-columns: repeat(auto-fit, minmax(19em, 1fr)); */
-/* grid-auto-rows: minmax(3.125em, auto); */
-/* outline: 0.5vw solid rgba(194, 189, 231, 0.3); */
-/* box-shadow: 0em -0.625em 0.625em 12.5em rgba(156, 78, 78, 0.2); */
+svg#phone-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* margin: 0.5em 0em; */
+  border-radius: inherit;
+  z-index: -1;
+}
+
 .grid-container {
-  /* background-color: rgba(236, 227, 227, 0.2); */
-  background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
+  /* background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
-  z-index: 5;
+  background-position: center; */
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3vw;
@@ -299,7 +579,6 @@ section {
   transform: rotateZ(90deg);
   transform-style: preserve-3d;
   transition: transform 1s linear 300ms;
-  /* will-change: transform; */
   position: relative;
   opacity: 0;
   animation: showGridContainer calc(var(--animation-bg-layout-duration) / 4)
@@ -355,7 +634,8 @@ section {
   user-select: none;
   cursor: grab;
   pointer-events: visible;
-  z-index: 0;
+  /* z-index: 0; */
+  object-fit: cover;
 }
 
 .grid-item img {
@@ -364,26 +644,17 @@ section {
   opacity: 1;
   user-select: none;
   touch-action: none;
-  /* will-change: transform; */
+  width: 50%;
 }
 
 /* active states activated on pointer down event */
 .grid-container.active {
-  transform: perspective(157em) rotateX(45deg) rotateZ(0deg)
+  transform: perspective(257em) rotateX(45deg) rotateZ(0deg)
     scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em);
-  transition: transform 2000ms ease-in-out 30ms;
-}
 
-/* For Shine Effect */
-.active:before {
-  content: "";
-  position: absolute;
-  top: 0%;
-  left: 0%;
-  width: 100%;
-  height: 100%;
-  animation: 2200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
-  border-radius: inherit;
+  /* transform: perspective(157em) rotateX(45deg) rotateZ(0deg) */
+  /* scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em); */
+  transition: transform 2000ms ease-in-out 30ms;
 }
 
 .active .grid-item {
@@ -398,8 +669,37 @@ section {
   /* will-change: transform; */
 }
 
+/* For Shine Effect */
+.active:before {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  animation: 2200ms shine cubic-bezier(0.445, 0.05, 0.55, 0.95) 1 250ms;
+  border-radius: inherit;
+}
+
+/* shine for rotation transition of section .grid-container */
+@keyframes shine {
+  0% {
+    background-size: 10000%;
+    background: var(--shine-bg-gradient);
+    background-repeat: no-repeat;
+    background-position: -50vw;
+  }
+  100% {
+    background-position: 300vw;
+  }
+}
+
 /****************************
   End Grid Container And Items 
+****************************/
+
+/****************************
+      Drag & Drop
 ****************************/
 
 /* add on pointer down and remove on pointer up */
@@ -477,29 +777,13 @@ section {
   }
 }
 
-/* shine for rotation transition of section .grid-container */
-@keyframes shine {
-  0% {
-    background-size: 10000%;
-    background: var(--shine-bg-gradient);
-    background-repeat: no-repeat;
-    background-position: -50vw;
-  }
-  100% {
-    background-position: 300vw;
-  }
-}
+/****************************
+      End Drag & Drop
+****************************/
 
-/* shine for rotation transition of section .grid-container */
-@keyframes glow {
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
+/****************************
+      Active Icon
+****************************/
 .active-icon {
   position: absolute;
   height: 10em;
@@ -530,4 +814,15 @@ svg.active-icon line {
   to {
     stroke-dashoffset: 0;
   }
+}
+
+/****************************
+    End Active Icon
+****************************/
+
+/****************************
+  Will Change (Animation Performance)
+****************************/
+.will-change {
+  will-change: auto;
 }
