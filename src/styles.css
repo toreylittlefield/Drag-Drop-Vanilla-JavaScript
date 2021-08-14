@@ -146,6 +146,46 @@ body {
 }
 
 /****************************
+      Header
+****************************/
+.logo-icon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  padding: 0em;
+}
+
+.logo-icon svg {
+  width: 15vmin;
+  margin: 3.5vmin 1.25rem;
+}
+
+.logo-icon #char-l-group path {
+  stroke-dasharray: 222;
+  stroke-dashoffset: 222;
+  stroke-width: 0.2;
+  animation: iconSVG 5s linear forwards;
+  /* fill: transparent; */
+  fill: url(#paint0_linear);
+  fill-opacity: 0.01;
+  stroke: white;
+}
+
+@keyframes iconSVG {
+  to {
+    fill-opacity: 1;
+    stroke-width: 0.05;
+    stroke: black;
+    stroke-dashoffset: 0;
+  }
+}
+/****************************
+      End Header
+****************************/
+
+/****************************
       Buttons
 ****************************/
 :root {
@@ -229,6 +269,11 @@ button {
   overflow: hidden;
 }
 
+.btn.skew {
+  background-color: hsla(var(--clr-alt-btn), 0.8);
+  font-size: 1rem;
+}
+
 /* https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/ */
 
 span.ripple {
@@ -270,6 +315,9 @@ span.ripple {
 .fab-list.open {
   opacity: 1;
   will-change: auto;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .fab-list li {
@@ -283,7 +331,6 @@ span.ripple {
   margin: auto;
   width: 80px;
   height: 80px;
-  /* z-index: 1; */
 }
 
 .fab-list li button {
@@ -468,7 +515,7 @@ svg.feather.feather-target:hover line {
   height: auto;
 }
 
-section {
+.main-content {
   font-size: inherit;
   display: grid;
   place-content: center;
