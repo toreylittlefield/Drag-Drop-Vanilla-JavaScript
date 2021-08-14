@@ -39,10 +39,12 @@ btnFabSelector.onpointerdown = (event) => {
   fabListButtonsSelector.forEach((button) => {
     const transition = `transition: all ${transitionTime}ms ease ${transitionTime}ms; will-change: transform;`;
     const translateXCSS = `translateX(-150%)`;
+    const skew = 30;
+    const strSkew = `skew(${-30}deg)`;
     const cssText = `transform: rotate(${-rotateAngle}deg) ${translateXCSS}; ${transition};`;
     if (open) {
       button.parentElement.style.cssText = cssText;
-      button.style.cssText = `transform: rotate(${rotateAngle}deg); ${transition};`;
+      button.style.cssText = `transform: rotate(${rotateAngle}deg) ; ${transition};`;
     } else {
       button.parentElement.style.cssText = `transform: rotate(0deg) translateX(0); ${transition};`;
       button.style.cssText = `transform: rotate(0deg); ${transition};`;
