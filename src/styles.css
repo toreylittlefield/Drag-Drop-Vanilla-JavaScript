@@ -548,11 +548,22 @@ svg.feather.feather-target:hover line {
 /****************************
   Grid Container And Items 
 ****************************/
+svg#phone-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* margin: 0.5em 0em; */
+  border-radius: inherit;
+  z-index: -1;
+}
+
 .grid-container {
-  background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
+  /* background-image: url("./Icons/digital-device-mockup/phone-mock-rotated.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+  background-position: center; */
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -638,8 +649,11 @@ svg.feather.feather-target:hover line {
 
 /* active states activated on pointer down event */
 .grid-container.active {
-  transform: perspective(157em) rotateX(45deg) rotateZ(0deg)
+  transform: perspective(257em) rotateX(45deg) rotateZ(0deg)
     scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em);
+
+  /* transform: perspective(157em) rotateX(45deg) rotateZ(0deg) */
+  /* scale3d(0.95, 1.1, 2) translate3d(0em, -7.5em, -3.5em); */
   transition: transform 2000ms ease-in-out 30ms;
 }
 
